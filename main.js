@@ -560,6 +560,9 @@
     showInHero(Number(tile.dataset.pick));
   });
 
+  // Cómo comprar: pagos y envíos vienen de STORE (los edita el dueño) --------
+  $('[data-store-buy]').textContent = `${STORE.payments} ${STORE.shipping}`;
+
   // Movimiento reducido: sin auto-rotate ni inclinación, y nada a medio animar
   function syncMotion() {
     el.model.toggleAttribute('auto-rotate', !reduceMQ.matches);
