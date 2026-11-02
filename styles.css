@@ -1,0 +1,267 @@
+/* ==========================================================================
+   Sneaker District: estilos
+   Índice: 1. Tokens  2. Base  3. Utilidades  4. Botones  5. Header
+           6. Hero  7. Secciones
+   ========================================================================== */
+
+/* 1. Tokens --------------------------------------------------------------- */
+:root {
+  /* Colores fijos de marca */
+  --carbon: #1C1C1E;
+  --rojo: #C8102E;
+  --cemento: #9A9B9F;        /* solo sobre fondos oscuros */
+  --gris: #55565A;           /* texto secundario sobre fondos claros */
+  --cemento-claro: #ECECED;
+  --blanco: #FFFFFF;
+
+  /* Tema del hero: main.js lo cambia con cada color de products.js.
+     Valores iniciales = Air Jordan 1 High Bred, para que no parpadee al cargar. */
+  --bg: #1C1C1E;
+  --ink: #FFFFFF;
+  --muted: #A9AAAE;
+  --disc: #303033;
+  --big: #27272A;
+  --accent: #C8102E;
+  --on: #FFFFFF;
+
+  /* Tipografía */
+  --font-display: 'Archivo Black', 'Arial Black', Impact, sans-serif;
+  --font-body: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-h1: clamp(3rem, 10vw, 8rem);
+  --fs-h2: clamp(2rem, 4.5vw, 3.25rem);
+
+  /* Movimiento */
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --t-theme: 700ms;
+
+  /* Layout */
+  --max: 1240px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --section-y: clamp(4rem, 9vw, 6rem);
+  --radius: 20px;
+  --pill: 999px;
+}
+
+/* 2. Base ----------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--carbon);
+  background-color: var(--blanco);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+p,
+figure,
+blockquote {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+a { color: inherit; }
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button { cursor: pointer; }
+
+:focus-visible {
+  outline: 3px solid var(--carbon);
+  outline-offset: 3px;
+}
+
+/* 3. Utilidades ----------------------------------------------------------- */
+.wrap {
+  width: 100%;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--pill);
+  background-color: var(--blanco);
+  color: var(--carbon);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible { transform: none; }
+
+/* 4. Botones -------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding: 0 1.75rem;
+  border: 0;
+  border-radius: var(--pill);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn--sm {
+  min-height: 44px;
+  padding: 0 1.25rem;
+  font-size: 0.9375rem;
+}
+
+/* Botón con los colores del tema del hero */
+.btn--theme {
+  background-color: var(--accent);
+  color: var(--on);
+  transition:
+    background-color var(--t-theme) var(--ease-out),
+    color var(--t-theme) var(--ease-out);
+}
+
+/* 5. Header (tema del hero) ------------------------------------------------ */
+.site-header {
+  background-color: var(--bg);
+  color: var(--ink);
+  transition:
+    background-color var(--t-theme) var(--ease-out),
+    color var(--t-theme) var(--ease-out);
+}
+
+.site-header :focus-visible { outline-color: var(--ink); }
+
+.site-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 72px;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.site-header__nav {
+  display: none;
+  gap: 1.75rem;
+}
+
+.site-header__nav a {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--t-theme) var(--ease-out);
+}
+
+@media (min-width: 768px) {
+  .site-header__nav { display: flex; }
+}
+
+/* 6. Hero (tema del hero) -------------------------------------------------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: 3rem 4rem;
+  background-color: var(--bg);
+  color: var(--ink);
+  transition:
+    background-color var(--t-theme) var(--ease-out),
+    color var(--t-theme) var(--ease-out);
+}
+
+.hero :focus-visible { outline-color: var(--ink); }
+
+/* 7. Secciones ------------------------------------------------------------ */
+.section { padding-block: var(--section-y); }
+
+.section--alt { background-color: var(--cemento-claro); }
+
+.section--dark {
+  background-color: var(--carbon);
+  color: var(--blanco);
+}
+
+.section--dark :focus-visible { outline-color: var(--blanco); }
+
+/* Movimiento reducido: sin animaciones ni transiciones */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
