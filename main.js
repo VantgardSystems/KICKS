@@ -17,6 +17,42 @@
     if (themeColorMeta) themeColorMeta.setAttribute('content', theme.bg);
   }
 
+  // Menú en celular ------------------------------------------------------------
+  const header = document.querySelector('.site-header');
+  const menuBtn = header.querySelector('.menu-btn');
+  const menu = document.getElementById('menu');
+  const isMenuOpen = () => header.hasAttribute('data-menu-open');
+
+  function setMenu(open, focusButton) {
+    header.toggleAttribute('data-menu-open', open);
+    menuBtn.setAttribute('aria-expanded', String(open));
+    menuBtn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    if (!open && focusButton) menuBtn.focus();
+  }
+
+  menuBtn.addEventListener('click', (e) => {
+    const open = !isMenuOpen();
+    setMenu(open);
+    // Abierto con teclado (detail 0): el foco pasa al primer link
+    if (open && e.detail === 0) menu.querySelector('a').focus();
+  });
+
+  menu.addEventListener('click', (e) => {
+    if (e.target.closest('a') && isMenuOpen()) setMenu(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isMenuOpen()) setMenu(false, true);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (isMenuOpen() && !header.contains(e.target)) setMenu(false);
+  });
+
+  window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+    if (e.matches && isMenuOpen()) setMenu(false);
+  });
+
   // Inicio -------------------------------------------------------------------
   document.querySelectorAll('[data-wa-contact]').forEach((a) => {
     a.href = waLink();

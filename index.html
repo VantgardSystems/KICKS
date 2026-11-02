@@ -25,13 +25,21 @@
   <header class="site-header">
     <div class="wrap site-header__bar">
       <a class="logo" href="#inicio">Sneaker District</a>
-      <nav class="site-header__nav" aria-label="Secciones">
+      <nav class="site-header__nav" id="menu" aria-label="Secciones">
         <a href="#lanzamientos">Lanzamientos</a>
         <a href="#mas-vendidos">Más vendidos</a>
         <a href="#como-comprar">Cómo comprar</a>
         <a href="#preguntas">Preguntas</a>
       </nav>
-      <a class="btn btn--theme btn--sm" href="https://wa.me/" data-wa-contact target="_blank" rel="noopener">Escríbenos</a>
+      <div class="site-header__actions">
+        <a class="btn btn--theme btn--sm site-header__cta" href="https://wa.me/" data-wa-contact target="_blank" rel="noopener">Escríbenos</a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="9" x2="20" y2="9"></line>
+            <line x1="4" y1="15" x2="20" y2="15"></line>
+          </svg>
+        </button>
+      </div>
     </div>
   </header>
 
