@@ -109,15 +109,25 @@
     dots: $('[data-hero-dots]', hero),
     cta: $('[data-hero-cta]', hero),
     main: $('.hero__main', hero),
+    shoe: $('.hero__shoe', hero),
+    fallback: $('[data-hero-fallback]', hero),
     img: $('.hero__img', hero),
     drawing: $('.hero__drawing', hero),
     model: $('.hero__model', hero),
+    disc: $('.hero__disc', hero),
+    bigname: $('.hero__bigname', hero),
+    title: $('.hero__title', hero),
+    swipe: $('.hero__swipe', hero),
     sidePrev: $('[data-hero-side="prev"]', hero),
     sideNext: $('[data-hero-side="next"]', hero),
   };
 
   const state = { p: 0, c: 0, size: null };
   const sidesMQ = window.matchMedia('(min-width: 1024px)');
+  const reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const finePointerMQ = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const hasGSAP = typeof window.gsap !== 'undefined';
+  const motionOK = () => hasGSAP && !reduceMQ.matches;
   let renderToken = 0;
 
   const wrap = (i) => (i + PRODUCTS.length) % PRODUCTS.length;
@@ -127,8 +137,59 @@
   };
   const labelOf = (product, color) => `${product.brand} ${product.name} color ${color.name}`;
 
+  // Animación ----------------------------------------------------------------
+  // Misma curva que la transición del tema en CSS: cubic-bezier(.2, .8, .2, 1)
+  function cubicBezier(x1, y1, x2, y2) {
+    const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+    const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+    const sampleX = (t) => ((ax * t + bx) * t + cx) * t;
+    const sampleY = (t) => ((ay * t + by) * t + cy) * t;
+    const slopeX = (t) => (3 * ax * t + 2 * bx) * t + cx;
+    return (p) => {
+      if (p <= 0) return 0;
+      if (p >= 1) return 1;
+      let t = p;
+      for (let i = 0; i < 8; i++) {
+        const err = sampleX(t) - p;
+        const slope = slopeX(t);
+        if (Math.abs(err) < 1e-6 || Math.abs(slope) < 1e-6) break;
+        t -= err / slope;
+      }
+      return sampleY(Math.min(1, Math.max(0, t)));
+    };
+  }
+  const EASE = cubicBezier(0.2, 0.8, 0.2, 1);
+
+  // Mientras cambia el tema (700 ms), las tallas siguen el ritmo del fondo
+  let themingTimer = 0;
+  function markTheming() {
+    hero.setAttribute('data-theming', '');
+    clearTimeout(themingTimer);
+    themingTimer = setTimeout(() => hero.removeAttribute('data-theming'), 750);
+  }
+
+  // Al cambiar de par: círculo, nombre gigante y textos entran con el tenis
+  function animateScene(dir) {
+    if (!motionOK()) return;
+    gsap.fromTo(el.disc, { scale: 0.92, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: EASE, overwrite: true });
+    gsap.fromTo(el.bigname, { x: 60 * dir, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: EASE, overwrite: true });
+    gsap.fromTo(el.title, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: EASE, overwrite: true });
+  }
+
+  // Tenis: entra desde el lado hacia el que avanzas (x ±120, giro leve, 800 ms);
+  // si solo cambia el color: fade + escala .92 a 1
+  function animateShoe(change) {
+    if (!motionOK() || !change.type) return;
+    const isNewPair = change.type === 'product';
+    gsap.fromTo(el.shoe,
+      isNewPair
+        ? { x: 120 * change.dir, rotation: 8 * change.dir, scale: 1, autoAlpha: 0 }
+        : { x: 0, rotation: 0, scale: 0.92, autoAlpha: 0 },
+      { x: 0, rotation: 0, scale: 1, autoAlpha: 1, duration: isNewPair ? 0.8 : 0.6, ease: EASE, overwrite: true });
+  }
+
   // Tenis central: modelo 3D si existe el .glb; si no, foto WebP; si no, dibujo
-  async function paintMain(product, color, token) {
+  async function paintMain(product, color, token, onSwap) {
     const label = labelOf(product, color);
     const imgOk = await hasImage(color.img);
     if (token !== renderToken) return;
@@ -144,6 +205,7 @@
       el.drawing.hidden = false;
       el.img.hidden = true;
     }
+    onSwap();
 
     const modelOk = await hasModel(color.glb);
     if (token !== renderToken) return;
@@ -176,7 +238,7 @@
   });
 
   // Tenis anterior y siguiente (solo se pintan en pantallas grandes)
-  async function paintSide(box, product, token) {
+  async function paintSide(box, product, token, animate) {
     const color = product.colors[0];
     const ok = await hasImage(color.img);
     if (token !== renderToken) return;
@@ -184,19 +246,22 @@
     box.innerHTML = ok
       ? `<img src="${color.img}" alt="" width="1200" height="600" decoding="async">`
       : shoeDrawing(color);
+    if (animate && motionOK()) {
+      gsap.fromTo(box.firstElementChild, { opacity: 0 }, { opacity: 1, duration: 0.6, ease: EASE });
+    }
   }
 
-  function paintSides(token) {
+  function paintSides(token, animate) {
     if (!sidesMQ.matches) return;
-    paintSide(el.sidePrev, PRODUCTS[wrap(state.p - 1)], token);
-    paintSide(el.sideNext, PRODUCTS[wrap(state.p + 1)], token);
+    paintSide(el.sidePrev, PRODUCTS[wrap(state.p - 1)], token, animate);
+    paintSide(el.sideNext, PRODUCTS[wrap(state.p + 1)], token, animate);
   }
 
-  sidesMQ.addEventListener('change', () => paintSides(renderToken));
+  sidesMQ.addEventListener('change', () => paintSides(renderToken, false));
 
   // Extra: tocar el tenis de un lado cambia a ese par
-  el.sidePrev.addEventListener('click', () => setProduct(state.p - 1));
-  el.sideNext.addEventListener('click', () => setProduct(state.p + 1));
+  el.sidePrev.addEventListener('click', () => setProduct(state.p - 1, -1));
+  el.sideNext.addEventListener('click', () => setProduct(state.p + 1, 1));
 
   // Mensaje prellenado: modelo, color y talla
   function updateCta() {
@@ -217,10 +282,12 @@
       </label>`).join('');
   }
 
-  function render() {
+  // change: {} al cargar, { type: 'product', dir } o { type: 'color' }
+  function render(change = {}) {
     const token = ++renderToken;
     const { product, color } = current();
 
+    if (change.type) markTheming();
     applyTheme(color.theme);
     el.short.textContent = product.short;
     el.brand.textContent = product.brand;
@@ -233,8 +300,9 @@
     });
 
     updateCta();
-    paintMain(product, color, token);
-    paintSides(token);
+    if (change.type === 'product') animateScene(change.dir);
+    paintMain(product, color, token, () => animateShoe(change));
+    paintSides(token, change.type === 'product');
 
     // Precarga los otros colores y los pares vecinos para que el cambio sea inmediato
     product.colors.forEach((c) => hasImage(c.img));
@@ -242,19 +310,21 @@
     hasImage(PRODUCTS[wrap(state.p - 1)].colors[0].img);
   }
 
-  function setProduct(index) {
+  // dir: 1 avanza (entra por la derecha), -1 retrocede (entra por la izquierda)
+  function setProduct(index, dir) {
     const p = wrap(index);
     if (p === state.p) return;
+    const step = dir || Math.sign(index - state.p) || 1;
     state.p = p;
     state.c = 0;
     renderColors(PRODUCTS[p]);
-    render();
+    render({ type: 'product', dir: step });
   }
 
   function setColor(index) {
     if (index === state.c) return;
     state.c = index;
-    render();
+    render({ type: 'color' });
   }
 
   // Controles del hero
@@ -269,7 +339,8 @@
     </label>`).join('');
 
   hero.querySelectorAll('[data-go]').forEach((btn) => {
-    btn.addEventListener('click', () => setProduct(state.p + Number(btn.dataset.go)));
+    const dir = Number(btn.dataset.go);
+    btn.addEventListener('click', () => setProduct(state.p + dir, dir));
   });
 
   el.dots.addEventListener('click', (e) => {
@@ -284,11 +355,108 @@
     updateCta();
   });
 
+  // Teclado: flechas izquierda/derecha cambian de par mientras el hero está a la vista.
+  // No interfiere con los radios (colores y tallas) ni con el modelo 3D enfocado.
+  let heroInView = true;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => { heroInView = entry.isIntersecting; }, { threshold: 0.2 })
+      .observe(hero);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (!heroInView || isMenuOpen()) return;
+    const target = e.target instanceof Element ? e.target : null;
+    if (target && target.closest('input, textarea, select, [contenteditable="true"], model-viewer')) return;
+    e.preventDefault();
+    const dir = e.key === 'ArrowRight' ? 1 : -1;
+    setProduct(state.p + dir, dir);
+  });
+
+  // Deslizar con Draggable en la zona de abajo del tenis (no encima del modelo:
+  // ahí arrastrar lo gira). Un swipe rápido basta aunque sea corto.
+  if (hasGSAP && window.Draggable) {
+    gsap.registerPlugin(Draggable);
+    const proxy = document.createElement('div');
+    proxy.className = 'hero__drag-proxy';
+    el.swipe.appendChild(proxy);
+    let dragStart = 0;
+
+    Draggable.create(proxy, {
+      type: 'x',
+      trigger: el.swipe,
+      dragClickables: true,
+      minimumMovement: 6,
+      cursor: 'grab',
+      activeCursor: 'grabbing',
+      onPress() {
+        dragStart = performance.now();
+      },
+      onDragStart() {
+        gsap.killTweensOf(el.shoe);
+      },
+      onDrag() {
+        if (motionOK()) {
+          const dx = gsap.utils.clamp(-160, 160, this.x);
+          gsap.set(el.shoe, { x: dx * 0.5, rotation: dx * 0.03 });
+        }
+      },
+      onDragEnd() {
+        const dx = this.x;
+        // Velocidad promedio del gesto (px/ms): un swipe rápido cuenta aunque sea corto
+        const velocity = Math.abs(dx) / Math.max(1, performance.now() - dragStart);
+        gsap.set(proxy, { x: 0 });
+        this.update();
+
+        if (Math.abs(dx) > 60 || (Math.abs(dx) > 20 && velocity > 0.15)) {
+          const dir = dx < 0 ? 1 : -1;
+          setProduct(state.p + dir, dir);
+        } else if (motionOK()) {
+          gsap.to(el.shoe, { x: 0, rotation: 0, scale: 1, autoAlpha: 1, duration: 0.35, ease: 'power3.out', overwrite: true });
+        }
+      },
+    });
+  }
+
+  // Inclinación 3D con el puntero cuando se ve la foto en lugar del modelo
+  if (hasGSAP) {
+    const tiltX = gsap.quickTo(el.fallback, 'rotationX', { duration: 0.6, ease: 'power3' });
+    const tiltY = gsap.quickTo(el.fallback, 'rotationY', { duration: 0.6, ease: 'power3' });
+
+    el.main.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse' || !finePointerMQ.matches || !motionOK()) return;
+      if (el.main.dataset.model === 'ready') return;
+      const r = el.main.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      tiltY(gsap.utils.clamp(-15, 15, px * 30));
+      tiltX(gsap.utils.clamp(-15, 15, -py * 30));
+    });
+
+    el.main.addEventListener('pointerleave', () => {
+      tiltX(0);
+      tiltY(0);
+    });
+  }
+
+  // Movimiento reducido: sin auto-rotate ni inclinación, y nada a medio animar
+  function syncMotion() {
+    el.model.toggleAttribute('auto-rotate', !reduceMQ.matches);
+    if (reduceMQ.matches && hasGSAP) {
+      gsap.killTweensOf([el.shoe, el.disc, el.bigname, el.title, el.fallback]);
+      gsap.set([el.shoe, el.disc, el.bigname, el.title, el.fallback], { clearProps: 'all' });
+    }
+  }
+
+  reduceMQ.addEventListener('change', syncMotion);
+
   // Inicio -------------------------------------------------------------------
   document.querySelectorAll('[data-wa-contact]').forEach((a) => {
     a.href = waLink();
   });
 
+  syncMotion();
   renderColors(PRODUCTS[state.p]);
   render();
 })();

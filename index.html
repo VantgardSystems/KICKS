@@ -64,21 +64,23 @@
               <div class="hero__disc" aria-hidden="true"></div>
               <!-- Capa 3: tenis central. Si no hay .glb, se ve la foto WebP; si tampoco hay foto, un dibujo -->
               <div class="hero__shoe">
-                <div class="hero__fallback" data-hero-fallback>
-                  <img class="hero__img" src="assets/img/jordan-1-high-bred.webp" alt="Nike Air Jordan 1 High color Bred" width="1200" height="600" fetchpriority="high" decoding="async" hidden>
-                  <div class="hero__drawing" hidden></div>
+                <div class="hero__float">
+                  <div class="hero__fallback" data-hero-fallback>
+                    <img class="hero__img" src="assets/img/jordan-1-high-bred.webp" alt="Nike Air Jordan 1 High color Bred" width="1200" height="600" fetchpriority="high" decoding="async" hidden>
+                    <div class="hero__drawing" hidden></div>
+                  </div>
+                  <model-viewer class="hero__model"
+                    alt="Nike Air Jordan 1 High color Bred"
+                    camera-controls
+                    auto-rotate
+                    rotation-per-second="10deg"
+                    disable-zoom
+                    disable-pan
+                    touch-action="pan-y"
+                    interaction-prompt="none"
+                    shadow-intensity="0"
+                    loading="eager"></model-viewer>
                 </div>
-                <model-viewer class="hero__model"
-                  alt="Nike Air Jordan 1 High color Bred"
-                  camera-controls
-                  auto-rotate
-                  rotation-per-second="10deg"
-                  disable-zoom
-                  disable-pan
-                  touch-action="pan-y"
-                  interaction-prompt="none"
-                  shadow-intensity="0"
-                  loading="eager"></model-viewer>
               </div>
               <div class="hero__shadow" aria-hidden="true"></div>
             </div>
