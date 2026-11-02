@@ -537,6 +537,29 @@
       </article>`;
   }).join('');
 
+  // Más vendidos: todos los PRODUCTS con el tema de su primer color ----------
+  const bestList = $('[data-best]');
+
+  bestList.innerHTML = PRODUCTS.map((product, i) => {
+    const color = product.colors[0];
+    return `
+      <li>
+        <a class="tile" href="#inicio" data-pick="${i}" style="--bg: ${color.theme.bg}">
+          <div class="tile__media">${shoePic(product, color)}</div>
+          <p class="tile__brand">${product.brand}</p>
+          <h3 class="tile__name">${product.name}</h3>
+          <p class="tile__price">${formatPrice(product.price)}</p>
+        </a>
+      </li>`;
+  }).join('');
+
+  bestList.addEventListener('click', (e) => {
+    const tile = e.target.closest('[data-pick]');
+    if (!tile) return;
+    e.preventDefault();
+    showInHero(Number(tile.dataset.pick));
+  });
+
   // Movimiento reducido: sin auto-rotate ni inclinación, y nada a medio animar
   function syncMotion() {
     el.model.toggleAttribute('auto-rotate', !reduceMQ.matches);
