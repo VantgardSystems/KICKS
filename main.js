@@ -80,6 +80,23 @@
     return modelCache.get(url);
   }
 
+  // model-viewer 4.0.0 (el de CLAUDE.md, como módulo) pesa ~930 KB: se carga solo
+  // cuando existe el primer .glb. Mientras tanto se ve la foto o el dibujo.
+  const MODEL_VIEWER_URL = 'https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js';
+  let modelViewerLoad = null;
+  function loadModelViewer() {
+    if (!modelViewerLoad) modelViewerLoad = import(MODEL_VIEWER_URL).catch(() => {});
+    return modelViewerLoad;
+  }
+
+  // Tareas que no urgen (precargar fotos de los pares vecinos) esperan a que
+  // termine la carga y el navegador esté libre
+  const whenIdle = (fn) => {
+    const run = () => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2000 }) : setTimeout(fn, 300));
+    if (document.readyState === 'complete') run();
+    else window.addEventListener('load', run, { once: true });
+  };
+
   // Dibujo de relleno (el de la inspiración) mientras no exista la foto WebP
   function shoeDrawing(color, label) {
     const a11y = label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"';
@@ -186,9 +203,9 @@
   // Mientras cambia el tema (700 ms), las tallas siguen el ritmo del fondo
   let themingTimer = 0;
   function markTheming() {
-    hero.setAttribute('data-theming', '');
+    root.setAttribute('data-theming', '');
     clearTimeout(themingTimer);
-    themingTimer = setTimeout(() => hero.removeAttribute('data-theming'), 750);
+    themingTimer = setTimeout(() => root.removeAttribute('data-theming'), 750);
   }
 
   // Al cambiar de par: círculo, nombre gigante y textos entran con el tenis
@@ -241,6 +258,7 @@
     if (token !== renderToken) return;
 
     if (modelOk) {
+      loadModelViewer();
       el.model.alt = label;
       if (imgOk) el.model.setAttribute('poster', color.img);
       else el.model.removeAttribute('poster');
@@ -354,9 +372,11 @@
     paintSides(token, change.type === 'product' || change.type === 'intro');
 
     // Precarga los otros colores y los pares vecinos para que el cambio sea inmediato
-    product.colors.forEach((c) => hasImage(c.img));
-    hasImage(PRODUCTS[wrap(state.p + 1)].colors[0].img);
-    hasImage(PRODUCTS[wrap(state.p - 1)].colors[0].img);
+    whenIdle(() => {
+      product.colors.forEach((c) => hasImage(c.img));
+      hasImage(PRODUCTS[wrap(state.p + 1)].colors[0].img);
+      hasImage(PRODUCTS[wrap(state.p - 1)].colors[0].img);
+    });
   }
 
   // dir: 1 avanza (entra por la derecha), -1 retrocede (entra por la izquierda)
@@ -657,6 +677,15 @@
   }
 
   $('[data-year]').textContent = new Date().getFullYear();
+
+  // Botón flotante: se aparta mientras se ve "Pedir por WhatsApp" del hero
+  // (en laptops se encimaban y había dos botones de WhatsApp juntos)
+  const waFloat = $('.wa-float');
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      waFloat.classList.toggle('is-hidden', entry.isIntersecting);
+    }).observe(el.cta);
+  }
 
   // Movimiento reducido: sin auto-rotate ni inclinación, y nada a medio animar
   function syncMotion() {

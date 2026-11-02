@@ -373,10 +373,17 @@ label { -webkit-tap-highlight-color: transparent; }
     font-weight: 500;
     letter-spacing: 0;
     line-height: 1.6;
-    transition: color var(--t-theme) var(--ease-out);
+    transition: color 150ms ease;
   }
 
+  /* Mientras cambia el tema, el color va al ritmo del fondo */
+  [data-theming] .site-header__nav a { transition-duration: var(--t-theme); }
+
   .site-header__cta { padding-inline: 1.25rem; }
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .site-header__nav a:hover { color: var(--ink); }
 }
 
 /* 6. Hero (tema del hero) -------------------------------------------------- */
@@ -707,7 +714,7 @@ label { -webkit-tap-highlight-color: transparent; }
 }
 
 /* Mientras cambia el tema, la barrita va al ritmo del fondo */
-.hero[data-theming] .hero__dot::before { transition-duration: var(--t-theme); }
+[data-theming] .hero__dot::before { transition-duration: var(--t-theme); }
 
 .hero__dot[aria-current='true'] {
   flex-basis: 48px;
@@ -860,7 +867,7 @@ label { -webkit-tap-highlight-color: transparent; }
 }
 
 /* Mientras cambia el tema, las tallas van al ritmo del fondo */
-.hero[data-theming] .size span {
+[data-theming] .size span {
   transition-duration: var(--t-theme), var(--t-theme), 160ms;
 }
 
@@ -1274,6 +1281,11 @@ label { -webkit-tap-highlight-color: transparent; }
   line-height: 1.35;
   list-style: none;
   cursor: pointer;
+  transition: color 150ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .faq__q:hover { color: var(--rojo); }
 }
 
 .faq__q::-webkit-details-marker { display: none; }
@@ -1470,7 +1482,24 @@ label { -webkit-tap-highlight-color: transparent; }
   font-weight: 600;
   text-decoration: none;
   box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
-  transition: transform 160ms var(--ease-out);
+  transition:
+    transform 160ms var(--ease-out),
+    opacity 200ms var(--ease-out),
+    translate 200ms var(--ease-out),
+    visibility 0s;
+}
+
+/* Se aparta mientras se ve el botón principal del hero (no lo tapa ni lo duplica) */
+.wa-float.is-hidden {
+  opacity: 0;
+  translate: 0 12px;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    transform 160ms var(--ease-out),
+    opacity 200ms var(--ease-out),
+    translate 200ms var(--ease-out),
+    visibility 0s linear 200ms;
 }
 
 .wa-float svg {
