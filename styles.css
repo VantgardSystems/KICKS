@@ -566,6 +566,7 @@ button { cursor: pointer; }
   border-radius: 50%;
   background: radial-gradient(closest-side, rgb(0 0 0 / 0.42), rgb(0 0 0 / 0));
   animation: hero-shadow 5s ease-in-out infinite;
+  transition: filter 600ms var(--ease-out);
 }
 
 /* Misma duración que el flotado: cuando el tenis sube, la sombra se encoge */
@@ -578,6 +579,15 @@ button { cursor: pointer; }
   .hero__float,
   .hero__shadow { animation: none; }
 }
+
+/* Extra: entrada al abrir la página. La escena empieza oculta y main.js la anima */
+.intro .hero__disc,
+.intro .hero__bigname,
+.intro .hero__shoe,
+.intro .hero__title { opacity: 0; }
+
+/* La opacidad de la sombra ya la anima el flotado; se oculta con filter */
+.intro .hero__shadow { filter: opacity(0); }
 
 /* Dibujo de relleno mientras no hay foto */
 .shoe-svg path {

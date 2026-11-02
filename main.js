@@ -180,13 +180,20 @@
   // si solo cambia el color: fade + escala .92 a 1
   function animateShoe(change) {
     if (!motionOK() || !change.type) return;
-    const isNewPair = change.type === 'product';
+    const isNewPair = change.type === 'product' || change.type === 'intro';
     gsap.fromTo(el.shoe,
       isNewPair
         ? { x: 120 * change.dir, rotation: 8 * change.dir, scale: 1, autoAlpha: 0 }
         : { x: 0, rotation: 0, scale: 0.92, autoAlpha: 0 },
       { x: 0, rotation: 0, scale: 1, autoAlpha: 1, duration: isNewPair ? 0.8 : 0.6, ease: EASE, overwrite: true });
   }
+
+  // Extra: entrada al abrir la página. Espera las fuentes (máx. 0.8 s) para que
+  // el nombre gigante no cambie de tipografía a media animación.
+  const introReady = Promise.race([
+    document.fonts ? document.fonts.ready : Promise.resolve(),
+    new Promise((resolve) => setTimeout(resolve, 800)),
+  ]);
 
   // Tenis central: modelo 3D si existe el .glb; si no, foto WebP; si no, dibujo
   async function paintMain(product, color, token, onSwap) {
@@ -282,12 +289,13 @@
       </label>`).join('');
   }
 
-  // change: {} al cargar, { type: 'product', dir } o { type: 'color' }
+  // change: {} sin animación, { type: 'intro', dir } al abrir,
+  // { type: 'product', dir } al cambiar de par o { type: 'color' }
   function render(change = {}) {
     const token = ++renderToken;
     const { product, color } = current();
 
-    if (change.type) markTheming();
+    if (change.type === 'product' || change.type === 'color') markTheming();
     applyTheme(color.theme);
     el.short.textContent = product.short;
     el.brand.textContent = product.brand;
@@ -301,8 +309,17 @@
 
     updateCta();
     if (change.type === 'product') animateScene(change.dir);
-    paintMain(product, color, token, () => animateShoe(change));
-    paintSides(token, change.type === 'product');
+    if (change.type === 'intro') {
+      introReady.then(() => {
+        root.classList.remove('intro');
+        animateScene(change.dir);
+      });
+    }
+    paintMain(product, color, token, () => {
+      if (change.type === 'intro') introReady.then(() => animateShoe(change));
+      else animateShoe(change);
+    });
+    paintSides(token, change.type === 'product' || change.type === 'intro');
 
     // Precarga los otros colores y los pares vecinos para que el cambio sea inmediato
     product.colors.forEach((c) => hasImage(c.img));
@@ -456,7 +473,10 @@
     a.href = waLink();
   });
 
+  const playIntro = root.classList.contains('intro') && motionOK();
+  if (!playIntro) root.classList.remove('intro');
+
   syncMotion();
   renderColors(PRODUCTS[state.p]);
-  render();
+  render(playIntro ? { type: 'intro', dir: 1 } : {});
 })();

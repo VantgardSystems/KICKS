@@ -6,6 +6,14 @@
   <title>Sneaker District | Tenis originales en México</title>
   <meta name="description" content="Tenis originales de Nike, Adidas, New Balance, Off-White, Yeezy y más. Elige tu par, pide por WhatsApp y recibe en todo México.">
   <meta name="theme-color" content="#1C1C1E">
+  <script>
+    // Extra: entrada del hero al abrir la página (se omite con movimiento reducido).
+    // Seguro: si algo falla, la escena se muestra a los 3 s.
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('intro');
+      setTimeout(function () { document.documentElement.classList.remove('intro'); }, 3000);
+    }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
