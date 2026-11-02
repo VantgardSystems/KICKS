@@ -433,7 +433,8 @@ button { cursor: pointer; }
   .hero__bigname { top: 26%; }
 }
 
-/* Tenis anterior y siguiente: escala .7, inclinados, opacidad .3 */
+/* Tenis anterior y siguiente: escala .7, inclinados, opacidad .3.
+   Con mouse se pueden tocar para cambiar a ese par (las flechas hacen lo mismo con teclado). */
 .hero__side { display: none; }
 
 @media (min-width: 1024px) {
@@ -441,11 +442,16 @@ button { cursor: pointer; }
     display: block;
     position: relative;
     opacity: 0.3;
-    pointer-events: none;
+    cursor: pointer;
+    transition: opacity 200ms var(--ease-out);
   }
 
   .hero__side--prev { grid-column: 1; rotate: -10deg; scale: 0.7; }
   .hero__side--next { grid-column: 3; rotate: 10deg; scale: 0.7; }
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .hero__side:hover { opacity: 0.55; }
 }
 
 .hero__main {

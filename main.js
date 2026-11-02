@@ -180,6 +180,7 @@
     const color = product.colors[0];
     const ok = await hasImage(color.img);
     if (token !== renderToken) return;
+    box.title = `Ver ${product.brand} ${product.name}`;
     box.innerHTML = ok
       ? `<img src="${color.img}" alt="" width="1200" height="600" decoding="async">`
       : shoeDrawing(color);
@@ -192,6 +193,10 @@
   }
 
   sidesMQ.addEventListener('change', () => paintSides(renderToken));
+
+  // Extra: tocar el tenis de un lado cambia a ese par
+  el.sidePrev.addEventListener('click', () => setProduct(state.p - 1));
+  el.sideNext.addEventListener('click', () => setProduct(state.p + 1));
 
   // Mensaje prellenado: modelo, color y talla
   function updateCta() {
