@@ -246,25 +246,34 @@
       else el.model.removeAttribute('poster');
       // Un solo <model-viewer>: solo cambia su src
       if (el.model.getAttribute('src') === color.glb && el.model.loaded) {
-        el.main.dataset.model = 'ready';
+        setModelReady(true);
       } else {
+        setModelReady(false);
         el.main.dataset.model = 'loading';
         el.model.setAttribute('src', color.glb);
       }
     } else {
-      delete el.main.dataset.model;
+      setModelReady(false);
       el.model.removeAttribute('src');
     }
   }
 
+  // Mientras no hay modelo listo, el <model-viewer> invisible no recibe foco
+  // ni se anuncia (inert); el lector de pantalla lee la foto
+  function setModelReady(ready) {
+    if (ready) el.main.dataset.model = 'ready';
+    else delete el.main.dataset.model;
+    el.model.inert = !ready;
+  }
+
   el.model.addEventListener('load', () => {
-    if (el.model.getAttribute('src') === current().color.glb) el.main.dataset.model = 'ready';
+    if (el.model.getAttribute('src') === current().color.glb) setModelReady(true);
   });
 
   el.model.addEventListener('error', () => {
     const url = current().color.glb;
     modelCache.set(url, Promise.resolve(false));
-    delete el.main.dataset.model;
+    setModelReady(false);
   });
 
   // Tenis anterior y siguiente (solo se pintan en pantallas grandes)
@@ -664,6 +673,10 @@
   document.querySelectorAll('[data-wa-contact]').forEach((a) => {
     a.href = waLink();
   });
+
+  // En iPhone, :active (la respuesta al presionar) solo se activa si hay un
+  // listener de toque en la página
+  document.addEventListener('touchstart', () => {}, { passive: true });
 
   const playIntro = root.classList.contains('intro') && motionOK();
   if (!playIntro) root.classList.remove('intro');

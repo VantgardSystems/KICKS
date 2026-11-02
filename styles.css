@@ -170,6 +170,7 @@ button { cursor: pointer; }
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
+  transition: transform 160ms var(--ease-out);
 }
 
 .btn--sm {
@@ -184,8 +185,50 @@ button { cursor: pointer; }
   color: var(--on);
   transition:
     background-color var(--t-theme) var(--ease-out),
-    color var(--t-theme) var(--ease-out);
+    color var(--t-theme) var(--ease-out),
+    transform 160ms var(--ease-out);
 }
+
+/* Microinteracciones de todo lo que se presiona.
+   Hover: un velo del color del texto (se adapta solo a cada tema), 150 ms.
+   Al presionar: escala .97 en 160 ms, para sentir que respondió. */
+.btn,
+.hero__arrow,
+.menu-btn,
+.wa-float {
+  position: relative;
+  isolation: isolate;
+}
+
+.btn::after,
+.hero__arrow::after,
+.menu-btn::after,
+.wa-float::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover::after { opacity: 0.12; }
+
+  .hero__arrow:hover::after,
+  .menu-btn:hover::after,
+  .wa-float:hover::after { opacity: 0.1; }
+}
+
+.btn:active,
+.wa-float:active { transform: scale(0.97); }
+
+a,
+button,
+summary,
+label { -webkit-tap-highlight-color: transparent; }
 
 /* 5. Header (tema del hero) ------------------------------------------------ */
 .site-header {
@@ -244,7 +287,7 @@ button { cursor: pointer; }
     transform 160ms var(--ease-out);
 }
 
-.menu-btn:active { transform: scale(0.94); }
+.menu-btn:active { transform: scale(0.95); }
 
 .menu-btn line {
   transform-box: fill-box;
@@ -389,8 +432,11 @@ button { cursor: pointer; }
   color: var(--ink);
   transition:
     border-color var(--t-theme) var(--ease-out),
-    color var(--t-theme) var(--ease-out);
+    color var(--t-theme) var(--ease-out),
+    transform 160ms var(--ease-out);
 }
+
+.hero__arrow:active { transform: scale(0.95); }
 
 @media (min-width: 768px) {
   .hero__arrow {
@@ -646,8 +692,8 @@ button { cursor: pointer; }
   border: 0;
   background: transparent;
   transition:
-    flex-basis 400ms var(--ease-out),
-    max-width 400ms var(--ease-out);
+    flex-basis 300ms var(--ease-out),
+    max-width 300ms var(--ease-out);
 }
 
 .hero__dot::before {
@@ -657,8 +703,11 @@ button { cursor: pointer; }
   height: 4px;
   border-radius: 2px;
   background-color: var(--muted);
-  transition: background-color var(--t-theme) var(--ease-out);
+  transition: background-color 200ms ease;
 }
+
+/* Mientras cambia el tema, la barrita va al ritmo del fondo */
+.hero[data-theming] .hero__dot::before { transition-duration: var(--t-theme); }
 
 .hero__dot[aria-current='true'] {
   flex-basis: 48px;
@@ -666,6 +715,10 @@ button { cursor: pointer; }
 }
 
 .hero__dot[aria-current='true']::before { background-color: var(--ink); }
+
+@media (hover: hover) and (pointer: fine) {
+  .hero__dot:hover::before { background-color: var(--ink); }
+}
 
 .hero__hint {
   font-size: 0.875rem;
@@ -747,8 +800,16 @@ button { cursor: pointer; }
   border-radius: 50%;
   background: linear-gradient(135deg, var(--c1) 50%, var(--c2) 50%);
   box-shadow: 0 0 0 1px var(--muted);
-  transition: box-shadow var(--t-theme) var(--ease-out);
+  transition:
+    box-shadow var(--t-theme) var(--ease-out),
+    scale 160ms var(--ease-out);
 }
+
+@media (hover: hover) and (pointer: fine) {
+  .swatch:hover .swatch__dot { scale: 1.06; }
+}
+
+.swatch:active .swatch__dot { scale: 0.94; }
 
 /* Anillo del color elegido: aparece rápido; su color sigue al tema (700 ms).
    El hueco es transparente, así no desentona mientras cambia el fondo. */
@@ -794,11 +855,20 @@ button { cursor: pointer; }
   font-variant-numeric: tabular-nums;
   transition:
     background-color 150ms var(--ease-out),
-    border-color 150ms var(--ease-out);
+    border-color 150ms var(--ease-out),
+    scale 160ms var(--ease-out);
 }
 
 /* Mientras cambia el tema, las tallas van al ritmo del fondo */
-.hero[data-theming] .size span { transition-duration: var(--t-theme); }
+.hero[data-theming] .size span {
+  transition-duration: var(--t-theme), var(--t-theme), 160ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .size:hover span { border-color: var(--ink); }
+}
+
+.size:active span { scale: 0.96; }
 
 .size input:checked + span {
   border-color: var(--ink);
@@ -1279,6 +1349,11 @@ button { cursor: pointer; }
   background: transparent;
   color: var(--blanco);
   font-size: 1rem;
+  transition: border-color 150ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .notify__input:hover { border-color: var(--blanco); }
 }
 
 .notify__input::placeholder {
@@ -1395,6 +1470,7 @@ button { cursor: pointer; }
   font-weight: 600;
   text-decoration: none;
   box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
+  transition: transform 160ms var(--ease-out);
 }
 
 .wa-float svg {
