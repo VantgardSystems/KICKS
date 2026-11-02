@@ -560,8 +560,64 @@
     showInHero(Number(tile.dataset.pick));
   });
 
-  // Cómo comprar: pagos y envíos vienen de STORE (los edita el dueño) --------
+  // Cómo comprar y Preguntas: pagos y envíos vienen de STORE (los edita el dueño)
   $('[data-store-buy]').textContent = `${STORE.payments} ${STORE.shipping}`;
+  $('[data-store-payments]').textContent = STORE.payments;
+
+  // Reseñas (REVIEWS) --------------------------------------------------------
+  const esc = (text) => String(text).replace(/[&<>"]/g, (ch) => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]
+  ));
+
+  $('[data-reviews]').innerHTML = REVIEWS.map((review) => `
+    <li>
+      <figure class="review">
+        <span class="review__mark" aria-hidden="true">“</span>
+        <blockquote class="review__text"><p>${esc(review.text)}</p></blockquote>
+        <figcaption class="review__who">${esc(review.who)}</figcaption>
+      </figure>
+    </li>`).join('');
+
+  // Avísame del próximo drop: valida el número y abre WhatsApp con el mensaje
+  const notifyForm = $('[data-notify]');
+  const notifyInput = $('#notify-phone');
+  const notifyMsg = $('#notify-msg');
+
+  // Acepta 10 dígitos, o con lada de país: 52 + 10 (o 521 + 10)
+  function phoneDigits(value) {
+    const digits = value.replace(/\D/g, '');
+    if (digits.length === 10) return digits;
+    if (digits.length === 12 && digits.startsWith('52')) return digits.slice(2);
+    if (digits.length === 13 && digits.startsWith('521')) return digits.slice(3);
+    return null;
+  }
+
+  function showNotifyError() {
+    notifyInput.setAttribute('aria-invalid', 'true');
+    notifyMsg.textContent = 'Escribe tu número de 10 dígitos, por ejemplo 55 1234 5678.';
+  }
+
+  notifyForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const digits = phoneDigits(notifyInput.value);
+    if (!digits) {
+      showNotifyError();
+      notifyInput.focus();
+      return;
+    }
+    notifyInput.removeAttribute('aria-invalid');
+    const text = `Hola, quiero que me avisen del próximo drop. Mi WhatsApp es ${digits}.`;
+    window.open(waLink(text), '_blank', 'noopener');
+    notifyMsg.textContent = 'Listo. Abrimos WhatsApp con tu mensaje: solo envíalo para quedar en la lista.';
+  });
+
+  // Después de un error, se quita en cuanto el número ya es válido
+  notifyInput.addEventListener('input', () => {
+    if (notifyInput.getAttribute('aria-invalid') === 'true' && phoneDigits(notifyInput.value)) {
+      notifyInput.removeAttribute('aria-invalid');
+      notifyMsg.textContent = '';
+    }
+  });
 
   // Movimiento reducido: sin auto-rotate ni inclinación, y nada a medio animar
   function syncMotion() {

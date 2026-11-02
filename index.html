@@ -221,21 +221,57 @@
     <!-- 8. Reseñas -->
     <section class="section section--alt" id="resenas" aria-labelledby="resenas-titulo">
       <div class="wrap">
-        <h2 id="resenas-titulo">Lo que dicen nuestros clientes</h2>
+        <div class="section__head">
+          <h2 id="resenas-titulo">Lo que dicen nuestros clientes</h2>
+        </div>
+        <!-- Las reseñas vienen de REVIEWS (products.js) -->
+        <ul class="reviews" role="list" data-reviews></ul>
       </div>
     </section>
 
-    <!-- 9. Preguntas frecuentes -->
+    <!-- 9. Preguntas frecuentes (<details> nativo, abre sin JS) -->
     <section class="section" id="preguntas" aria-labelledby="preguntas-titulo">
       <div class="wrap">
-        <h2 id="preguntas-titulo">Preguntas frecuentes</h2>
+        <div class="section__head">
+          <h2 id="preguntas-titulo">Preguntas frecuentes</h2>
+        </div>
+        <div class="faq">
+          <details class="faq__item">
+            <summary class="faq__q">¿Los tenis son originales?<svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></summary>
+            <p class="faq__a">Sí. Cada par se revisa antes de venderse y llega con su caja y etiquetas.</p>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">¿Cuánto tarda mi envío?<svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></summary>
+            <p class="faq__a">[EDITAR: de 2 a 5 días hábiles a todo México.]</p>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">¿Puedo cambiar la talla?<svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></summary>
+            <p class="faq__a">[EDITAR: sí, en los primeros 7 días si el par está sin usar.]</p>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">¿Cómo puedo pagar?<svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></summary>
+            <!-- Viene de STORE.payments (products.js) -->
+            <p class="faq__a" data-store-payments>Transferencia, tarjeta o efectivo en tienda. [EDITAR]</p>
+          </details>
+        </div>
       </div>
     </section>
 
-    <!-- 10. Avísame del próximo drop -->
+    <!-- 10. Avísame del próximo drop: abre WhatsApp con un mensaje prellenado -->
     <section class="section section--dark" id="avisame" aria-labelledby="avisame-titulo">
-      <div class="wrap">
-        <h2 id="avisame-titulo">Avísame del próximo drop</h2>
+      <div class="wrap notify">
+        <div class="notify__copy">
+          <h2 id="avisame-titulo">Avísame del próximo drop</h2>
+          <p class="section__lead">Te mandamos un WhatsApp cuando lleguen pares nuevos, antes que a nadie.</p>
+        </div>
+        <form class="notify__form" data-notify novalidate>
+          <label class="notify__label" for="notify-phone">Tu WhatsApp</label>
+          <div class="notify__row">
+            <input class="notify__input" id="notify-phone" name="telefono" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="55 1234 5678" aria-describedby="notify-msg">
+            <button class="btn btn--lg btn--red" type="submit">Avísame</button>
+          </div>
+          <p class="notify__msg" id="notify-msg" role="status"></p>
+        </form>
       </div>
     </section>
   </main>
