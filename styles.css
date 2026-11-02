@@ -1468,8 +1468,9 @@ label { -webkit-tap-highlight-color: transparent; }
 /* Botón flotante verde de WhatsApp */
 .wa-float {
   position: fixed;
-  right: 1rem;
-  bottom: 1rem;
+  /* Suma el borde seguro del iPhone para no quedar bajo la barra de inicio */
+  right: calc(1rem + env(safe-area-inset-right, 0px));
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
   z-index: 30;
   display: inline-flex;
   align-items: center;
@@ -1516,8 +1517,8 @@ label { -webkit-tap-highlight-color: transparent; }
 
 @media (min-width: 768px) {
   .wa-float {
-    right: 1.5rem;
-    bottom: 1.5rem;
+    right: calc(1.5rem + env(safe-area-inset-right, 0px));
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
