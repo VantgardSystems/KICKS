@@ -73,6 +73,8 @@ video {
   max-width: 100%;
 }
 
+[hidden] { display: none !important; }
+
 h1,
 h2,
 h3,
@@ -299,8 +301,8 @@ button { cursor: pointer; }
   .site-header__cta { display: none; }
 }
 
-/* Tablet y escritorio: links en línea, sin botón de menú */
-@media (min-width: 768px) {
+/* Escritorio: links en línea, sin botón de menú */
+@media (min-width: 1024px) {
   .site-header__bar { gap: 1.5rem; }
 
   .menu-btn { display: none; }
@@ -336,7 +338,7 @@ button { cursor: pointer; }
 .hero {
   position: relative;
   overflow: hidden;
-  padding-block: 3rem 4rem;
+  padding-block: 0.5rem 3rem;
   background-color: var(--bg);
   color: var(--ink);
   transition:
@@ -345,6 +347,412 @@ button { cursor: pointer; }
 }
 
 .hero :focus-visible { outline-color: var(--ink); }
+
+/* Carrusel. Celular: flechas abajo, junto a los indicadores.
+   Tablet y escritorio: flechas a los lados del tenis. */
+.hero__carousel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "stage stage stage"
+    "prev  swipe next";
+  align-items: center;
+  column-gap: 0.25rem;
+}
+
+.hero__stage { grid-area: stage; }
+.hero__swipe { grid-area: swipe; }
+.hero__arrow--prev { grid-area: prev; }
+.hero__arrow--next { grid-area: next; }
+
+@media (min-width: 768px) {
+  .hero__carousel {
+    grid-template-areas:
+      "prev stage next"
+      ".    swipe .";
+    column-gap: 1rem;
+  }
+}
+
+.hero__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--muted);
+  border-radius: var(--pill);
+  background: transparent;
+  color: var(--ink);
+  transition:
+    border-color var(--t-theme) var(--ease-out),
+    color var(--t-theme) var(--ease-out);
+}
+
+@media (min-width: 768px) {
+  .hero__arrow {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+/* Escenario: capas de atrás hacia adelante */
+.hero__stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .hero__stage { grid-template-columns: 22% minmax(0, 1fr) 22%; }
+}
+
+/* Capa 1: nombre corto gigante */
+.hero__bigname {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  translate: -50% -50%;
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 19vw, 17rem);
+  letter-spacing: -0.02em;
+  line-height: 0.8;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--big);
+  pointer-events: none;
+  user-select: none;
+  transition: color var(--t-theme) var(--ease-out);
+}
+
+/* Celular: más arriba, para que se lea por encima del círculo */
+@media (max-width: 767.98px) {
+  .hero__bigname { top: 26%; }
+}
+
+/* Tenis anterior y siguiente: escala .7, inclinados, opacidad .3 */
+.hero__side { display: none; }
+
+@media (min-width: 1024px) {
+  .hero__side {
+    display: block;
+    position: relative;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .hero__side--prev { grid-column: 1; rotate: -10deg; scale: 0.7; }
+  .hero__side--next { grid-column: 3; rotate: 10deg; scale: 0.7; }
+}
+
+.hero__main {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  margin-inline: auto;
+  aspect-ratio: 4 / 3;
+}
+
+@media (min-width: 768px) {
+  .hero__main { aspect-ratio: 3 / 2; }
+}
+
+/* Escritorio: la altura del escenario se ajusta al alto de la pantalla
+   para que el botón de WhatsApp se vea sin scroll (también en 1366x768). */
+@media (min-width: 1024px) {
+  .hero__main {
+    --stage-h: clamp(300px, 100svh - 425px, 420px);
+    grid-column: 2;
+    height: var(--stage-h);
+    aspect-ratio: auto;
+  }
+}
+
+/* Capa 2: círculo */
+.hero__disc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background-color: var(--disc);
+  transition: background-color var(--t-theme) var(--ease-out);
+}
+
+/* Capa 3: tenis central */
+.hero__shoe {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+}
+
+.hero__fallback {
+  width: 88%;
+  rotate: -8deg;
+}
+
+@media (min-width: 1024px) {
+  .hero__fallback { width: min(88%, var(--stage-h) * 1.45); }
+}
+
+.hero__img,
+.hero__drawing svg {
+  width: 100%;
+  height: auto;
+}
+
+.hero__model {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  --poster-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Cuando el .glb carga, el modelo reemplaza a la foto */
+.hero__main[data-model='ready'] .hero__model {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero__main[data-model='ready'] .hero__fallback { visibility: hidden; }
+
+/* Sombra elíptica en el piso */
+.hero__shadow {
+  position: absolute;
+  bottom: 9%;
+  left: 50%;
+  z-index: 1;
+  width: 62%;
+  height: 7%;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.42), rgb(0 0 0 / 0));
+}
+
+/* Dibujo de relleno mientras no hay foto */
+.shoe-svg path {
+  stroke: #5A5A5E;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.shoe-svg .lace {
+  fill: none;
+  stroke-width: 3;
+}
+
+.shoe-svg .hl { stroke: none; }
+
+/* Zona para deslizar e indicadores */
+.hero__swipe {
+  display: grid;
+  justify-items: center;
+  gap: 0.125rem;
+  padding-block: 0.5rem;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.hero__dots {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.hero__dot {
+  display: flex;
+  flex: 1 1 24px;
+  align-items: center;
+  max-width: 28px;
+  height: 44px;
+  padding: 0 3px;
+  border: 0;
+  background: transparent;
+}
+
+.hero__dot::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--muted);
+  transition: background-color var(--t-theme) var(--ease-out);
+}
+
+.hero__dot[aria-current='true'] {
+  flex-basis: 48px;
+  max-width: 64px;
+}
+
+.hero__dot[aria-current='true']::before { background-color: var(--ink); }
+
+.hero__hint {
+  font-size: 0.875rem;
+  color: var(--muted);
+  transition: color var(--t-theme) var(--ease-out);
+}
+
+/* Info debajo del tenis */
+.hero__info {
+  display: grid;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--disc);
+  transition: border-color var(--t-theme) var(--ease-out);
+}
+
+.hero__brand {
+  font-weight: 500;
+  color: var(--muted);
+  transition: color var(--t-theme) var(--ease-out);
+}
+
+.hero__name { margin-top: 0.375rem; }
+
+.hero__price {
+  margin-top: 0.875rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.hero__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.75rem clamp(1.5rem, 3vw, 3rem);
+}
+
+.hero__field {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.hero__legend {
+  margin-bottom: 0.75rem;
+  padding: 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+  transition: color var(--t-theme) var(--ease-out);
+}
+
+.hero__legend strong {
+  font-weight: 500;
+  color: var(--ink);
+  transition: color var(--t-theme) var(--ease-out);
+}
+
+/* Bolitas de color: dos tonos (upper y panel) */
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.swatch {
+  display: block;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.swatch__dot {
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c1) 50%, var(--c2) 50%);
+  box-shadow: 0 0 0 1px var(--muted);
+  transition: box-shadow var(--t-theme) var(--ease-out);
+}
+
+.swatch input:checked + .swatch__dot { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--ink); }
+
+.swatch input:focus-visible + .swatch__dot {
+  outline: 3px solid var(--ink);
+  outline-offset: 6px;
+}
+
+/* Tallas */
+.sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.size { cursor: pointer; }
+
+.size span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 44px;
+  padding: 0 0.75rem;
+  border: 1px solid var(--muted);
+  border-radius: var(--pill);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.size input:checked + span {
+  border-color: var(--ink);
+  background-color: var(--ink);
+  color: var(--bg);
+}
+
+.size input:focus-visible + span {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.btn--lg {
+  min-height: 56px;
+  padding: 0 2rem;
+  font-size: 1.0625rem;
+}
+
+.hero__cta { width: 100%; }
+
+@media (min-width: 768px) {
+  .hero__cta {
+    width: auto;
+    margin-left: auto;
+  }
+}
+
+/* Nombre compacto (elegido por el dueño): de 3rem en celular a 4rem en escritorio,
+   para que precio, tallas y botón de WhatsApp quepan sin hacer scroll. */
+.hero__name { font-size: clamp(3rem, 2.25rem + 2.4vw, 4rem); }
+
+/* Escritorio: título a la izquierda y controles en una sola fila */
+@media (min-width: 1024px) {
+  .hero__info {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    column-gap: 3rem;
+  }
+
+  .hero__controls { flex-wrap: nowrap; }
+  .sizes { max-width: 312px; }
+}
 
 /* 7. Secciones ------------------------------------------------------------ */
 .section { padding-block: var(--section-y); }

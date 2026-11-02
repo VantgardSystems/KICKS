@@ -47,7 +47,80 @@
     <!-- 2. Hero -->
     <section class="hero" id="inicio" aria-label="Tenis destacados">
       <div class="wrap">
-        <h1 class="hero__name">Air Jordan 1 High</h1>
+        <div class="hero__carousel">
+          <button class="hero__arrow hero__arrow--prev" type="button" data-go="-1" aria-label="Ver tenis anterior">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+          </button>
+
+          <div class="hero__stage">
+            <!-- Capa 1: nombre corto gigante (color big) -->
+            <p class="hero__bigname" aria-hidden="true"><span data-hero-short>Jordan 1</span></p>
+
+            <!-- Tenis anterior y siguiente (ocultos en celular) -->
+            <div class="hero__side hero__side--prev" data-hero-side="prev" aria-hidden="true"></div>
+
+            <div class="hero__main">
+              <!-- Capa 2: círculo detrás del tenis -->
+              <div class="hero__disc" aria-hidden="true"></div>
+              <!-- Capa 3: tenis central. Si no hay .glb, se ve la foto WebP; si tampoco hay foto, un dibujo -->
+              <div class="hero__shoe">
+                <div class="hero__fallback" data-hero-fallback>
+                  <img class="hero__img" src="assets/img/jordan-1-high-bred.webp" alt="Nike Air Jordan 1 High color Bred" width="1200" height="600" fetchpriority="high" decoding="async" hidden>
+                  <div class="hero__drawing" hidden></div>
+                </div>
+                <model-viewer class="hero__model"
+                  alt="Nike Air Jordan 1 High color Bred"
+                  camera-controls
+                  auto-rotate
+                  rotation-per-second="10deg"
+                  disable-zoom
+                  disable-pan
+                  touch-action="pan-y"
+                  interaction-prompt="none"
+                  shadow-intensity="0"
+                  loading="eager"></model-viewer>
+              </div>
+              <div class="hero__shadow" aria-hidden="true"></div>
+            </div>
+
+            <div class="hero__side hero__side--next" data-hero-side="next" aria-hidden="true"></div>
+          </div>
+
+          <button class="hero__arrow hero__arrow--next" type="button" data-go="1" aria-label="Ver tenis siguiente">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg>
+          </button>
+
+          <!-- Zona para deslizar (abajo del tenis, no encima del modelo) -->
+          <div class="hero__swipe">
+            <div class="hero__dots" role="group" aria-label="Elegir tenis" data-hero-dots></div>
+            <p class="hero__hint">Desliza aquí para cambiar de par</p>
+          </div>
+        </div>
+
+        <div class="hero__info">
+          <div class="hero__title" aria-live="polite">
+            <p class="hero__brand" data-hero-brand>Nike</p>
+            <h1 class="hero__name" data-hero-name>Air Jordan 1 High</h1>
+            <p class="hero__price" data-hero-price>$6,499 MXN</p>
+          </div>
+
+          <div class="hero__controls">
+            <fieldset class="hero__field">
+              <legend class="hero__legend">Color: <strong data-hero-color-name>Bred</strong></legend>
+              <div class="swatches" data-hero-colors></div>
+            </fieldset>
+
+            <fieldset class="hero__field">
+              <legend class="hero__legend">Talla (MX)</legend>
+              <div class="sizes" data-hero-sizes></div>
+            </fieldset>
+
+            <a class="btn btn--theme btn--lg hero__cta" href="https://wa.me/" target="_blank" rel="noopener" data-hero-cta>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.2A8.5 8.5 0 1 1 21 11.5z"></path></svg>
+              Pedir por WhatsApp
+            </a>
+          </div>
+        </div>
       </div>
     </section>
 
