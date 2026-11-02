@@ -619,6 +619,36 @@
     }
   });
 
+  // Footer: contacto de STORE. Lo que sigue en [EDITAR] se muestra como texto;
+  // al llenarlo en products.js se vuelve link solo.
+  const isFilled = (value) => Boolean(value) && !value.includes('[EDITAR]');
+  const socialUrl = {
+    instagram: (handle) => `https://instagram.com/${handle.replace(/^@/, '')}`,
+    tiktok: (handle) => `https://www.tiktok.com/@${handle.replace(/^@/, '')}`,
+  };
+
+  document.querySelectorAll('[data-social]').forEach((item) => {
+    const key = item.dataset.social;
+    const value = STORE[key];
+    const label = key === 'instagram' ? 'Instagram' : 'TikTok';
+    if (!isFilled(value)) {
+      item.textContent = `${label} [EDITAR]`;
+      return;
+    }
+    const url = /^https?:\/\//.test(value) ? value : socialUrl[key](value);
+    item.innerHTML = `<a href="${esc(url)}" target="_blank" rel="noopener">${label}</a>`;
+  });
+
+  const addressItem = $('[data-store-address]');
+  if (isFilled(STORE.address)) {
+    const maps = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(STORE.address);
+    addressItem.innerHTML = `<a href="${maps}" target="_blank" rel="noopener">${esc(STORE.address)}</a>`;
+  } else {
+    addressItem.textContent = `Dirección ${STORE.address}`;
+  }
+
+  $('[data-year]').textContent = new Date().getFullYear();
+
   // Movimiento reducido: sin auto-rotate ni inclinación, y nada a medio animar
   function syncMotion() {
     el.model.toggleAttribute('auto-rotate', !reduceMQ.matches);

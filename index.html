@@ -276,7 +276,48 @@
     </section>
   </main>
 
-  <!-- 11. Footer + botón flotante de WhatsApp (fase 9) -->
-  <footer class="site-footer"></footer>
+  <!-- 11. Footer: contacto de STORE (products.js) -->
+  <footer class="site-footer">
+    <div class="wrap site-footer__top">
+      <div>
+        <a class="logo site-footer__logo" href="#inicio">Sneaker District</a>
+        <p class="site-footer__slogan">Originales o nada.</p>
+      </div>
+      <nav class="site-footer__cols" aria-label="Pie de página">
+        <div>
+          <h2 class="site-footer__title">Tienda</h2>
+          <ul class="site-footer__list" role="list">
+            <li><a href="#lanzamientos">Lanzamientos</a></li>
+            <li><a href="#mas-vendidos">Más vendidos</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="site-footer__title">Ayuda</h2>
+          <ul class="site-footer__list" role="list">
+            <li><a href="#como-comprar">Cómo comprar</a></li>
+            <li><a href="#preguntas">Preguntas frecuentes</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="site-footer__title">Contacto</h2>
+          <ul class="site-footer__list" role="list">
+            <li><a href="https://wa.me/" data-wa-contact target="_blank" rel="noopener">WhatsApp</a></li>
+            <li data-social="instagram">Instagram [EDITAR]</li>
+            <li data-social="tiktok">TikTok [EDITAR]</li>
+            <li data-store-address>Dirección [EDITAR]</li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="wrap site-footer__bottom">
+      <p>© <span data-year>2026</span> Sneaker District</p>
+    </div>
+  </footer>
+
+  <!-- Botón flotante de WhatsApp -->
+  <a class="wa-float" href="https://wa.me/" data-wa-contact target="_blank" rel="noopener" aria-label="Contacto por WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.2A8.5 8.5 0 1 1 21 11.5z"></path></svg>
+    <span>Contacto</span>
+  </a>
 </body>
 </html>
