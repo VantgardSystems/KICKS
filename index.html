@@ -110,7 +110,7 @@
         <div class="hero__info">
           <div class="hero__title" aria-live="polite">
             <p class="hero__brand" data-hero-brand>Nike</p>
-            <h1 class="hero__name" data-hero-name>Air Jordan 1 High</h1>
+            <h1 class="hero__name" data-hero-name tabindex="-1">Air Jordan 1 High</h1>
             <p class="hero__price" data-hero-price>$6,499 MXN</p>
           </div>
 
@@ -134,17 +134,22 @@
       </div>
     </section>
 
-    <!-- 3. Marcas -->
-    <section class="section brands" aria-labelledby="marcas-titulo">
+    <!-- 3. Marcas: al tocar una, carga su primer tenis en el hero y sube -->
+    <section class="brands" aria-labelledby="marcas-titulo">
       <div class="wrap">
         <h2 class="visually-hidden" id="marcas-titulo">Marcas</h2>
+        <ul class="brands__list" role="list" data-brands></ul>
       </div>
     </section>
 
     <!-- 4. Lanzamientos -->
     <section class="section section--alt" id="lanzamientos" aria-labelledby="lanzamientos-titulo">
       <div class="wrap">
-        <h2 id="lanzamientos-titulo">Lanzamientos</h2>
+        <div class="section__head">
+          <h2 id="lanzamientos-titulo">Lanzamientos</h2>
+          <p class="section__lead">Los pares que llegan esta temporada. Aparta el tuyo antes de que se agote.</p>
+        </div>
+        <div class="drops" data-drops></div>
       </div>
     </section>
 

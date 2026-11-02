@@ -96,6 +96,29 @@
     </svg>`;
   }
 
+  // Foto de un par para tarjetas. Si el WebP no existe, se cambia solo por el dibujo.
+  // (El evento error no burbujea: se escucha en fase de captura.)
+  const findColor = (id, slug) => {
+    const product = PRODUCTS.find((p) => p.id === id);
+    return { product, color: product && product.colors.find((c) => c.slug === slug) };
+  };
+
+  function shoePic(product, color) {
+    return `<img class="shoe-pic" src="${color.img}" alt="" width="1200" height="600" loading="lazy" decoding="async" data-shoe="${product.id}/${color.slug}">`;
+  }
+
+  document.addEventListener('error', (e) => {
+    const img = e.target;
+    if (!(img instanceof HTMLImageElement) || !img.dataset.shoe) return;
+    const { color } = findColor(...img.dataset.shoe.split('/'));
+    if (!color) return;
+    const tmp = document.createElement('div');
+    tmp.innerHTML = shoeDrawing(color);
+    const svg = tmp.firstElementChild;
+    svg.classList.add('shoe-pic');
+    img.replaceWith(svg);
+  }, true);
+
   // Hero ---------------------------------------------------------------------
   const hero = $('.hero');
   const el = {
@@ -456,6 +479,63 @@
       tiltY(0);
     });
   }
+
+  // Mostrar un par en el hero y subir hasta él (Marcas y Más vendidos).
+  // El cambio ocurre cuando el hero ya se ve, para que la entrada no pase desapercibida.
+  function showInHero(index) {
+    // El foco pasa al nombre del par (útil con teclado y lector de pantalla)
+    const go = () => {
+      setProduct(index);
+      el.name.focus({ preventScroll: true });
+    };
+    if (window.scrollY < 10 || reduceMQ.matches) {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      go();
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const start = performance.now();
+    const waitForHero = () => {
+      if (window.scrollY < hero.offsetHeight * 0.5 || performance.now() - start > 1200) go();
+      else requestAnimationFrame(waitForHero);
+    };
+    requestAnimationFrame(waitForHero);
+  }
+
+  // Marcas -------------------------------------------------------------------
+  const brandsList = $('[data-brands]');
+  const brands = [...new Set(PRODUCTS.map((p) => p.brand))];
+
+  brandsList.innerHTML = brands.map((brand) =>
+    `<li><a class="brands__link" href="#inicio" data-brand="${brand}">${brand}</a></li>`
+  ).join('');
+
+  brandsList.addEventListener('click', (e) => {
+    const link = e.target.closest('[data-brand]');
+    if (!link) return;
+    e.preventDefault();
+    showInHero(PRODUCTS.findIndex((p) => p.brand === link.dataset.brand));
+  });
+
+  // Lanzamientos: cada tarjeta usa el tema de su color -------------------------
+  $('[data-drops]').innerHTML = DROPS.map(([id, slug, label]) => {
+    const { product, color } = findColor(id, slug);
+    const t = color.theme;
+    const text = `Hola, quiero apartar los ${product.brand} ${product.name} color ${color.name} (${label}). ¿Qué tallas van a tener?`;
+    return `
+      <article class="drop" style="--bg: ${t.bg}; --ink: ${t.ink}; --muted: ${t.muted}; --disc: ${t.disc}; --accent: ${t.accent}; --on: ${t.on}">
+        <div class="drop__media">
+          ${shoePic(product, color)}
+          <p class="drop__tag">${label}</p>
+        </div>
+        <div>
+          <p class="drop__brand">${product.brand}</p>
+          <h3 class="drop__name">${product.name}</h3>
+          <p class="drop__meta">${color.name}, ${formatPrice(product.price)}</p>
+        </div>
+        <a class="btn btn--theme drop__cta" href="${waLink(text)}" target="_blank" rel="noopener">Apartar por WhatsApp</a>
+      </article>`;
+  }).join('');
 
   // Movimiento reducido: sin auto-rotate ni inclinación, y nada a medio animar
   function syncMotion() {
