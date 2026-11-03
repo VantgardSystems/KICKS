@@ -1,6 +1,27 @@
 {
   "version": 1,
   "skills": {
+    "21st-cli-use": {
+      "source": "21st-dev/skill",
+      "sourceType": "github",
+      "skillPath": "skills/21st-cli-use/SKILL.md",
+      "computedHash": "7ef87a695824a4719a8f1f211b72bbe03952a1fa4d40e0fd4c472d4eb1cbee0a",
+      "installMode": "copy"
+    },
+    "21st-ui-build": {
+      "source": "21st-dev/skill",
+      "sourceType": "github",
+      "skillPath": "skills/21st-ui-build/SKILL.md",
+      "computedHash": "1779535d72552feb5b0747e54f590ac3a849827de19399aff649ab5a7e90ae07",
+      "installMode": "copy"
+    },
+    "21st-ui-review": {
+      "source": "21st-dev/skill",
+      "sourceType": "github",
+      "skillPath": "skills/21st-ui-review/SKILL.md",
+      "computedHash": "5ef243e99a7c2a97eba56434e6a66cc93b4fe5687b6ef215238b13e6bb9c0f2b",
+      "installMode": "copy"
+    },
     "emil-design-eng": {
       "source": "emilkowalski/skill",
       "sourceType": "github",
@@ -36,6 +57,13 @@
       "sourceType": "github",
       "skillPath": "skills/gsap-utils/SKILL.md",
       "computedHash": "1ab2387f6e694718a4f1b5acf2a4ab16e1b884c3428adf5f6b26d830f00826cf"
+    },
+    "lenis-smooth-scroll": {
+      "source": "ume0207/claude-code-skills",
+      "sourceType": "github",
+      "skillPath": "skills/lenis-smooth-scroll/SKILL.md",
+      "computedHash": "f11d82f194a41d0c35dd713bf0b598afcbc346b9b06c14b8923894b36893bd97",
+      "installMode": "copy"
     }
   }
 }
