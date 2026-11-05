@@ -199,6 +199,8 @@
     };
   }
   const EASE = cubicBezier(0.2, 0.8, 0.2, 1);
+  // Curva de los controles (igual que --ease-out-ui en CSS): como un resorte sin rebote
+  const EASE_UI = cubicBezier(0.23, 1, 0.32, 1);
 
   // Mientras cambia el tema (700 ms), las tallas siguen el ritmo del fondo
   let themingTimer = 0;
@@ -444,45 +446,76 @@
   });
 
   // Deslizar con Draggable en la zona de abajo del tenis (no encima del modelo:
-  // ahí arrastrar lo gira). Un swipe rápido basta aunque sea corto.
+  // ahí arrastrar lo gira). Gesto estilo Apple (Designing Fluid Interfaces):
+  // - el tenis sigue al dedo 1:1, con resistencia (rubber band) más allá de 160 px;
+  // - no se compromete hasta moverse 10 px;
+  // - al soltar se proyecta la inercia para decidir: un flick corto y rápido cambia
+  //   de par; si el dedo regresa al final, se cancela.
   if (hasGSAP && window.Draggable) {
     gsap.registerPlugin(Draggable);
     const proxy = document.createElement('div');
     proxy.className = 'hero__drag-proxy';
     el.swipe.appendChild(proxy);
-    let dragStart = 0;
+
+    const SWIPE_COMMIT = 72; // px proyectados para cambiar de par
+    let history = [];
+
+    // Historial corto (~100 ms) para medir la velocidad real al soltar
+    const track = (x) => {
+      const t = performance.now();
+      history.push({ x, t });
+      while (history.length > 2 && t - history[0].t > 100) history.shift();
+    };
+    const releaseVelocity = () => { // px/s
+      if (history.length < 2) return 0;
+      const first = history[0];
+      const last = history[history.length - 1];
+      return ((last.x - first.x) / Math.max(1, last.t - first.t)) * 1000;
+    };
+    // Proyección de Apple: a dónde llegaría el gesto con esa inercia
+    // (0.99 = ágil, 0.998 = scroll normal; 0.995 queda en medio)
+    const project = (v, rate = 0.995) => ((v / 1000) * rate) / (1 - rate);
+    // Resistencia progresiva: entre más se pasa del límite, menos avanza
+    const rubberband = (dx, limit = 160) => {
+      const over = Math.abs(dx) - limit;
+      if (over <= 0) return dx;
+      return Math.sign(dx) * (limit + (over * limit * 0.55) / (limit + 0.55 * over));
+    };
 
     Draggable.create(proxy, {
       type: 'x',
       trigger: el.swipe,
       dragClickables: true,
-      minimumMovement: 6,
+      minimumMovement: 10,
       cursor: 'grab',
       activeCursor: 'grabbing',
-      onPress() {
-        dragStart = performance.now();
-      },
       onDragStart() {
         gsap.killTweensOf(el.shoe);
+        history = [];
+        track(this.x);
       },
       onDrag() {
+        track(this.x);
         if (motionOK()) {
-          const dx = gsap.utils.clamp(-160, 160, this.x);
-          gsap.set(el.shoe, { x: dx * 0.5, rotation: dx * 0.03 });
+          const dx = rubberband(this.x);
+          gsap.set(el.shoe, { x: dx, rotation: dx * 0.02 });
         }
       },
       onDragEnd() {
+        track(this.x);
         const dx = this.x;
-        // Velocidad promedio del gesto (px/ms): un swipe rápido cuenta aunque sea corto
-        const velocity = Math.abs(dx) / Math.max(1, performance.now() - dragStart);
+        const v = releaseVelocity();
+        const projected = dx + project(v);
+        const reversing = Math.abs(v) > 150 && Math.sign(v) !== Math.sign(dx);
         gsap.set(proxy, { x: 0 });
         this.update();
 
-        if (Math.abs(dx) > 60 || (Math.abs(dx) > 20 && velocity > 0.15)) {
-          const dir = dx < 0 ? 1 : -1;
+        if (!reversing && Math.abs(projected) > SWIPE_COMMIT) {
+          const dir = projected < 0 ? 1 : -1;
           setProduct(state.p + dir, dir);
         } else if (motionOK()) {
-          gsap.to(el.shoe, { x: 0, rotation: 0, scale: 1, autoAlpha: 1, duration: 0.35, ease: 'power3.out', overwrite: true });
+          // Regresa desde donde quedó (nunca salta), sin rebote
+          gsap.to(el.shoe, { x: 0, rotation: 0, scale: 1, autoAlpha: 1, duration: 0.3, ease: EASE_UI, overwrite: true });
         }
       },
     });

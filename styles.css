@@ -32,8 +32,16 @@
   --fs-h1: clamp(3rem, 10vw, 8rem);
   --fs-h2: clamp(2rem, 4.5vw, 3.25rem);
 
-  /* Movimiento */
-  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  /* Movimiento (CLAUDE.md + estilo Apple)
+     Controles: solo 100/150/200/300 ms y solo transform/opacity.
+     --ease-in-ui es el espejo de --ease-out-ui: lo que entra sale por el mismo camino. */
+  --ease-out: cubic-bezier(.2, .8, .2, 1);         /* escaparate del hero (tema, 700 ms) */
+  --ease-out-ui: cubic-bezier(0.23, 1, 0.32, 1);   /* entrar: como un resorte sin rebote */
+  --ease-in-ui: cubic-bezier(0.68, 0, 0.77, 0);    /* salir */
+  --t-press: 100ms;
+  --t-fast: 150ms;
+  --t-base: 200ms;
+  --t-slow: 300ms;
   --t-theme: 700ms;
 
   /* Layout */
@@ -170,7 +178,7 @@ button { cursor: pointer; }
   line-height: 1;
   text-decoration: none;
   white-space: nowrap;
-  transition: transform 160ms var(--ease-out);
+  transition: transform var(--t-press) var(--ease-out-ui);
 }
 
 .btn--sm {
@@ -183,15 +191,21 @@ button { cursor: pointer; }
 .btn--theme {
   background-color: var(--accent);
   color: var(--on);
+}
+
+/* El color solo se anima como parte del cambio de tema del hero (escaparate) */
+[data-theming] .btn--theme {
   transition:
     background-color var(--t-theme) var(--ease-out),
     color var(--t-theme) var(--ease-out),
-    transform 160ms var(--ease-out);
+    transform var(--t-press) var(--ease-out-ui);
 }
 
-/* Microinteracciones de todo lo que se presiona.
-   Hover: un velo del color del texto (se adapta solo a cada tema), 150 ms.
-   Al presionar: escala .97 en 160 ms, para sentir que respondió. */
+/* Microinteracciones de todo lo que se presiona (estilo Apple):
+   - Respuesta al presionar, no al soltar: escala .97 en 100 ms.
+   - Hover solo con mouse: los botones se oscurecen 8 %; flechas, menú y botón
+     flotante se cubren con un velo de su propio color. 150 ms, ease-out al
+     entrar y ease-in al salir. */
 .btn,
 .hero__arrow,
 .menu-btn,
@@ -211,19 +225,42 @@ button { cursor: pointer; }
   border-radius: inherit;
   background-color: currentColor;
   opacity: 0;
-  transition: opacity 150ms ease;
+  transition: opacity var(--t-fast) var(--ease-in-ui);
 }
 
+.btn::after { background-color: rgb(0 0 0); }
+
 @media (hover: hover) and (pointer: fine) {
-  .btn:hover::after { opacity: 0.12; }
+  .btn:hover::after {
+    opacity: 0.08;
+    transition: opacity var(--t-fast) var(--ease-out-ui);
+  }
 
   .hero__arrow:hover::after,
   .menu-btn:hover::after,
-  .wa-float:hover::after { opacity: 0.1; }
+  .wa-float:hover::after {
+    opacity: 0.1;
+    transition: opacity var(--t-fast) var(--ease-out-ui);
+  }
 }
 
 .btn:active,
-.wa-float:active { transform: scale(0.97); }
+.wa-float:active,
+.hero__arrow:active,
+.menu-btn:active { transform: scale(0.97); }
+
+/* Links de texto: al presionar se atenúan, como los botones de texto de iOS */
+.logo,
+.site-header__nav a,
+.brands__link,
+.site-footer a,
+.faq__q { transition: opacity var(--t-press) var(--ease-out-ui); }
+
+.logo:active,
+.site-header__nav a:active,
+.brands__link:active,
+.site-footer a:active,
+.faq__q:active { opacity: 0.6; }
 
 a,
 button,
@@ -281,43 +318,57 @@ label { -webkit-tap-highlight-color: transparent; }
   border-radius: var(--pill);
   background: transparent;
   color: var(--ink);
+  transition: transform var(--t-press) var(--ease-out-ui);
+}
+
+[data-theming] .menu-btn {
   transition:
     border-color var(--t-theme) var(--ease-out),
     color var(--t-theme) var(--ease-out),
-    transform 160ms var(--ease-out);
+    transform var(--t-press) var(--ease-out-ui);
 }
-
-.menu-btn:active { transform: scale(0.95); }
 
 .menu-btn line {
   transform-box: fill-box;
   transform-origin: center;
-  transition: transform 200ms var(--ease-out);
+  transition: transform var(--t-base) var(--ease-out-ui);
 }
 
 .site-header[data-menu-open] .menu-btn line:first-child { transform: translateY(3px) rotate(45deg); }
 .site-header[data-menu-open] .menu-btn line:last-child { transform: translateY(-3px) rotate(-45deg); }
 
-/* Celular: el nav es un panel que baja desde el header */
+/* Celular: el menú es una hoja de material translúcido que nace del botón
+   (esquina superior derecha) y se cierra por el mismo camino. */
 .site-header__nav {
   position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
+  top: calc(100% - 0.5rem);
+  right: var(--gutter);
   display: flex;
   flex-direction: column;
-  padding: 0.5rem var(--gutter) 1.5rem;
-  border-top: 1px solid var(--disc);
+  width: min(18rem, calc(100vw - 2 * var(--gutter)));
+  padding: 0.75rem 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: var(--radius);
   background-color: var(--bg);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.12),
+    0 16px 40px rgb(0 0 0 / 0.22);
+  transform-origin: calc(100% - 22px) 0;
   visibility: hidden;
   opacity: 0;
-  transform: translateY(-8px);
+  transform: scale(0.96);
   transition:
-    opacity 200ms var(--ease-out),
-    transform 200ms var(--ease-out),
-    visibility 0s linear 200ms,
-    background-color var(--t-theme) var(--ease-out),
-    border-color var(--t-theme) var(--ease-out);
+    opacity var(--t-fast) var(--ease-in-ui),
+    transform var(--t-fast) var(--ease-in-ui),
+    visibility 0s linear var(--t-fast);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header__nav {
+    background-color: color-mix(in srgb, var(--bg) 78%, transparent);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    backdrop-filter: saturate(180%) blur(24px);
+  }
 }
 
 .site-header[data-menu-open] .site-header__nav {
@@ -325,19 +376,33 @@ label { -webkit-tap-highlight-color: transparent; }
   opacity: 1;
   transform: none;
   transition:
-    opacity 200ms var(--ease-out),
-    transform 200ms var(--ease-out),
-    visibility 0s,
-    background-color var(--t-theme) var(--ease-out),
-    border-color var(--t-theme) var(--ease-out);
+    opacity var(--t-base) var(--ease-out-ui),
+    transform var(--t-base) var(--ease-out-ui),
+    visibility 0s;
+}
+
+/* Sin transparencias o con más contraste: material sólido con borde definido */
+@media (prefers-reduced-transparency: reduce) {
+  .site-header__nav {
+    background-color: var(--bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .site-header__nav {
+    border-color: var(--ink);
+    background-color: var(--bg);
+  }
 }
 
 .site-header__nav a {
-  padding-block: 0.625rem;
+  padding-block: 0.5rem;
   font-family: var(--font-display);
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   letter-spacing: -0.02em;
-  line-height: 1.1;
+  line-height: 1.15;
   text-decoration: none;
 }
 
@@ -356,15 +421,22 @@ label { -webkit-tap-highlight-color: transparent; }
     position: static;
     flex-direction: row;
     gap: 1.75rem;
+    width: auto;
     padding: 0;
     border: 0;
+    border-radius: 0;
     background: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     visibility: visible;
     opacity: 1;
     transform: none;
     transition: none;
   }
 
+  /* Links en color muted (AA en todos los temas); al pasar el mouse se
+     encienden al instante con el color del texto; al presionar se atenúan */
   .site-header__nav a {
     padding-block: 0;
     color: var(--muted);
@@ -373,11 +445,14 @@ label { -webkit-tap-highlight-color: transparent; }
     font-weight: 500;
     letter-spacing: 0;
     line-height: 1.6;
-    transition: color 150ms ease;
   }
 
   /* Mientras cambia el tema, el color va al ritmo del fondo */
-  [data-theming] .site-header__nav a { transition-duration: var(--t-theme); }
+  [data-theming] .site-header__nav a {
+    transition:
+      opacity var(--t-press) var(--ease-out-ui),
+      color var(--t-theme) var(--ease-out);
+  }
 
   .site-header__cta { padding-inline: 1.25rem; }
 }
@@ -437,13 +512,15 @@ label { -webkit-tap-highlight-color: transparent; }
   border-radius: var(--pill);
   background: transparent;
   color: var(--ink);
+  transition: transform var(--t-press) var(--ease-out-ui);
+}
+
+[data-theming] .hero__arrow {
   transition:
     border-color var(--t-theme) var(--ease-out),
     color var(--t-theme) var(--ease-out),
-    transform 160ms var(--ease-out);
+    transform var(--t-press) var(--ease-out-ui);
 }
-
-.hero__arrow:active { transform: scale(0.95); }
 
 @media (min-width: 768px) {
   .hero__arrow {
@@ -498,7 +575,7 @@ label { -webkit-tap-highlight-color: transparent; }
     position: relative;
     opacity: 0.3;
     cursor: pointer;
-    transition: opacity 200ms var(--ease-out);
+    transition: opacity var(--t-base) var(--ease-out-ui);
   }
 
   .hero__side--prev { grid-column: 1; rotate: -10deg; scale: 0.7; }
@@ -689,18 +766,16 @@ label { -webkit-tap-highlight-color: transparent; }
   max-width: 400px;
 }
 
+/* Indicadores: todos miden lo mismo; la barra activa crece con scaleX (nunca con width) */
 .hero__dot {
   display: flex;
   flex: 1 1 24px;
   align-items: center;
-  max-width: 28px;
+  max-width: 40px;
   height: 44px;
   padding: 0 3px;
   border: 0;
   background: transparent;
-  transition:
-    flex-basis 300ms var(--ease-out),
-    max-width 300ms var(--ease-out);
 }
 
 .hero__dot::before {
@@ -710,25 +785,30 @@ label { -webkit-tap-highlight-color: transparent; }
   height: 4px;
   border-radius: 2px;
   background-color: var(--muted);
-  transition: background-color 200ms ease;
+  transform: scaleX(0.4);
+  transition: transform var(--t-base) var(--ease-out-ui);
 }
 
 /* Mientras cambia el tema, la barrita va al ritmo del fondo */
-[data-theming] .hero__dot::before { transition-duration: var(--t-theme); }
-
-.hero__dot[aria-current='true'] {
-  flex-basis: 48px;
-  max-width: 64px;
+[data-theming] .hero__dot::before {
+  transition:
+    transform var(--t-base) var(--ease-out-ui),
+    background-color var(--t-theme) var(--ease-out);
 }
 
-.hero__dot[aria-current='true']::before { background-color: var(--ink); }
+.hero__dot[aria-current='true']::before {
+  background-color: var(--ink);
+  transform: none;
+}
 
+/* Al pasar el mouse, la barra se alarga un poco: anticipa lo que pasará al tocarla */
 @media (hover: hover) and (pointer: fine) {
-  .hero__dot:hover::before { background-color: var(--ink); }
+  .hero__dot:not([aria-current='true']):hover::before { transform: scaleX(0.6); }
 }
 
 .hero__hint {
   font-size: 0.875rem;
+  letter-spacing: 0.01em;
   color: var(--muted);
   transition: color var(--t-theme) var(--ease-out);
 }
@@ -776,6 +856,7 @@ label { -webkit-tap-highlight-color: transparent; }
   margin-bottom: 0.75rem;
   padding: 0;
   font-size: 0.875rem;
+  letter-spacing: 0.01em;
   color: var(--muted);
   transition: color var(--t-theme) var(--ease-out);
 }
@@ -807,18 +888,25 @@ label { -webkit-tap-highlight-color: transparent; }
   border-radius: 50%;
   background: linear-gradient(135deg, var(--c1) 50%, var(--c2) 50%);
   box-shadow: 0 0 0 1px var(--muted);
+  transition: scale var(--t-press) var(--ease-out-ui);
+}
+
+[data-theming] .swatch__dot {
   transition:
     box-shadow var(--t-theme) var(--ease-out),
-    scale 160ms var(--ease-out);
+    scale var(--t-press) var(--ease-out-ui);
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .swatch:hover .swatch__dot { scale: 1.06; }
+  .swatch:hover .swatch__dot {
+    scale: 1.06;
+    transition: scale var(--t-fast) var(--ease-out-ui);
+  }
 }
 
-.swatch:active .swatch__dot { scale: 0.94; }
+.swatch:active .swatch__dot { scale: 0.97; }
 
-/* Anillo del color elegido: aparece rápido; su color sigue al tema (700 ms).
+/* Anillo del color elegido: aparece en 150 ms; su color sigue al tema.
    El hueco es transparente, así no desentona mientras cambia el fondo. */
 .swatch__dot::after {
   content: '';
@@ -827,8 +915,12 @@ label { -webkit-tap-highlight-color: transparent; }
   border: 2px solid var(--ink);
   border-radius: 50%;
   opacity: 0;
+  transition: opacity var(--t-fast) var(--ease-out-ui);
+}
+
+[data-theming] .swatch__dot::after {
   transition:
-    opacity 150ms var(--ease-out),
+    opacity var(--t-fast) var(--ease-out-ui),
     border-color var(--t-theme) var(--ease-out);
 }
 
@@ -860,22 +952,23 @@ label { -webkit-tap-highlight-color: transparent; }
   font-size: 0.9375rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
-  transition:
-    background-color 150ms var(--ease-out),
-    border-color 150ms var(--ease-out),
-    scale 160ms var(--ease-out);
+  /* Elegir una talla responde al instante; solo se anima la escala al presionar */
+  transition: scale var(--t-press) var(--ease-out-ui);
 }
 
 /* Mientras cambia el tema, las tallas van al ritmo del fondo */
 [data-theming] .size span {
-  transition-duration: var(--t-theme), var(--t-theme), 160ms;
+  transition:
+    background-color var(--t-theme) var(--ease-out),
+    border-color var(--t-theme) var(--ease-out),
+    scale var(--t-press) var(--ease-out-ui);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .size:hover span { border-color: var(--ink); }
 }
 
-.size:active span { scale: 0.96; }
+.size:active span { scale: 0.97; }
 
 .size input:checked + span {
   border-color: var(--ink);
@@ -974,9 +1067,9 @@ label { -webkit-tap-highlight-color: transparent; }
   line-height: 1;
   color: var(--gris);
   text-decoration: none;
-  transition: color 150ms ease;
 }
 
+/* El color cambia al instante; al presionar se atenúa (opacidad, 100 ms) */
 @media (hover: hover) and (pointer: fine) {
   .brands__link:hover { color: var(--carbon); }
 }
@@ -1045,6 +1138,7 @@ label { -webkit-tap-highlight-color: transparent; }
   color: var(--bg);
   font-size: 0.875rem;
   font-weight: 600;
+  letter-spacing: 0.01em;
   line-height: 1.4;
 }
 
@@ -1108,7 +1202,7 @@ label { -webkit-tap-highlight-color: transparent; }
   aspect-ratio: 1;
   border-radius: var(--radius);
   background-color: var(--bg);
-  transition: scale 160ms var(--ease-out);
+  transition: scale var(--t-press) var(--ease-out-ui);
 }
 
 /* La foto es horizontal: en pantallas grandes la caja 4:3 evita tanto aire */
@@ -1119,8 +1213,8 @@ label { -webkit-tap-highlight-color: transparent; }
 .tile__media .shoe-pic {
   width: 84%;
   transition:
-    translate 300ms var(--ease-out),
-    rotate 300ms var(--ease-out);
+    translate var(--t-slow) var(--ease-in-ui),
+    rotate var(--t-slow) var(--ease-in-ui);
 }
 
 /* Al pasar el mouse, el tenis se levanta un poco; al presionar, la caja cede */
@@ -1128,14 +1222,18 @@ label { -webkit-tap-highlight-color: transparent; }
   .tile:hover .shoe-pic {
     translate: 0 -6px;
     rotate: -12deg;
+    transition:
+      translate var(--t-slow) var(--ease-out-ui),
+      rotate var(--t-slow) var(--ease-out-ui);
   }
 }
 
-.tile:active .tile__media { scale: 0.98; }
+.tile:active .tile__media { scale: 0.97; }
 
 .tile__brand {
   margin-top: 0.875rem;
   font-size: 0.875rem;
+  letter-spacing: 0.01em;
   color: var(--gris);
 }
 
@@ -1281,7 +1379,6 @@ label { -webkit-tap-highlight-color: transparent; }
   line-height: 1.35;
   list-style: none;
   cursor: pointer;
-  transition: color 150ms ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1295,7 +1392,7 @@ label { -webkit-tap-highlight-color: transparent; }
   width: 22px;
   height: 22px;
   color: var(--rojo);
-  transition: rotate 200ms var(--ease-out);
+  transition: rotate var(--t-base) var(--ease-out-ui);
 }
 
 /* El + gira y se vuelve × al abrir */
@@ -1307,19 +1404,14 @@ label { -webkit-tap-highlight-color: transparent; }
   color: var(--gris);
 }
 
-/* Donde el navegador lo soporta, la respuesta se despliega suave */
-@supports (interpolate-size: allow-keywords) {
-  .faq { interpolate-size: allow-keywords; }
+/* La respuesta aparece con fade y un leve deslizamiento (solo opacity y transform) */
+.faq__item[open] .faq__a { animation: faq-in var(--t-base) var(--ease-out-ui); }
 
-  .faq__item::details-content {
-    block-size: 0;
-    overflow: hidden;
-    transition:
-      block-size 250ms var(--ease-out),
-      content-visibility 250ms allow-discrete;
+@keyframes faq-in {
+  from {
+    opacity: 0;
+    translate: 0 -6px;
   }
-
-  .faq__item[open]::details-content { block-size: auto; }
 }
 
 /* 15. Avísame del próximo drop ---------------------------------------------- */
@@ -1361,7 +1453,6 @@ label { -webkit-tap-highlight-color: transparent; }
   background: transparent;
   color: var(--blanco);
   font-size: 1rem;
-  transition: border-color 150ms ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -1445,10 +1536,7 @@ label { -webkit-tap-highlight-color: transparent; }
   list-style: none;
 }
 
-.site-footer a {
-  text-decoration: none;
-  transition: color 150ms ease;
-}
+.site-footer a { text-decoration: none; }
 
 @media (hover: hover) and (pointer: fine) {
   .site-footer a:hover { color: var(--blanco); }
@@ -1459,6 +1547,7 @@ label { -webkit-tap-highlight-color: transparent; }
   margin-top: 2.5rem;
   padding-bottom: 4.5rem;
   font-size: 0.8125rem;
+  letter-spacing: 0.01em;
 }
 
 @media (min-width: 768px) {
@@ -1483,24 +1572,26 @@ label { -webkit-tap-highlight-color: transparent; }
   font-weight: 600;
   text-decoration: none;
   box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
+  /* Entra con ease-out (200 ms) */
   transition:
-    transform 160ms var(--ease-out),
-    opacity 200ms var(--ease-out),
-    translate 200ms var(--ease-out),
+    transform var(--t-press) var(--ease-out-ui),
+    opacity var(--t-base) var(--ease-out-ui),
+    translate var(--t-base) var(--ease-out-ui),
     visibility 0s;
 }
 
-/* Se aparta mientras se ve el botón principal del hero (no lo tapa ni lo duplica) */
+/* Se aparta mientras se ve el botón principal del hero (no lo tapa ni lo duplica).
+   Sale por el mismo camino por el que entra, con ease-in (150 ms) */
 .wa-float.is-hidden {
   opacity: 0;
   translate: 0 12px;
   visibility: hidden;
   pointer-events: none;
   transition:
-    transform 160ms var(--ease-out),
-    opacity 200ms var(--ease-out),
-    translate 200ms var(--ease-out),
-    visibility 0s linear 200ms;
+    transform var(--t-press) var(--ease-out-ui),
+    opacity var(--t-fast) var(--ease-in-ui),
+    translate var(--t-fast) var(--ease-in-ui),
+    visibility 0s linear var(--t-fast);
 }
 
 .wa-float svg {
