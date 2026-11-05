@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sneaker District | Tenis originales en México</title>
+  <meta name="description" content="Tenis originales de Nike, Adidas, New Balance, Off-White, Yeezy y más. Elige tu par, pide por WhatsApp y recibe en todo México.">
+  <meta name="theme-color" content="#1C1C1E">
+  <script>
+    // Extra: entrada del hero al abrir la página (se omite con movimiento reducido).
+    // Seguro: si algo falla, la escena se muestra a los 3 s.
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('intro');
+      setTimeout(function () { document.documentElement.classList.remove('intro'); }, 3000);
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- model-viewer 4.0.0 (módulo, ~930 KB): lo carga main.js solo cuando existe el primer .glb -->
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Draggable.min.js"></script>
+  <script defer src="products.js"></script>
+  <script defer src="main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <!-- 1. Header: usa el tema del hero -->
+  <header class="site-header">
+    <div class="wrap site-header__bar">
+      <a class="logo" href="#inicio">Sneaker District</a>
+      <nav class="site-header__nav" id="menu" aria-label="Secciones">
+        <a href="#lanzamientos">Lanzamientos</a>
+        <a href="#mas-vendidos">Más vendidos</a>
+        <a href="#como-comprar">Cómo comprar</a>
+        <a href="#preguntas">Preguntas</a>
+      </nav>
+      <div class="site-header__actions">
+        <a class="btn btn--theme btn--sm site-header__cta" href="https://wa.me/" data-wa-contact target="_blank" rel="noopener">Escríbenos</a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="9" x2="20" y2="9"></line>
+            <line x1="4" y1="15" x2="20" y2="15"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <!-- 2. Hero -->
+    <section class="hero" id="inicio" aria-label="Tenis destacados">
+      <div class="wrap">
+        <div class="hero__carousel">
+          <button class="hero__arrow hero__arrow--prev" type="button" data-go="-1" aria-label="Ver tenis anterior">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"></path></svg>
+          </button>
+
+          <div class="hero__stage">
+            <!-- Capa 1: nombre corto gigante (color big) -->
+            <p class="hero__bigname" aria-hidden="true"><span data-hero-short>Jordan 1</span></p>
+
+            <!-- Tenis anterior y siguiente (ocultos en celular) -->
+            <div class="hero__side hero__side--prev" data-hero-side="prev" aria-hidden="true"></div>
+
+            <div class="hero__main">
+              <!-- Capa 2: círculo detrás del tenis -->
+              <div class="hero__disc" aria-hidden="true"></div>
+              <!-- Capa 3: tenis central. Si no hay .glb, se ve la foto WebP; si tampoco hay foto, un dibujo -->
+              <div class="hero__shoe">
+                <div class="hero__float">
+                  <div class="hero__fallback" data-hero-fallback>
+                    <img class="hero__img" src="assets/img/jordan-1-high-bred.webp" alt="Nike Air Jordan 1 High color Bred" width="1200" height="600" fetchpriority="high" decoding="async" hidden>
+                    <div class="hero__drawing" hidden></div>
+                  </div>
+                  <model-viewer class="hero__model" inert
+                    alt="Nike Air Jordan 1 High color Bred"
+                    camera-controls
+                    auto-rotate
+                    rotation-per-second="10deg"
+                    disable-zoom
+                    disable-pan
+                    touch-action="pan-y"
+                    interaction-prompt="none"
+                    shadow-intensity="0"
+                    loading="eager"></model-viewer>
+                </div>
+              </div>
+              <div class="hero__shadow" aria-hidden="true"></div>
+            </div>
+
+            <div class="hero__side hero__side--next" data-hero-side="next" aria-hidden="true"></div>
+          </div>
+
+          <button class="hero__arrow hero__arrow--next" type="button" data-go="1" aria-label="Ver tenis siguiente">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"></path></svg>
+          </button>
+
+          <!-- Zona para deslizar (abajo del tenis, no encima del modelo) -->
+          <div class="hero__swipe">
+            <div class="hero__dots" role="group" aria-label="Elegir tenis" data-hero-dots></div>
+            <p class="hero__hint">Desliza aquí para cambiar de par</p>
+          </div>
+        </div>
+
+        <div class="hero__info">
+          <div class="hero__title" aria-live="polite">
+            <p class="hero__brand" data-hero-brand>Nike</p>
+            <h1 class="hero__name" data-hero-name tabindex="-1">Air Jordan 1 High</h1>
+            <p class="hero__price" data-hero-price>$6,499 MXN</p>
+          </div>
+
+          <div class="hero__controls">
+            <fieldset class="hero__field">
+              <legend class="hero__legend">Color: <strong data-hero-color-name>Bred</strong></legend>
+              <div class="swatches" data-hero-colors></div>
+            </fieldset>
+
+            <fieldset class="hero__field">
+              <legend class="hero__legend">Talla (MX)</legend>
+              <div class="sizes" data-hero-sizes></div>
+            </fieldset>
+
+            <a class="btn btn--theme btn--lg hero__cta" href="https://wa.me/" target="_blank" rel="noopener" data-hero-cta>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.2A8.5 8.5 0 1 1 21 11.5z"></path></svg>
+              Pedir por WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Marcas: al tocar una, carga su primer tenis en el hero y sube -->
+    <section class="brands" aria-labelledby="marcas-titulo">
+      <div class="wrap">
+        <h2 class="visually-hidden" id="marcas-titulo">Marcas</h2>
+        <ul class="brands__list" role="list" data-brands></ul>
+      </div>
+    </section>
+
+    <!-- 4. Lanzamientos -->
+    <section class="section section--alt" id="lanzamientos" aria-labelledby="lanzamientos-titulo">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="lanzamientos-titulo">Lanzamientos</h2>
+          <p class="section__lead">Los pares que llegan esta temporada. Aparta el tuyo antes de que se agote.</p>
+        </div>
+        <div class="drops" data-drops></div>
+      </div>
+    </section>
+
+    <!-- 5. Más vendidos -->
+    <section class="section" id="mas-vendidos" aria-labelledby="vendidos-titulo">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="vendidos-titulo">Más vendidos</h2>
+          <p class="section__lead">Toca un par para verlo arriba, elegir color y talla.</p>
+        </div>
+        <ul class="tiles" role="list" data-best></ul>
+      </div>
+    </section>
+
+    <!-- 6. Garantía de originalidad -->
+    <section class="section section--dark guarantee" id="garantia" aria-labelledby="garantia-titulo">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="garantia-titulo">Originales o nada.</h2>
+          <p class="section__lead">Sabemos que lo que más preocupa al comprar tenis en línea es que sean piratas. Por eso:</p>
+        </div>
+        <ul class="points" role="list">
+          <li class="point">
+            <svg class="point__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"></path><path d="M9 12l2 2 4-4"></path></svg>
+            <h3>Revisamos cada par</h3>
+            <p>Antes de venderlo, lo verificamos pieza por pieza.</p>
+          </li>
+          <li class="point">
+            <svg class="point__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"></path><path d="M3 8l9 5 9-5"></path><path d="M12 13v8"></path></svg>
+            <h3>Caja y etiquetas originales</h3>
+            <p>Recibes el par completo, como salió de la marca.</p>
+          </li>
+          <li class="point">
+            <svg class="point__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4v6h6"></path><path d="M20 20v-6h-6"></path><path d="M19 9a8 8 0 0 0-14.5-2.5L4 10"></path><path d="M5 15a8 8 0 0 0 14.5 2.5L20 14"></path></svg>
+            <h3>Tu dinero de vuelta</h3>
+            <p>Si no es original, te regresamos el 100%. [EDITAR]</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 7. Cómo comprar y envíos -->
+    <section class="section" id="como-comprar" aria-labelledby="comprar-titulo">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="comprar-titulo">Cómo comprar</h2>
+        </div>
+        <ol class="steps" role="list">
+          <li class="step">
+            <span class="step__num" aria-hidden="true">1</span>
+            <h3>Elige tu par</h3>
+            <p>Escoge el modelo, el color y tu talla.</p>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">2</span>
+            <h3>Escríbenos</h3>
+            <p>Toca “Pedir por WhatsApp” y te confirmamos si hay en tu talla.</p>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">3</span>
+            <h3>Paga y recibe</h3>
+            <!-- Pagos y envíos vienen de STORE (products.js) -->
+            <p data-store-buy>Transferencia, tarjeta o efectivo en tienda. [EDITAR] Envíos a todo México. [EDITAR]</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 8. Reseñas -->
+    <section class="section section--alt" id="resenas" aria-labelledby="resenas-titulo">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="resenas-titulo">Lo que dicen nuestros clientes</h2>
+        </div>
+        <!-- Las reseñas vienen de REVIEWS (products.js) -->
+        <ul class="reviews" role="list" data-reviews></ul>
+      </div>
+    </section>
+
+    <!-- 9. Preguntas frecuentes (<details> nativo, abre sin JS) -->
+    <section class="section" id="preguntas" aria-labelledby="preguntas-titulo">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="preguntas-titulo">Preguntas frecuentes</h2>
+        </div>
+        <div class="faq">
+          <details class="faq__item">
+            <summary class="faq__q">¿Los tenis son originales?<svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></summary>
+            <p class="faq__a">Sí. Cada par se revisa antes de venderse y llega con su caja y etiquetas.</p>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">¿Cuánto tarda mi envío?<svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></summary>
+            <p class="faq__a">[EDITAR: de 2 a 5 días hábiles a todo México.]</p>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">¿Puedo cambiar la talla?<svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></summary>
+            <p class="faq__a">[EDITAR: sí, en los primeros 7 días si el par está sin usar.]</p>
+          </details>
+          <details class="faq__item">
+            <summary class="faq__q">¿Cómo puedo pagar?<svg class="faq__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></summary>
+            <!-- Viene de STORE.payments (products.js) -->
+            <p class="faq__a" data-store-payments>Transferencia, tarjeta o efectivo en tienda. [EDITAR]</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Avísame del próximo drop: abre WhatsApp con un mensaje prellenado -->
+    <section class="section section--dark" id="avisame" aria-labelledby="avisame-titulo">
+      <div class="wrap notify">
+        <div class="notify__copy">
+          <h2 id="avisame-titulo">Avísame del próximo drop</h2>
+          <p class="section__lead">Te mandamos un WhatsApp cuando lleguen pares nuevos, antes que a nadie.</p>
+        </div>
+        <form class="notify__form" data-notify novalidate>
+          <label class="notify__label" for="notify-phone">Tu WhatsApp</label>
+          <div class="notify__row">
+            <input class="notify__input" id="notify-phone" name="telefono" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="55 1234 5678" aria-describedby="notify-msg">
+            <button class="btn btn--lg btn--red" type="submit">Avísame</button>
+          </div>
+          <p class="notify__msg" id="notify-msg" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- 11. Footer: contacto de STORE (products.js) -->
+  <footer class="site-footer">
+    <div class="wrap site-footer__top">
+      <div>
+        <a class="logo site-footer__logo" href="#inicio">Sneaker District</a>
+        <p class="site-footer__slogan">Originales o nada.</p>
+      </div>
+      <nav class="site-footer__cols" aria-label="Pie de página">
+        <div>
+          <h2 class="site-footer__title">Tienda</h2>
+          <ul class="site-footer__list" role="list">
+            <li><a href="#lanzamientos">Lanzamientos</a></li>
+            <li><a href="#mas-vendidos">Más vendidos</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="site-footer__title">Ayuda</h2>
+          <ul class="site-footer__list" role="list">
+            <li><a href="#como-comprar">Cómo comprar</a></li>
+            <li><a href="#preguntas">Preguntas frecuentes</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2 class="site-footer__title">Contacto</h2>
+          <ul class="site-footer__list" role="list">
+            <li><a href="https://wa.me/" data-wa-contact target="_blank" rel="noopener">WhatsApp</a></li>
+            <li data-social="instagram">Instagram [EDITAR]</li>
+            <li data-social="tiktok">TikTok [EDITAR]</li>
+            <li data-store-address>Dirección [EDITAR]</li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="wrap site-footer__bottom">
+      <p>© <span data-year>2026</span> Sneaker District</p>
+    </div>
+  </footer>
+
+  <!-- Botón flotante de WhatsApp -->
+  <a class="wa-float" href="https://wa.me/" data-wa-contact target="_blank" rel="noopener" aria-label="Contacto por WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20.5l1.6-5.2A8.5 8.5 0 1 1 21 11.5z"></path></svg>
+    <span>Contacto</span>
+  </a>
+</body>
+</html>

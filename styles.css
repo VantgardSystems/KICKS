@@ -1,0 +1,1627 @@
+/* ==========================================================================
+   Sneaker District: estilos
+   Índice: 1. Tokens  2. Base  3. Utilidades  4. Botones  5. Header
+           6. Hero  7. Secciones  8. Marcas  9. Lanzamientos  10. Más vendidos
+           11. Garantía  12. Cómo comprar  13. Reseñas  14. Preguntas
+           15. Avísame  16. Footer y botón flotante
+   ========================================================================== */
+
+/* 1. Tokens --------------------------------------------------------------- */
+:root {
+  /* Colores fijos de marca */
+  --carbon: #1C1C1E;
+  --rojo: #C8102E;
+  --cemento: #9A9B9F;        /* solo sobre fondos oscuros */
+  --gris: #55565A;           /* texto secundario sobre fondos claros */
+  --cemento-claro: #ECECED;
+  --blanco: #FFFFFF;
+
+  /* Tema del hero: main.js lo cambia con cada color de products.js.
+     Valores iniciales = Air Jordan 1 High Bred, para que no parpadee al cargar. */
+  --bg: #1C1C1E;
+  --ink: #FFFFFF;
+  --muted: #A9AAAE;
+  --disc: #303033;
+  --big: #27272A;
+  --accent: #C8102E;
+  --on: #FFFFFF;
+
+  /* Tipografía */
+  --font-display: 'Archivo Black', 'Arial Black', Impact, sans-serif;
+  --font-body: 'Archivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fs-h1: clamp(3rem, 10vw, 8rem);
+  --fs-h2: clamp(2rem, 4.5vw, 3.25rem);
+
+  /* Movimiento (CLAUDE.md + estilo Apple)
+     Controles: solo 100/150/200/300 ms y solo transform/opacity.
+     --ease-in-ui es el espejo de --ease-out-ui: lo que entra sale por el mismo camino. */
+  --ease-out: cubic-bezier(.2, .8, .2, 1);         /* escaparate del hero (tema, 700 ms) */
+  --ease-out-ui: cubic-bezier(0.23, 1, 0.32, 1);   /* entrar: como un resorte sin rebote */
+  --ease-in-ui: cubic-bezier(0.68, 0, 0.77, 0);    /* salir */
+  --t-press: 100ms;
+  --t-fast: 150ms;
+  --t-base: 200ms;
+  --t-slow: 300ms;
+  --t-theme: 700ms;
+
+  /* Layout */
+  --max: 1240px;
+  --gutter: clamp(1rem, 4vw, 2rem);
+  --section-y: clamp(4rem, 9vw, 6rem);
+  --radius: 20px;
+  --pill: 999px;
+}
+
+/* 2. Base ----------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--carbon);
+  background-color: var(--blanco);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+[hidden] { display: none !important; }
+
+h1,
+h2,
+h3,
+p,
+figure,
+blockquote {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+h1 { font-size: var(--fs-h1); }
+h2 { font-size: var(--fs-h2); }
+
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+a { color: inherit; }
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button { cursor: pointer; }
+
+:focus-visible {
+  outline: 3px solid var(--carbon);
+  outline-offset: 3px;
+}
+
+/* 3. Utilidades ----------------------------------------------------------- */
+.wrap {
+  width: 100%;
+  max-width: calc(var(--max) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--pill);
+  background-color: var(--blanco);
+  color: var(--carbon);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible { transform: none; }
+
+/* 4. Botones -------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding: 0 1.75rem;
+  border: 0;
+  border-radius: var(--pill);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--t-press) var(--ease-out-ui);
+}
+
+.btn--sm {
+  min-height: 44px;
+  padding: 0 1.25rem;
+  font-size: 0.9375rem;
+}
+
+/* Botón con los colores del tema del hero */
+.btn--theme {
+  background-color: var(--accent);
+  color: var(--on);
+}
+
+/* El color solo se anima como parte del cambio de tema del hero (escaparate) */
+[data-theming] .btn--theme {
+  transition:
+    background-color var(--t-theme) var(--ease-out),
+    color var(--t-theme) var(--ease-out),
+    transform var(--t-press) var(--ease-out-ui);
+}
+
+/* Microinteracciones de todo lo que se presiona (estilo Apple):
+   - Respuesta al presionar, no al soltar: escala .97 en 100 ms.
+   - Hover solo con mouse: los botones se oscurecen 8 %; flechas, menú y botón
+     flotante se cubren con un velo de su propio color. 150 ms, ease-out al
+     entrar y ease-in al salir. */
+.btn,
+.hero__arrow,
+.menu-btn,
+.wa-float {
+  position: relative;
+  isolation: isolate;
+}
+
+.btn::after,
+.hero__arrow::after,
+.menu-btn::after,
+.wa-float::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease-in-ui);
+}
+
+.btn::after { background-color: rgb(0 0 0); }
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover::after {
+    opacity: 0.08;
+    transition: opacity var(--t-fast) var(--ease-out-ui);
+  }
+
+  .hero__arrow:hover::after,
+  .menu-btn:hover::after,
+  .wa-float:hover::after {
+    opacity: 0.1;
+    transition: opacity var(--t-fast) var(--ease-out-ui);
+  }
+}
+
+.btn:active,
+.wa-float:active,
+.hero__arrow:active,
+.menu-btn:active { transform: scale(0.97); }
+
+/* Links de texto: al presionar se atenúan, como los botones de texto de iOS */
+.logo,
+.site-header__nav a,
+.brands__link,
+.site-footer a,
+.faq__q { transition: opacity var(--t-press) var(--ease-out-ui); }
+
+.logo:active,
+.site-header__nav a:active,
+.brands__link:active,
+.site-footer a:active,
+.faq__q:active { opacity: 0.6; }
+
+a,
+button,
+summary,
+label { -webkit-tap-highlight-color: transparent; }
+
+/* 5. Header (tema del hero) ------------------------------------------------ */
+.site-header {
+  position: relative;
+  z-index: 20;
+  background-color: var(--bg);
+  color: var(--ink);
+  transition:
+    background-color var(--t-theme) var(--ease-out),
+    color var(--t-theme) var(--ease-out);
+}
+
+.site-header :focus-visible { outline-color: var(--ink); }
+
+.site-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 72px;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: clamp(1.125rem, 4.5vw, 1.375rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.site-header__cta { padding-inline: 1rem; }
+
+/* Botón de menú (solo celular): dos líneas que se cruzan en X al abrir */
+.menu-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--muted);
+  border-radius: var(--pill);
+  background: transparent;
+  color: var(--ink);
+  transition: transform var(--t-press) var(--ease-out-ui);
+}
+
+[data-theming] .menu-btn {
+  transition:
+    border-color var(--t-theme) var(--ease-out),
+    color var(--t-theme) var(--ease-out),
+    transform var(--t-press) var(--ease-out-ui);
+}
+
+.menu-btn line {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform var(--t-base) var(--ease-out-ui);
+}
+
+.site-header[data-menu-open] .menu-btn line:first-child { transform: translateY(3px) rotate(45deg); }
+.site-header[data-menu-open] .menu-btn line:last-child { transform: translateY(-3px) rotate(-45deg); }
+
+/* Celular: el menú es una hoja de material translúcido que nace del botón
+   (esquina superior derecha) y se cierra por el mismo camino. */
+.site-header__nav {
+  position: absolute;
+  top: calc(100% - 0.5rem);
+  right: var(--gutter);
+  display: flex;
+  flex-direction: column;
+  width: min(18rem, calc(100vw - 2 * var(--gutter)));
+  padding: 0.75rem 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: var(--radius);
+  background-color: var(--bg);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.12),
+    0 16px 40px rgb(0 0 0 / 0.22);
+  transform-origin: calc(100% - 22px) 0;
+  visibility: hidden;
+  opacity: 0;
+  transform: scale(0.96);
+  transition:
+    opacity var(--t-fast) var(--ease-in-ui),
+    transform var(--t-fast) var(--ease-in-ui),
+    visibility 0s linear var(--t-fast);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header__nav {
+    background-color: color-mix(in srgb, var(--bg) 78%, transparent);
+    -webkit-backdrop-filter: saturate(180%) blur(24px);
+    backdrop-filter: saturate(180%) blur(24px);
+  }
+}
+
+.site-header[data-menu-open] .site-header__nav {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--t-base) var(--ease-out-ui),
+    transform var(--t-base) var(--ease-out-ui),
+    visibility 0s;
+}
+
+/* Sin transparencias o con más contraste: material sólido con borde definido */
+@media (prefers-reduced-transparency: reduce) {
+  .site-header__nav {
+    background-color: var(--bg);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .site-header__nav {
+    border-color: var(--ink);
+    background-color: var(--bg);
+  }
+}
+
+.site-header__nav a {
+  padding-block: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-decoration: none;
+}
+
+/* Pantallas muy angostas: el botón flotante de WhatsApp cubre el contacto */
+@media (max-width: 359.98px) {
+  .site-header__cta { display: none; }
+}
+
+/* Escritorio: links en línea, sin botón de menú */
+@media (min-width: 1024px) {
+  .site-header__bar { gap: 1.5rem; }
+
+  .menu-btn { display: none; }
+
+  .site-header__nav {
+    position: static;
+    flex-direction: row;
+    gap: 1.75rem;
+    width: auto;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /* Links en color muted (AA en todos los temas); al pasar el mouse se
+     encienden al instante con el color del texto; al presionar se atenúan */
+  .site-header__nav a {
+    padding-block: 0;
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.6;
+  }
+
+  /* Mientras cambia el tema, el color va al ritmo del fondo */
+  [data-theming] .site-header__nav a {
+    transition:
+      opacity var(--t-press) var(--ease-out-ui),
+      color var(--t-theme) var(--ease-out);
+  }
+
+  .site-header__cta { padding-inline: 1.25rem; }
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .site-header__nav a:hover { color: var(--ink); }
+}
+
+/* 6. Hero (tema del hero) -------------------------------------------------- */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: 0.5rem 3rem;
+  background-color: var(--bg);
+  color: var(--ink);
+  transition:
+    background-color var(--t-theme) var(--ease-out),
+    color var(--t-theme) var(--ease-out);
+}
+
+.hero :focus-visible { outline-color: var(--ink); }
+
+/* Carrusel. Celular: flechas abajo, junto a los indicadores.
+   Tablet y escritorio: flechas a los lados del tenis. */
+.hero__carousel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    "stage stage stage"
+    "prev  swipe next";
+  align-items: center;
+  column-gap: 0.25rem;
+}
+
+.hero__stage { grid-area: stage; }
+.hero__swipe { grid-area: swipe; }
+.hero__arrow--prev { grid-area: prev; }
+.hero__arrow--next { grid-area: next; }
+
+@media (min-width: 768px) {
+  .hero__carousel {
+    grid-template-areas:
+      "prev stage next"
+      ".    swipe .";
+    column-gap: 1rem;
+  }
+}
+
+.hero__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--muted);
+  border-radius: var(--pill);
+  background: transparent;
+  color: var(--ink);
+  transition: transform var(--t-press) var(--ease-out-ui);
+}
+
+[data-theming] .hero__arrow {
+  transition:
+    border-color var(--t-theme) var(--ease-out),
+    color var(--t-theme) var(--ease-out),
+    transform var(--t-press) var(--ease-out-ui);
+}
+
+@media (min-width: 768px) {
+  .hero__arrow {
+    width: 52px;
+    height: 52px;
+  }
+}
+
+/* Escenario: capas de atrás hacia adelante */
+.hero__stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .hero__stage { grid-template-columns: 22% minmax(0, 1fr) 22%; }
+}
+
+/* Capa 1: nombre corto gigante */
+.hero__bigname {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  translate: -50% -50%;
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 19vw, 17rem);
+  letter-spacing: -0.02em;
+  line-height: 0.8;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--big);
+  pointer-events: none;
+  user-select: none;
+  transition: color var(--t-theme) var(--ease-out);
+}
+
+/* Celular: más arriba, para que se lea por encima del círculo */
+@media (max-width: 767.98px) {
+  .hero__bigname { top: 26%; }
+}
+
+/* Tenis anterior y siguiente: escala .7, inclinados, opacidad .3.
+   Con mouse se pueden tocar para cambiar a ese par (las flechas hacen lo mismo con teclado). */
+.hero__side { display: none; }
+
+@media (min-width: 1024px) {
+  .hero__side {
+    display: block;
+    position: relative;
+    opacity: 0.3;
+    cursor: pointer;
+    transition: opacity var(--t-base) var(--ease-out-ui);
+  }
+
+  .hero__side--prev { grid-column: 1; rotate: -10deg; scale: 0.7; }
+  .hero__side--next { grid-column: 3; rotate: 10deg; scale: 0.7; }
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .hero__side:hover { opacity: 0.55; }
+}
+
+.hero__main {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  margin-inline: auto;
+  aspect-ratio: 4 / 3;
+}
+
+@media (min-width: 768px) {
+  .hero__main { aspect-ratio: 3 / 2; }
+}
+
+/* Escritorio: la altura del escenario se ajusta al alto de la pantalla
+   para que el botón de WhatsApp se vea sin scroll (también en 1366x768). */
+@media (min-width: 1024px) {
+  .hero__main {
+    --stage-h: clamp(300px, 100svh - 425px, 420px);
+    grid-column: 2;
+    height: var(--stage-h);
+    aspect-ratio: auto;
+  }
+}
+
+/* Capa 2: círculo */
+.hero__disc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background-color: var(--disc);
+  transition: background-color var(--t-theme) var(--ease-out);
+}
+
+/* Capa 3: tenis central. .hero__shoe recibe la entrada (GSAP) y el arrastre */
+.hero__shoe {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* Reposo: flota 16 px en un ciclo de 5 s; perspectiva para la inclinación 3D */
+.hero__float {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  perspective: 1200px;
+  animation: hero-float 5s ease-in-out infinite;
+}
+
+@keyframes hero-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -16px; }
+}
+
+/* Foto o dibujo: se inclina con el puntero (rotateX/Y máx. 15°) */
+.hero__fallback {
+  width: 88%;
+  transform-style: preserve-3d;
+}
+
+@media (min-width: 1024px) {
+  .hero__fallback { width: min(88%, var(--stage-h) * 1.45); }
+}
+
+.hero__img,
+.hero__drawing svg {
+  width: 100%;
+  height: auto;
+}
+
+.hero__img,
+.hero__drawing { rotate: -8deg; }
+
+.hero__model {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  --poster-color: transparent;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Cuando el .glb carga, el modelo aparece sobre la foto y luego la foto se oculta */
+.hero__main[data-model='ready'] .hero__model {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 300ms ease;
+}
+
+.hero__main[data-model='ready'] .hero__fallback {
+  visibility: hidden;
+  transition: visibility 0s linear 300ms;
+}
+
+/* Sombra elíptica en el piso */
+.hero__shadow {
+  position: absolute;
+  bottom: 9%;
+  left: 50%;
+  z-index: 1;
+  width: 62%;
+  height: 7%;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.42), rgb(0 0 0 / 0));
+  animation: hero-shadow 5s ease-in-out infinite;
+  transition: filter 600ms var(--ease-out);
+}
+
+/* Misma duración que el flotado: cuando el tenis sube, la sombra se encoge */
+@keyframes hero-shadow {
+  0%, 100% { scale: 1; opacity: 1; }
+  50% { scale: 0.78; opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__float,
+  .hero__shadow { animation: none; }
+}
+
+/* Extra: entrada al abrir la página. La escena empieza oculta y main.js la anima */
+.intro .hero__disc,
+.intro .hero__bigname,
+.intro .hero__shoe,
+.intro .hero__title { opacity: 0; }
+
+/* La opacidad de la sombra ya la anima el flotado; se oculta con filter */
+.intro .hero__shadow { filter: opacity(0); }
+
+/* Dibujo de relleno mientras no hay foto */
+.shoe-svg path {
+  stroke: #5A5A5E;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.shoe-svg .lace {
+  fill: none;
+  stroke-width: 3;
+}
+
+.shoe-svg .hl { stroke: none; }
+
+/* Zona para deslizar e indicadores */
+.hero__swipe {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.125rem;
+  padding-block: 0.5rem;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Elemento invisible que mueve Draggable; el tenis lo sigue desde JS */
+.hero__drag-proxy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hero__dots {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* Indicadores: todos miden lo mismo; la barra activa crece con scaleX (nunca con width) */
+.hero__dot {
+  display: flex;
+  flex: 1 1 24px;
+  align-items: center;
+  max-width: 40px;
+  height: 44px;
+  padding: 0 3px;
+  border: 0;
+  background: transparent;
+}
+
+.hero__dot::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background-color: var(--muted);
+  transform: scaleX(0.4);
+  transition: transform var(--t-base) var(--ease-out-ui);
+}
+
+/* Mientras cambia el tema, la barrita va al ritmo del fondo */
+[data-theming] .hero__dot::before {
+  transition:
+    transform var(--t-base) var(--ease-out-ui),
+    background-color var(--t-theme) var(--ease-out);
+}
+
+.hero__dot[aria-current='true']::before {
+  background-color: var(--ink);
+  transform: none;
+}
+
+/* Al pasar el mouse, la barra se alarga un poco: anticipa lo que pasará al tocarla */
+@media (hover: hover) and (pointer: fine) {
+  .hero__dot:not([aria-current='true']):hover::before { transform: scaleX(0.6); }
+}
+
+.hero__hint {
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  transition: color var(--t-theme) var(--ease-out);
+}
+
+/* Info debajo del tenis */
+.hero__info {
+  display: grid;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--disc);
+  transition: border-color var(--t-theme) var(--ease-out);
+}
+
+.hero__brand {
+  font-weight: 500;
+  color: var(--muted);
+  transition: color var(--t-theme) var(--ease-out);
+}
+
+.hero__name { margin-top: 0.375rem; }
+
+.hero__price {
+  margin-top: 0.875rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.hero__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.75rem clamp(1.5rem, 3vw, 3rem);
+}
+
+.hero__field {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.hero__legend {
+  margin-bottom: 0.75rem;
+  padding: 0;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  color: var(--muted);
+  transition: color var(--t-theme) var(--ease-out);
+}
+
+.hero__legend strong {
+  font-weight: 500;
+  color: var(--ink);
+  transition: color var(--t-theme) var(--ease-out);
+}
+
+/* Bolitas de color: dos tonos (upper y panel) */
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+}
+
+.swatch {
+  display: block;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.swatch__dot {
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c1) 50%, var(--c2) 50%);
+  box-shadow: 0 0 0 1px var(--muted);
+  transition: scale var(--t-press) var(--ease-out-ui);
+}
+
+[data-theming] .swatch__dot {
+  transition:
+    box-shadow var(--t-theme) var(--ease-out),
+    scale var(--t-press) var(--ease-out-ui);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .swatch:hover .swatch__dot {
+    scale: 1.06;
+    transition: scale var(--t-fast) var(--ease-out-ui);
+  }
+}
+
+.swatch:active .swatch__dot { scale: 0.97; }
+
+/* Anillo del color elegido: aparece en 150 ms; su color sigue al tema.
+   El hueco es transparente, así no desentona mientras cambia el fondo. */
+.swatch__dot::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--ease-out-ui);
+}
+
+[data-theming] .swatch__dot::after {
+  transition:
+    opacity var(--t-fast) var(--ease-out-ui),
+    border-color var(--t-theme) var(--ease-out);
+}
+
+.swatch input:checked + .swatch__dot::after { opacity: 1; }
+
+.swatch input:focus-visible + .swatch__dot {
+  outline: 3px solid var(--ink);
+  outline-offset: 8px;
+}
+
+/* Tallas */
+.sizes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.size { cursor: pointer; }
+
+.size span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 56px;
+  height: 44px;
+  padding: 0 0.75rem;
+  border: 1px solid var(--muted);
+  border-radius: var(--pill);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  /* Elegir una talla responde al instante; solo se anima la escala al presionar */
+  transition: scale var(--t-press) var(--ease-out-ui);
+}
+
+/* Mientras cambia el tema, las tallas van al ritmo del fondo */
+[data-theming] .size span {
+  transition:
+    background-color var(--t-theme) var(--ease-out),
+    border-color var(--t-theme) var(--ease-out),
+    scale var(--t-press) var(--ease-out-ui);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .size:hover span { border-color: var(--ink); }
+}
+
+.size:active span { scale: 0.97; }
+
+.size input:checked + span {
+  border-color: var(--ink);
+  background-color: var(--ink);
+  color: var(--bg);
+}
+
+.size input:focus-visible + span {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.btn--lg {
+  min-height: 56px;
+  padding: 0 2rem;
+  font-size: 1.0625rem;
+}
+
+.hero__cta { width: 100%; }
+
+@media (min-width: 768px) {
+  .hero__cta {
+    width: auto;
+    margin-left: auto;
+  }
+}
+
+/* Nombre compacto (elegido por el dueño): de 3rem en celular a 4rem en escritorio,
+   para que precio, tallas y botón de WhatsApp quepan sin hacer scroll. */
+.hero__name { font-size: clamp(3rem, 2.25rem + 2.4vw, 4rem); }
+
+/* Escritorio: título a la izquierda y controles en una sola fila */
+@media (min-width: 1024px) {
+  .hero__info {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    column-gap: 3rem;
+  }
+
+  .hero__controls { flex-wrap: nowrap; }
+  .sizes { max-width: 312px; }
+}
+
+/* 7. Secciones ------------------------------------------------------------ */
+.section { padding-block: var(--section-y); }
+
+.section--alt { background-color: var(--cemento-claro); }
+
+.section--dark {
+  background-color: var(--carbon);
+  color: var(--blanco);
+}
+
+.section--dark :focus-visible { outline-color: var(--blanco); }
+
+.section__head {
+  max-width: 40rem;
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.section__lead {
+  margin-top: 1rem;
+  font-size: 1.125rem;
+  color: var(--gris);
+  text-wrap: balance;
+}
+
+.section--dark .section__lead { color: var(--cemento); }
+
+/* Foto de un par en tarjetas: misma inclinación que en el hero */
+.shoe-pic {
+  position: relative;
+  width: min(86%, 520px);
+  height: auto;
+  rotate: -8deg;
+}
+
+/* 8. Marcas ----------------------------------------------------------------- */
+.brands { padding-block: clamp(1.25rem, 3vw, 2rem); }
+
+.brands__list {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: clamp(1.25rem, 3vw, 2.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.brands__link {
+  display: inline-block;
+  padding-block: 0.75rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--gris);
+  text-decoration: none;
+}
+
+/* El color cambia al instante; al presionar se atenúa (opacidad, 100 ms) */
+@media (hover: hover) and (pointer: fine) {
+  .brands__link:hover { color: var(--carbon); }
+}
+
+@media (min-width: 1024px) {
+  .brands__list { justify-content: space-between; }
+}
+
+/* 9. Lanzamientos: cada tarjeta usa el tema de su color -------------------- */
+.drops {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .drops { grid-template-columns: 1fr 1fr; }
+  .drop:first-child { grid-column: 1 / -1; }
+}
+
+@media (min-width: 1024px) {
+  .drops { grid-template-columns: 2fr 1fr 1fr; }
+  .drop:first-child { grid-column: auto; }
+}
+
+.drop {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  background-color: var(--bg);
+  color: var(--ink);
+}
+
+.drop :focus-visible { outline-color: var(--ink); }
+
+.drop__media {
+  position: relative;
+  display: grid;
+  flex: 1 1 auto;
+  place-items: center;
+  min-height: 200px;
+  padding-block: 1.5rem;
+}
+
+/* Eco del círculo del hero */
+.drop__media::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 88%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background-color: var(--disc);
+}
+
+.drop__tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--pill);
+  background-color: var(--ink);
+  color: var(--bg);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.4;
+}
+
+.drop__brand {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.drop__name {
+  margin-top: 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.drop__meta {
+  margin-top: 0.5rem;
+  color: var(--muted);
+}
+
+.drop__cta { width: 100%; }
+
+@media (min-width: 768px) {
+  .drop__cta {
+    align-self: flex-start;
+    width: auto;
+  }
+}
+
+/* 10. Más vendidos: mosaico con el tema del primer color de cada par ------- */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.75rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 640px) {
+  .tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.25rem 1.25rem;
+  }
+
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius);
+  color: inherit;
+  text-decoration: none;
+}
+
+.tile__media {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: var(--radius);
+  background-color: var(--bg);
+  transition: scale var(--t-press) var(--ease-out-ui);
+}
+
+/* La foto es horizontal: en pantallas grandes la caja 4:3 evita tanto aire */
+@media (min-width: 640px) {
+  .tile__media { aspect-ratio: 4 / 3; }
+}
+
+.tile__media .shoe-pic {
+  width: 84%;
+  transition:
+    translate var(--t-slow) var(--ease-in-ui),
+    rotate var(--t-slow) var(--ease-in-ui);
+}
+
+/* Al pasar el mouse, el tenis se levanta un poco; al presionar, la caja cede */
+@media (hover: hover) and (pointer: fine) {
+  .tile:hover .shoe-pic {
+    translate: 0 -6px;
+    rotate: -12deg;
+    transition:
+      translate var(--t-slow) var(--ease-out-ui),
+      rotate var(--t-slow) var(--ease-out-ui);
+  }
+}
+
+.tile:active .tile__media { scale: 0.97; }
+
+.tile__brand {
+  margin-top: 0.875rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  color: var(--gris);
+}
+
+.tile__name {
+  margin-top: 0.125rem;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+}
+
+.tile__price {
+  margin-top: 0.375rem;
+  font-weight: 600;
+  color: var(--rojo);
+}
+
+/* 11. Garantía de originalidad: banda carbón con puntitos tipo cemento ----- */
+.guarantee {
+  background-image:
+    radial-gradient(#34343A 1px, transparent 1.6px),
+    radial-gradient(#2A2A2E 1.6px, transparent 2.2px);
+  background-position: 0 0, 5px 8px;
+  background-size: 11px 11px, 17px 17px;
+}
+
+.points {
+  display: grid;
+  gap: 2.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .points {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem;
+  }
+}
+
+.point__icon {
+  width: 32px;
+  height: 32px;
+  color: var(--blanco);
+}
+
+.point h3 { margin-top: 1rem; }
+
+.point p {
+  margin-top: 0.375rem;
+  color: var(--cemento);
+}
+
+/* 12. Cómo comprar: los únicos números 1-2-3 de la página ------------------ */
+.steps {
+  display: grid;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.step__num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 4rem;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--rojo);
+}
+
+.step h3 { margin-top: 1rem; }
+
+.step p {
+  margin-top: 0.375rem;
+  color: var(--gris);
+}
+
+/* 13. Reseñas ---------------------------------------------------------------- */
+.reviews {
+  display: grid;
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .reviews { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.75rem;
+  border-radius: var(--radius);
+  background-color: var(--blanco);
+}
+
+.review__mark {
+  display: block;
+  height: 2.25rem;
+  font-family: var(--font-display);
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--rojo);
+}
+
+.review__text {
+  flex: 1;
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.review__who {
+  margin-top: 1.25rem;
+  font-size: 0.9375rem;
+  color: var(--gris);
+}
+
+/* 14. Preguntas frecuentes: <details> nativo -------------------------------- */
+.faq {
+  max-width: 50rem;
+  border-bottom: 1px solid var(--cemento-claro);
+}
+
+.faq__item { border-top: 1px solid var(--cemento-claro); }
+
+.faq__q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-block: 1.375rem;
+  font-size: 1.1875rem;
+  font-weight: 600;
+  line-height: 1.35;
+  list-style: none;
+  cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .faq__q:hover { color: var(--rojo); }
+}
+
+.faq__q::-webkit-details-marker { display: none; }
+
+.faq__icon {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: var(--rojo);
+  transition: rotate var(--t-base) var(--ease-out-ui);
+}
+
+/* El + gira y se vuelve × al abrir */
+.faq__item[open] .faq__icon { rotate: 45deg; }
+
+.faq__a {
+  max-width: 62ch;
+  padding-bottom: 1.5rem;
+  color: var(--gris);
+}
+
+/* La respuesta aparece con fade y un leve deslizamiento (solo opacity y transform) */
+.faq__item[open] .faq__a { animation: faq-in var(--t-base) var(--ease-out-ui); }
+
+@keyframes faq-in {
+  from {
+    opacity: 0;
+    translate: 0 -6px;
+  }
+}
+
+/* 15. Avísame del próximo drop ---------------------------------------------- */
+.notify {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .notify {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 28rem);
+    align-items: end;
+    gap: 4rem;
+  }
+}
+
+.notify__copy .section__lead { max-width: 34rem; }
+
+.notify__label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.notify__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.notify__input {
+  flex: 1 1 220px;
+  min-width: 0;
+  height: 56px;
+  padding: 0 1.25rem;
+  border: 1px solid var(--cemento);
+  border-radius: var(--pill);
+  background: transparent;
+  color: var(--blanco);
+  font-size: 1rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .notify__input:hover { border-color: var(--blanco); }
+}
+
+.notify__input::placeholder {
+  color: var(--cemento);
+  opacity: 1;
+}
+
+.notify__input:focus-visible {
+  outline: 3px solid var(--blanco);
+  outline-offset: 3px;
+}
+
+.notify__input[aria-invalid='true'] { border-color: var(--blanco); }
+
+.btn--red {
+  flex: 1 0 auto;
+  background-color: var(--rojo);
+  color: var(--blanco);
+}
+
+.notify__msg {
+  min-height: 1.6em;
+  margin-top: 0.75rem;
+  font-size: 0.9375rem;
+  color: var(--blanco);
+}
+
+/* 16. Footer --------------------------------------------------------------- */
+.site-footer {
+  padding-block: 3.5rem 2.5rem;
+  border-top: 1px solid rgb(154 155 159 / 0.2);
+  background-color: var(--carbon);
+  color: var(--cemento);
+}
+
+.site-footer :focus-visible { outline-color: var(--blanco); }
+
+.site-footer__top {
+  display: grid;
+  gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .site-footer__top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 3rem;
+  }
+}
+
+.site-footer__logo {
+  font-size: 1.625rem;
+  color: var(--blanco);
+}
+
+.site-footer__slogan { margin-top: 0.5rem; }
+
+.site-footer__cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 3.5rem;
+}
+
+.site-footer__title {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.6;
+  color: var(--blanco);
+}
+
+.site-footer__list {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer a { text-decoration: none; }
+
+@media (hover: hover) and (pointer: fine) {
+  .site-footer a:hover { color: var(--blanco); }
+}
+
+/* Espacio extra abajo para que el botón flotante no tape la última línea */
+.site-footer__bottom {
+  margin-top: 2.5rem;
+  padding-bottom: 4.5rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+}
+
+@media (min-width: 768px) {
+  .site-footer__bottom { padding-bottom: 0; }
+}
+
+/* Botón flotante verde de WhatsApp */
+.wa-float {
+  position: fixed;
+  /* Suma el borde seguro del iPhone para no quedar bajo la barra de inicio */
+  right: calc(1rem + env(safe-area-inset-right, 0px));
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding: 0 1.25rem 0 1rem;
+  border-radius: var(--pill);
+  background-color: #25D366;
+  color: var(--carbon);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
+  /* Entra con ease-out (200 ms) */
+  transition:
+    transform var(--t-press) var(--ease-out-ui),
+    opacity var(--t-base) var(--ease-out-ui),
+    translate var(--t-base) var(--ease-out-ui),
+    visibility 0s;
+}
+
+/* Se aparta mientras se ve el botón principal del hero (no lo tapa ni lo duplica).
+   Sale por el mismo camino por el que entra, con ease-in (150 ms) */
+.wa-float.is-hidden {
+  opacity: 0;
+  translate: 0 12px;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    transform var(--t-press) var(--ease-out-ui),
+    opacity var(--t-fast) var(--ease-in-ui),
+    translate var(--t-fast) var(--ease-in-ui),
+    visibility 0s linear var(--t-fast);
+}
+
+.wa-float svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Anillo doble: se ve sobre fondos claros y oscuros */
+.wa-float:focus-visible {
+  outline: 3px solid var(--carbon);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--blanco), 0 6px 20px rgb(0 0 0 / 0.18);
+}
+
+@media (min-width: 768px) {
+  .wa-float {
+    right: calc(1.5rem + env(safe-area-inset-right, 0px));
+    bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Movimiento reducido: sin animaciones ni transiciones */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "skills": {
+    "21st-cli-use": {
+      "source": "21st-dev/skill",
+      "sourceType": "github",
+      "skillPath": "skills/21st-cli-use/SKILL.md",
+      "computedHash": "7ef87a695824a4719a8f1f211b72bbe03952a1fa4d40e0fd4c472d4eb1cbee0a",
+      "installMode": "copy"
+    },
+    "21st-ui-build": {
+      "source": "21st-dev/skill",
+      "sourceType": "github",
+      "skillPath": "skills/21st-ui-build/SKILL.md",
+      "computedHash": "1779535d72552feb5b0747e54f590ac3a849827de19399aff649ab5a7e90ae07",
+      "installMode": "copy"
+    },
+    "21st-ui-review": {
+      "source": "21st-dev/skill",
+      "sourceType": "github",
+      "skillPath": "skills/21st-ui-review/SKILL.md",
+      "computedHash": "5ef243e99a7c2a97eba56434e6a66cc93b4fe5687b6ef215238b13e6bb9c0f2b",
+      "installMode": "copy"
+    },
+    "apple-design": {
+      "source": "emilkowalski/skill",
+      "sourceType": "github",
+      "skillPath": "skills/apple-design/SKILL.md",
+      "computedHash": "0190417d092a0df447b000154e39733ea6d97efad6d3bec8a6ce3845aeb88914",
+      "installMode": "copy"
+    },
+    "emil-design-eng": {
+      "source": "emilkowalski/skill",
+      "sourceType": "github",
+      "skillPath": "skills/emil-design-eng/SKILL.md",
+      "computedHash": "51f2537e04d15911b41d78e2de24c36a0e26d41beae15e82a954fe5496a5eda9"
+    },
+    "gsap-core": {
+      "source": "greensock/gsap-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-core/SKILL.md",
+      "computedHash": "c4a01101d9e1aafbf4b49f75d74f9349790d8741981ba0237c990093863035a6"
+    },
+    "gsap-performance": {
+      "source": "greensock/gsap-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-performance/SKILL.md",
+      "computedHash": "863842ac2d7aee53fd4f0025c960173d7ad3e658a5715b89b2211fa280213c1f"
+    },
+    "gsap-plugins": {
+      "source": "greensock/gsap-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-plugins/SKILL.md",
+      "computedHash": "791bda0e6e460511fe82a78e745db519b88ffaeeab4d04a74879a03ca4f41740"
+    },
+    "gsap-timeline": {
+      "source": "greensock/gsap-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-timeline/SKILL.md",
+      "computedHash": "54981c2feec5a9c0d57988aeb32315af32bdeadd261550d5e9db7a7b1f08b487"
+    },
+    "gsap-utils": {
+      "source": "greensock/gsap-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gsap-utils/SKILL.md",
+      "computedHash": "1ab2387f6e694718a4f1b5acf2a4ab16e1b884c3428adf5f6b26d830f00826cf"
+    },
+    "lenis-smooth-scroll": {
+      "source": "ume0207/claude-code-skills",
+      "sourceType": "github",
+      "skillPath": "skills/lenis-smooth-scroll/SKILL.md",
+      "computedHash": "f11d82f194a41d0c35dd713bf0b598afcbc346b9b06c14b8923894b36893bd97",
+      "installMode": "copy"
+    }
+  }
+}
