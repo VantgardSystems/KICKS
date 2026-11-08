@@ -4,11 +4,13 @@ Página de una sola pantalla para [ecowatt.mx](https://ecowatt.mx). Está diseñ
 
 ```
 index.html               La página completa (HTML estático, sin build)
+aviso-de-privacidad.html Aviso de privacidad integral (borrador para revisión legal)
 assets/css/ecowatt.css   Estilos: paleta del logo, móvil primero
 assets/js/ecowatt.js     CONFIG de la calculadora + interacciones (sin librerías)
 assets/img/              Logo, logo inverso, favicon e ícono para iOS
 docs/plan-de-diseno.md   Paleta, tipografía, wireframes, principios y revisión del plan
-docs/imagenes-hero-kling.md  Prompts de Kling y pasos para las imágenes del hero
+docs/imagenes-ia.md      Imágenes generadas con IA: modelos, prompts y cómo regenerarlas
+herramientas/preparar-hero.py  Recorta la casa y prepara las 3 capas del hero a partir de una foto
 ```
 
 Para verla en tu compu: `python3 -m http.server` y abre `http://localhost:8000`.
@@ -18,7 +20,7 @@ Para verla en tu compu: `python3 -m http.server` y abre `http://localhost:8000`.
 1. **Conecta el formulario.** En `assets/js/ecowatt.js`, pon en `CONFIG.formulario.endpoint` la URL que va a recibir los datos (Formspree, Netlify Forms, un webhook o un PHP propio; llegan por POST multipart, con la foto del recibo). Mientras esté vacío, el formulario funciona en **modo demostración**: muestra el mensaje de éxito, pero no manda los datos a ningún lado.
 2. **Ajusta la calculadora.** Revisa cada valor marcado con `[Ajustar]` en `CONFIG` y luego cambia `datosDeEjemplo` a `false` para quitar la etiqueta "Valores de ejemplo".
 3. **Reemplaza los placeholders** de la lista de abajo y borra cada etiqueta `<span class="ej">Ejemplo</span>` que acompaña al dato que ya confirmaste.
-4. **Cambia las fotos.** Cada `<div class="foto" role="img" aria-label="…">` describe la foto que va ahí. Sustitúyelo por `<img class="foto" src="assets/img/….webp" alt="(misma descripción)" width="1200" height="900" loading="lazy" decoding="async">`. Usa WebP de unos 1200 px de ancho.
+4. **Pon las fotos reales.** En los proyectos, cambia la ilustración de `.proyecto-ilus` por la foto del proyecto. En "Quiénes somos", cambia cada `.marco` por la foto del equipo, la camioneta o la bodega. Usa WebP de unos 1200 px de ancho, con `loading="lazy"` y un texto alternativo que describa la foto.
 
 ## Páginas por ciudad
 
@@ -26,11 +28,11 @@ La página ya está lista para duplicarse por ciudad, por ejemplo `/paneles-sola
 
 ## Lista de placeholders que hay que reemplazar
 
-### Hero de día y noche (imágenes temporales)
-| Dónde | Placeholder |
+### Imágenes generadas con IA
+| Dónde | Nota |
 |---|---|
-| Hero | Las 6 imágenes son **temporales**: vienen de la referencia "Lumen Roof", una casa de campo genérica. Cámbialas por las de Ecowatt generadas con Kling. Los prompts y los pasos están en `docs/imagenes-hero-kling.md` |
-| `CONFIG.hero` | Al cambiar las fotos, ajusta `porche` (luz ámbar de noche), `techo` e `imagen` |
+| Hero, "Para tu casa", "Para tu negocio" y "Para tu industria" | Son imágenes generadas con IA (Higgsfield) y llevan la etiqueta "Imagen ilustrativa". Si Ecowatt tiene fotos propias de buena calidad, conviene usarlas. Detalles en `docs/imagenes-ia.md` |
+| Proyectos y "Quiénes somos" | Usan ilustraciones y marcos de color con la leyenda "Foto real pendiente". Ahí van fotos reales de Ecowatt, nunca de IA |
 
 ### Confianza y reputación
 | Dónde | Placeholder |
@@ -88,14 +90,30 @@ La página ya está lista para duplicarse por ciudad, por ejemplo `/paneles-sola
 | ¿Qué mantenimiento necesita? | Limpieza `[cada X meses]` |
 | ¿Qué pasa si me cambio de casa? | `[Confirmar si Ecowatt desmonta y reinstala, y en qué condiciones.]` |
 
-### Pie de página y legal
+### Pie de página
 | Dónde | Placeholder |
 |---|---|
 | Pie | `[Días y horario de atención]` (agrégalo también como `openingHoursSpecification` en el JSON-LD) |
-| Aviso de privacidad | `[Texto completo del aviso de privacidad…]` y `[Confirmar con el aviso real.]` |
 
-### Fotos reales (12 espacios)
-Hero (cuadrilla instalando en una azotea de León), Para tu casa, Para tu negocio, Para tu industria, Sistemas aislados, los 8 proyectos, el equipo frente a la bodega, la camioneta y el interior de la bodega. Cada espacio trae la descripción de la foto que va ahí.
+### Aviso de privacidad (`aviso-de-privacidad.html` y la ventana del formulario)
+Está redactado como **borrador conforme a la LFPDPPP** y lo debe revisar un abogado antes de publicarse. Cuando esté listo, borra el aviso amarillo de "Borrador" y las etiquetas "Ejemplo".
+
+| Dónde | Placeholder |
+|---|---|
+| Responsable (página y ventana) | `[Razón social de la empresa]` |
+| Responsable | `[Nombre o área]` a cargo de los datos personales |
+| Encabezado | Fecha de "Última actualización" |
+| Datos que recabamos | Qué datos de facturación y pago piden, y qué datos pide CFE para el trámite |
+| Con quién los compartimos | Confirmar CFE y fabricantes, y la lista real de proveedores (mensajería, correo, alojamiento, formulario, monitoreo, contabilidad) |
+| Derechos ARCO | Plazo de respuesta `[20 días hábiles]` |
+| Conservación | Plazo para borrar cotizaciones no contratadas `[12 meses]` |
+| Cookies | Actualizar si se agrega Google Analytics, Tag Manager o el píxel de Meta |
+| Autoridad | Confirmar la autoridad vigente en protección de datos |
+
+El formulario incluye una casilla **opcional** para promociones, separada de la casilla obligatoria del aviso, como pide la ley para las finalidades que no son necesarias. Llega en el campo `novedades`.
+
+### Fotos reales (11 espacios)
+Las 8 tarjetas de proyectos, más el equipo frente a la bodega, la camioneta y el interior de la bodega. Cada espacio trae la descripción de la foto que va ahí.
 
 ### Calculadora (`CONFIG` en `assets/js/ecowatt.js`)
 | Valor | Qué es | Valor de referencia |

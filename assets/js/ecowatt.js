@@ -63,9 +63,9 @@ const CONFIG = {
     hundir: 240,          // ms que tarda la casa en hundirse en la niebla
     subir: 820,           // ms que tarda en volver a subir con la nueva luz
     profundidad: 0.27,    // cuánto se hunde, como fracción de la altura de la pantalla
-    imagen: { ancho: 2560, alto: 1440 }, // tamaño de las fotos del hero
-    porche: { x: 0.66, y: 0.78 },        // dónde está la luz del porche en la foto de noche (0 a 1); tiñe la niebla de ámbar
-    techo: 0.29,          // dónde empieza el techo en la foto (0 = arriba); en escritorio la casa se acomoda debajo de los botones
+    imagen: { ancho: 2400, alto: 1350 }, // tamaño de las fotos del hero
+    porche: { x: 0.825, y: 0.68 },       // dónde está la luz del porche en la foto de noche (0 a 1); tiñe la niebla de ámbar
+    techo: 0.30,          // dónde empieza el techo en la foto (0 = arriba); en escritorio la casa se acomoda debajo de los botones
   },
 
   formulario: {
@@ -220,7 +220,7 @@ const CONFIG = {
 void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-1.,0.,1.);}`;
       const fs = `#version 300 es
 precision highp float;
-uniform vec2 R;uniform float T,S,K;uniform vec2 G;
+uniform vec2 R;uniform float T,S,K,F;uniform vec2 G;
 out vec4 o;
 float h(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
 float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
@@ -235,7 +235,7 @@ void main(){
   vec2 w=vec2(fbm(p+vec2(t,0.)),fbm(p+vec2(-t*.7,t*.3)+3.7));
   float d=fbm(p+w*1.5+vec2(t*1.4,0.));
   float e=fbm(p*.55+w*.9+vec2(-t*.5,t*.2));
-  float low=smoothstep(.70,1.04,y+(d-.5)*.34);
+  float low=smoothstep(F,F+.34,y+(d-.5)*.34);
   float side=((1.-smoothstep(0.,.24,q.x))+smoothstep(.76,1.,q.x))*smoothstep(.2,.95,y+(e-.5)*.5)*.2;
   float wisps=smoothstep(.56,.86,e)*smoothstep(.12,.42,y)*(1.-smoothstep(.62,.9,y))*.18;
   float rest=clamp(low+side+wisps,0.,1.);
@@ -263,7 +263,7 @@ void main(){
         if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
         gl.useProgram(prog);
         gl.bindVertexArray(gl.createVertexArray());
-        U = Object.fromEntries(['R', 'T', 'S', 'K', 'G'].map((nombre) => [nombre, gl.getUniformLocation(prog, nombre)]));
+        U = Object.fromEntries(['R', 'T', 'S', 'K', 'G', 'F'].map((nombre) => [nombre, gl.getUniformLocation(prog, nombre)]));
       } catch (err) {
         console.warn('[Ecowatt] La niebla no está disponible en este navegador.', err);
         lienzo.hidden = true;
@@ -272,35 +272,47 @@ void main(){
       lienzo.hidden = true;
     }
 
-    // Geometría de la foto con object-fit: cover dentro del hero.
+    // Geometría de la foto con object-fit: cover dentro de la capa de la casa.
+    // En escritorio la capa mide lo mismo que el hero; en celular es una banda abajo.
+    const caja = $('.hero-casa');
     const geometria = () => {
       const img = $('.recorte', sets[1]);
-      const W = hero.clientWidth;
-      const Hh = hero.clientHeight;
+      const W = caja.clientWidth;
+      const Hc = caja.clientHeight;
       const iw = img.naturalWidth || H.imagen.ancho;
       const ih = img.naturalHeight || H.imagen.alto;
-      const esc = Math.max(W / iw, Hh / ih);
+      const esc = Math.max(W / iw, Hc / ih);
       const [px, py] = getComputedStyle(img).objectPosition.split(' ').map((v) => parseFloat(v) / 100);
-      return { W, Hh, iw, ih, esc, ox: (W - iw * esc) * px, oy: (Hh - ih * esc) * py };
+      return {
+        iw, ih, esc,
+        ox: (W - iw * esc) * px,
+        oy: (Hc - ih * esc) * py,
+        izq: caja.offsetLeft,
+        arriba: caja.offsetTop,
+        anchoHero: hero.clientWidth,
+        altoHero: hero.clientHeight,
+      };
     };
 
     // En escritorio, baja la casa lo justo para que el techo quede debajo de los botones.
     const escritorio = window.matchMedia('(min-width: 821px)');
     const calcularBase = () => {
       if (!escritorio.matches) { hero.style.removeProperty('--base'); return; }
+      hero.style.setProperty('--base', '0px');
       const g = geometria();
       const techo = g.oy + H.techo * g.ih * g.esc;
       const botonesAbajo = $('.hero-acciones', hero).getBoundingClientRect().bottom - hero.getBoundingClientRect().top;
-      const base = limitar(botonesAbajo + 16 - techo, 0, g.Hh * 0.24);
+      const base = limitar(botonesAbajo + 16 - techo, 0, g.altoHero * 0.24);
       hero.style.setProperty('--base', `${Math.round(base)}px`);
     };
 
-    // Lleva la posición del porche (en la foto) a coordenadas de pantalla.
+    // Lleva la posición del porche (en la foto) a coordenadas de la niebla.
     const calcularPorche = () => {
       const g = geometria();
-      const base = $('.hero-casa').getBoundingClientRect().top - hero.getBoundingClientRect().top
-        - (parseFloat(raiz.getPropertyValue('--sink')) || 0);
-      porche = [(g.ox + H.porche.x * g.iw * g.esc) / g.W, (g.oy + H.porche.y * g.ih * g.esc + base) / g.Hh];
+      porche = [
+        (g.izq + g.ox + H.porche.x * g.iw * g.esc) / g.anchoHero,
+        (g.arriba + g.oy + H.porche.y * g.ih * g.esc) / g.altoHero,
+      ];
     };
 
     const medir = () => {
@@ -322,6 +334,8 @@ void main(){
       gl.uniform1f(U.S, oleada);
       gl.uniform1f(U.K, k);
       gl.uniform2f(U.G, porche[0], porche[1]);
+      // En celular la casa está abajo: la niebla de reposo empieza más abajo para no taparla.
+      gl.uniform1f(U.F, escritorio.matches ? 0.70 : 0.9);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
@@ -880,6 +894,23 @@ void main(){
       }
     });
   });
+
+  /* ------------------------------------------------------------------------
+     7b. Aparición suave de las secciones al hacer scroll (300 ms)
+     ------------------------------------------------------------------------ */
+  const revelables = $$('[data-revelar], .grafica');
+  if ('IntersectionObserver' in window && !movimientoReducido.matches && revelables.length) {
+    document.documentElement.classList.add('revelar-activo');
+    const vigia = new IntersectionObserver((entradas) => {
+      entradas.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('revelado');
+          vigia.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    revelables.forEach((el) => vigia.observe(el));
+  }
 
   /* ------------------------------------------------------------------------
      8. Año actual en el pie

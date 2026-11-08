@@ -118,3 +118,28 @@ A pedido del cliente, el hero pasó a ser una escena a pantalla completa. Una ca
 - **Identidad:** se conservan Archivo, la paleta y el logo, que cambia al logo inverso de noche.
 - **Dos momentos llamativos:** ahora hay dos, el hero y el recibo de la calculadora. El resto de la página sigue tranquilo.
 - **Cabecera:** es transparente sobre el hero y blanca al bajar.
+
+## Versión 2: rediseño a pedido del cliente
+
+El cliente pidió una interfaz distinta, con más color y animación, y que la página se viera mejor en celular.
+
+- **Paleta azul, verde y amarillo:** azul marino `#0B1D5C`, azul `#1F4FD8`, verde `#22C55E` / `#16A34A` y amarillo `#FFC727`, cada uno con sus tonos claros para fondos.
+- **Tipografía:** Sora para los títulos (geométrica, con presencia) y Figtree para el texto (clara y amable).
+- **Cinco estilos de botón:**
+  - WhatsApp: verde, con el ícono en un círculo blanco y un brillo al pasar.
+  - Sol: amarillo, para la calculadora y las acciones destacadas.
+  - Contorno: secundario.
+  - Vidrio: sobre el hero.
+  - Enlace con flecha.
+- **Un fondo distinto por sección:**
+  - Amarillo: DAC.
+  - Azul claro: pasos y nosotros.
+  - Azul marino: calculadora y proyectos.
+  - Verde claro: opiniones.
+  - Amarillo claro: pagos.
+  - Degradado azul y verde: formulario.
+- **Íconos propios** en trazo de 2 px, tarjetas con sombras suaves y una franja de confianza que flota sobre el hero.
+- **Animación:** aparición suave al hacer scroll (300 ms, solo `transform` y `opacity`) y barras que crecen en la gráfica de la DAC. Todo respeta "reducir movimiento".
+- **Hero en celular:** la casa va en una banda abajo y el interruptor queda encima de ella, así la animación se ve completa. La niebla de reposo es más baja en celular.
+- **Sin JavaScript** (por ejemplo, si un visor lo bloquea), el día y la noche se alternan solos, con los textos ajustados.
+- **Imágenes:** generadas con IA (ver `docs/imagenes-ia.md`).
