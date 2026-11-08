@@ -1,0 +1,109 @@
+# Ecowatt: plan de diseño
+
+## Paleta (sale del logo de Ecowatt)
+
+| Nombre | Hex | Uso |
+|---|---|---|
+| Azul Ecowatt | `#29319E` | El "watt" del logo. Títulos, enlaces, contornos y foco de teclado. |
+| Azul celda | `#1B2170` | El azul profundo de un panel. Solo en la banda de la calculadora y en las siluetas de azoteas. |
+| Tinta | `#12173F` | Texto principal y pie de página. Sustituye al negro. |
+| Verde eco | `#30B800` | El "eco" del logo. Reservado para acciones: botones de WhatsApp y el sello de ahorro. Siempre con texto en Tinta (6.5:1). |
+| Naranja flama | `#FC7014` | La flama del logo: el sol y la energía. Solo en detalles (la barra de consumo del recibo, el deslizador, la línea que tacha el recibo de antes). Nunca como color de texto sobre blanco. |
+| Cielo de mediodía | `#EEF2FA` | Fondo de las secciones alternas. Un blanco azulado, como el cielo del Bajío a las 12, no crema. |
+
+Tonos de apoyo para cumplir AA: `#4A5078` (texto secundario, 7.7:1), `#1F7A00` (verde del sello sobre papel, 5.5:1), `#B3261E` (errores).
+
+## Tipografía
+
+Una sola familia, **Archivo**, usada en dos anchos a propósito:
+
+- **Archivo expandido (wdth 106 a 125), pesos 700 a 800.** Para titulares y cifras. Las letras anchas recuerdan las placas metálicas de los inversores y los rótulos de bodega. En los números del recibo usa cifras tabulares, para que los dígitos no bailen mientras bajan.
+- **Archivo normal (wdth 100), pesos 400 y 700.** Para el texto, los botones y los formularios. Es una grotesca sobria con números claros, sin ceros tachados, para montos y teléfonos.
+- Escala de tercera mayor (1.25): 17 px para el texto, 22, 28, 35 y 44 px en adelante para los títulos. La línea de texto mide 65 caracteres como máximo.
+- Usar una sola familia también ahorra una descarga de fuentes y acelera la carga en celular.
+
+> Revisión: la primera versión usaba Atkinson Hyperlegible para el texto. En pantalla, su cero tachado hacía que "$3,500" y "(477) 299 2060" se vieran como código. La cambiamos por Archivo en ancho normal.
+
+## Wireframes
+
+### Hero (móvil primero)
+
+```
+┌──────────────────────────────────┐
+│ [logo ecowatt]              [☰]  │ menú fijo
+├──────────────────────────────────┤
+│ Paga el mínimo de luz            │ H1, Archivo ancho
+│ con paneles solares              │
+│ en León                          │
+│                                  │
+│ Diseñamos, instalamos y          │ subtítulo
+│ monitoreamos sistemas solares    │
+│ para casas y negocios en León    │
+│ y el Bajío.                      │
+│                                  │
+│ [ (wa) Cotiza gratis por WhatsApp ] verde, ancho completo
+│ [      Calcula tu ahorro         ]  contorno azul
+│ ──────────────────────────────── │
+│ [4.9] de 5       │ [000]         │ franja de confianza 2×2
+│ en Google        │ instalados    │
+│ Más de 40        │ 24/7          │
+│ años en electr.  │ monitoreo     │
+│                                  │
+│ ▂▂▆▆▂▂▄▄▂▂▆▆ ◢◢◢ ▂▂▄▄▂▂ (azoteas)│ silueta de techos de León,
+└──────────────────────────────────┘ tinacos y paneles a 21°
+
+Escritorio: texto a la izquierda (7/12), foto real a la derecha (5/12).
+La franja de confianza pasa a una fila de 4 y la silueta abarca todo el ancho.
+```
+
+### Calculadora
+
+```
+┌──────────────────────────────────┐ fondo azul celda
+│ Calcula cuánto bajaría tu recibo │
+│                                  │
+│ ¿Para dónde son los paneles?     │
+│ [   Casa   ][  Negocio  ]        │
+│ ¿Cuánto pagas de luz al bimestre?│
+│ [ $  3,500                    ]  │
+│ ●━━━━━━○──────────────────────   │ deslizador (perilla naranja)
+│ ¿En qué ciudad?                  │
+│ [ León                       ▾]  │
+│                                  │
+│  ┌ Tu recibo de luz   Bimestral ┐│ papel blanco,
+│  │ Casa en León                 ││ sombra corta de mediodía
+│  │ Sin paneles        $3,500    ││ queda tachado
+│  │ Total a pagar con paneles    ││
+│  │ $150                         ││ cifra que baja de antes a después
+│  │ ▓▓░░░░░░░░░░░░░░░░░░░░░░░░   ││ la barra se encoge
+│  │ [Ahorras $3,350 al bimestre] ││ sello verde
+│  │ ||| || |||| | ||| ||  |||    ││
+│  └╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱╲╱┘│ borde dentado de ticket
+│ Paneles: 8  │ Ahorro al bimestre │ cifras en tabla 2×2
+│ Al año      │ Recuperas en 4 a 5 │
+│ Es un estimado. Tu cotización    │
+│ exacta la hacemos con tu recibo. │
+│ [ (wa) Cotiza este cálculo por WhatsApp ]
+└──────────────────────────────────┘
+
+Escritorio: los controles a la izquierda (5/12) y el recibo con las cifras a la derecha (6/12).
+```
+
+## Tres principios
+
+1. **El recibo es el protagonista.** Toda la página habla como el recibo de CFE: bimestre, total a pagar, pesos. El único momento animado es el recibo que baja de lo que pagas hoy a lo que pagarías. Todo lo demás se queda quieto.
+2. **Luz de mediodía.** Contraste alto, fondos limpios, sin degradados, brillos ni vidrio. La única sombra con carácter es la del recibo: corta y nítida, como la que deja el sol del Bajío a las 12. Cada color del logo tiene un solo trabajo: azul para estructura, verde para actuar y naranja para la energía.
+3. **Techos de León, no fotos de catálogo.** El hero termina en una silueta de azoteas con tinacos, tanques de gas y paneles inclinados a 21°, la latitud de León. Cada foto pendiente describe una escena real de Ecowatt. Los datos que faltan se ven como placeholders marcados, no como promesas inventadas.
+
+## Revisión del plan: qué se cambió porque sonaba a "cualquier empresa solar"
+
+| Primera idea | Por qué era genérica | Cambio |
+|---|---|---|
+| Hero con foto de paneles y cielo azul a todo lo ancho, con un degradado encima | Es el hero de casi todas las solares de México | Titular sobre el recibo, fondo blanco y silueta de azoteas mexicanas (tinacos y tanques de gas) que da paso a la calculadora |
+| Paleta de "energía verde": verde hoja, amarillo sol y azul cielo en degradado | Es el código de color de toda la industria | Solo los tres colores del logo, cada uno con un rol estricto. El naranja nunca decora |
+| Ícono de sol o rayos de luz junto al titular | Cliché solar | Eliminado. El sol solo aparece como la perilla naranja del deslizador |
+| Montserrat o Poppins | Son las fuentes de la mayoría de las solares mexicanas | Una sola familia, Archivo, en dos anchos: expandida con carácter de placa técnica para títulos y normal para leer |
+| Resultados de la calculadora en 4 tarjetas con íconos | Es el kit de tarjetas de SaaS | Los resultados se muestran en un recibo que la gente reconoce, más una tabla sobria de 2×2 |
+| Contadores animados del tipo "+500 clientes" en el hero | Los números serían inventados y la animación es de plantilla | Franja de confianza estática con placeholders marcados |
+| Hojitas, planeta y "energía limpia para el futuro" | Frases vacías | Copy centrado en el bolsillo: recibo, DAC, ahorro y recuperación |
+| Botón flotante de WhatsApp y burbuja de chat también en móvil | Se enciman con la barra inferior | En móvil, la barra inferior asume WhatsApp y la burbuja del chat se coloca encima de ella |
