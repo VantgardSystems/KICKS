@@ -8,6 +8,7 @@ assets/css/ecowatt.css   Estilos: paleta del logo, móvil primero
 assets/js/ecowatt.js     CONFIG de la calculadora + interacciones (sin librerías)
 assets/img/              Logo, logo inverso, favicon e ícono para iOS
 docs/plan-de-diseno.md   Paleta, tipografía, wireframes, principios y revisión del plan
+docs/imagenes-hero-kling.md  Prompts de Kling y pasos para las imágenes del hero
 ```
 
 Para verla en tu compu: `python3 -m http.server` y abre `http://localhost:8000`.
@@ -24,6 +25,12 @@ Para verla en tu compu: `python3 -m http.server` y abre `http://localhost:8000`.
 La página ya está lista para duplicarse por ciudad, por ejemplo `/paneles-solares/queretaro/`. Las instrucciones están en un comentario dentro del `<head>` de `index.html`. En resumen: copia el archivo, cambia `data-ciudad="leon"` por el slug de la ciudad (lo encuentras en `CONFIG.ciudades`) y ajusta el título, la descripción, el canonical y el H1. La calculadora, el formulario y todos los mensajes de WhatsApp toman la ciudad de ese atributo.
 
 ## Lista de placeholders que hay que reemplazar
+
+### Hero de día y noche (imágenes temporales)
+| Dónde | Placeholder |
+|---|---|
+| Hero | Las 6 imágenes son **temporales**: vienen de la referencia "Lumen Roof", una casa de campo genérica. Cámbialas por las de Ecowatt generadas con Kling. Los prompts y los pasos están en `docs/imagenes-hero-kling.md` |
+| `CONFIG.hero` | Al cambiar las fotos, ajusta `porche` (luz ámbar de noche), `techo` e `imagen` |
 
 ### Confianza y reputación
 | Dónde | Placeholder |

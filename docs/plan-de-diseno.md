@@ -107,3 +107,14 @@ Escritorio: los controles a la izquierda (5/12) y el recibo con las cifras a la 
 | Contadores animados del tipo "+500 clientes" en el hero | Los números serían inventados y la animación es de plantilla | Franja de confianza estática con placeholders marcados |
 | Hojitas, planeta y "energía limpia para el futuro" | Frases vacías | Copy centrado en el bolsillo: recibo, DAC, ahorro y recuperación |
 | Botón flotante de WhatsApp y burbuja de chat también en móvil | Se enciman con la barra inferior | En móvil, la barra inferior asume WhatsApp y la burbuja del chat se coloca encima de ella |
+
+## Cambio posterior: hero de día y noche
+
+A pedido del cliente, el hero pasó a ser una escena a pantalla completa. Una casa con paneles se hunde en una niebla generada con WebGL; mientras está escondida cambia de día a noche y vuelve a subir con la otra luz. La técnica se tomó de la referencia "Lumen Roof", adaptada a Ecowatt:
+
+- **Mensaje:** el interruptor explica la medición neta. "De día: tus paneles producen" y "De noche: usas lo que produjiste". El efecto no es solo decoración: cuenta cómo funciona el medidor bidireccional.
+- **Inicio:** la página arranca de día, por la luz del Bajío al mediodía. La referencia arrancaba de noche.
+- **Titular de un solo color:** la referencia pinta parte del titular en otro tono, y el brief de Ecowatt lo prohíbe.
+- **Identidad:** se conservan Archivo, la paleta y el logo, que cambia al logo inverso de noche.
+- **Dos momentos llamativos:** ahora hay dos, el hero y el recibo de la calculadora. El resto de la página sigue tranquilo.
+- **Cabecera:** es transparente sobre el hero y blanca al bajar.

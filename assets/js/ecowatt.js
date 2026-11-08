@@ -58,6 +58,16 @@ const CONFIG = {
   ],
   ciudadOtra: { slug: 'otra', nombre: 'Otra ciudad', hsp: 5.5 },
 
+  // Hero de día y noche: tiempos de la animación y datos de la foto.
+  hero: {
+    hundir: 240,          // ms que tarda la casa en hundirse en la niebla
+    subir: 820,           // ms que tarda en volver a subir con la nueva luz
+    profundidad: 0.27,    // cuánto se hunde, como fracción de la altura de la pantalla
+    imagen: { ancho: 2560, alto: 1440 }, // tamaño de las fotos del hero
+    porche: { x: 0.66, y: 0.78 },        // dónde está la luz del porche en la foto de noche (0 a 1); tiñe la niebla de ámbar
+    techo: 0.29,          // dónde empieza el techo en la foto (0 = arriba); en escritorio la casa se acomoda debajo de los botones
+  },
+
   formulario: {
     // URL que recibe el formulario por POST (multipart/form-data, incluye la foto del recibo).
     // Sirve Formspree, Netlify Forms, un webhook o un PHP propio.
@@ -114,11 +124,13 @@ const CONFIG = {
   const nav = $('#nav');
   const menuTexto = $('[data-menu-texto]');
 
+  let alCambiarMenu = () => {};
   const cerrarMenu = (devolverFoco = false) => {
     nav.classList.remove('abierto');
     menuBtn.setAttribute('aria-expanded', 'false');
     menuTexto.textContent = 'Abrir menú';
     document.documentElement.classList.remove('sin-scroll');
+    alCambiarMenu();
     if (devolverFoco) menuBtn.focus();
   };
   const abrirMenu = () => {
@@ -126,6 +138,7 @@ const CONFIG = {
     menuBtn.setAttribute('aria-expanded', 'true');
     menuTexto.textContent = 'Cerrar menú';
     document.documentElement.classList.add('sin-scroll');
+    alCambiarMenu();
     const primero = $('a', nav);
     if (primero) primero.focus();
   };
@@ -140,6 +153,267 @@ const CONFIG = {
   window.matchMedia('(min-width: 1080px)').addEventListener('change', (e) => {
     if (e.matches) cerrarMenu();
   });
+
+  /* ------------------------------------------------------------------------
+     2b. Hero de día y noche
+     Un solo reloj (requestAnimationFrame) calcula, desde el clic, cuánto se
+     hunde la casa, la oleada de niebla y la mezcla de colores, y lo escribe en
+     variables CSS (--sink, --dip, --k) y en el shader. La casa se cambia en el
+     punto más hondo, cuando la niebla tapa el techo.
+     ------------------------------------------------------------------------ */
+  const hero = $('#inicio');
+  const lienzo = $('#niebla');
+  if (hero && lienzo) {
+    const H = CONFIG.hero;
+    const raiz = document.documentElement.style;
+    const cabecera = $('.cabecera');
+    const SINK = H.hundir;
+    const RISE = H.subir;
+    const DEPTH = H.profundidad;
+    const limitar = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+    const suave = (a, b, x) => { const t = limitar((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+    const sets = [$('#set-dia'), $('#set-noche')];
+    const botones = [$('#b-dia'), $('#b-noche')];
+    let objetivo = 0;
+    let desde = 0;
+    let inicio = -1;
+    let enCola = null;
+    let cambiado = true;
+    let k = 0;
+    let oleada = 0;
+    let animando = false;
+    let enVista = true;
+    let cuadroHero = 0;
+    let porche = [0.72, 0.74];
+    const t0 = performance.now();
+
+    const escribir = (sinkPx, dip, kk) => {
+      raiz.setProperty('--sink', `${sinkPx.toFixed(1)}px`);
+      raiz.setProperty('--dip', dip.toFixed(3));
+      raiz.setProperty('--k', kk.toFixed(3));
+    };
+
+    // Las imágenes de noche se piden cuando la página ya cargó, para no frenar la primera vista.
+    let nocheCargada = false;
+    const cargarNoche = () => {
+      if (nocheCargada) return;
+      nocheCargada = true;
+      $$('img[data-src]', hero).forEach((img) => { img.src = img.dataset.src; img.removeAttribute('data-src'); });
+    };
+    const listas = (n) => {
+      const imgs = $$('img', sets[n]);
+      if (n === 1) imgs.push($('#cielo-noche'));
+      return Promise.all(imgs.map((img) => (img.complete && img.naturalWidth ? null : img.decode().catch(() => {}))));
+    };
+    if (document.readyState === 'complete') setTimeout(cargarNoche, 400);
+    else window.addEventListener('load', () => setTimeout(cargarNoche, 400), { once: true });
+    $('.toggle', hero).addEventListener('pointerenter', cargarNoche, { once: true });
+
+    const mostrarSet = (n) => sets.forEach((el, i) => el.classList.toggle('is-on', i === n));
+    const marcarBotones = (n) => botones.forEach((b, i) => b.setAttribute('aria-pressed', String(i === n)));
+
+    // Niebla: shader de ruido fractal sobre un triángulo que cubre la pantalla.
+    const gl = lienzo.getContext('webgl2', { alpha: true, premultipliedAlpha: true, antialias: false });
+    let U = null;
+    if (gl) {
+      const vs = `#version 300 es
+void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-1.,0.,1.);}`;
+      const fs = `#version 300 es
+precision highp float;
+uniform vec2 R;uniform float T,S,K;uniform vec2 G;
+out vec4 o;
+float h(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+  return mix(mix(h(i),h(i+vec2(1.,0.)),f.x),mix(h(i+vec2(0.,1.)),h(i+vec2(1.,1.)),f.x),f.y);}
+float fbm(vec2 p){float v=0.,a=.5;p=mat2(.8,.6,-.6,.8)*p+5.3;
+  for(int i=0;i<5;i++){v+=a*n(p);p=mat2(1.6,1.2,-1.2,1.6)*p;a*=.5;}return v;}
+void main(){
+  vec2 q=vec2(gl_FragCoord.x/R.x,1.-gl_FragCoord.y/R.y);
+  float y=q.y;
+  vec2 p=vec2(q.x*R.x/R.y,y)*2.4;
+  float t=T*.05;
+  vec2 w=vec2(fbm(p+vec2(t,0.)),fbm(p+vec2(-t*.7,t*.3)+3.7));
+  float d=fbm(p+w*1.5+vec2(t*1.4,0.));
+  float e=fbm(p*.55+w*.9+vec2(-t*.5,t*.2));
+  float low=smoothstep(.70,1.04,y+(d-.5)*.34);
+  float side=((1.-smoothstep(0.,.24,q.x))+smoothstep(.76,1.,q.x))*smoothstep(.2,.95,y+(e-.5)*.5)*.2;
+  float wisps=smoothstep(.56,.86,e)*smoothstep(.12,.42,y)*(1.-smoothstep(.62,.9,y))*.18;
+  float rest=clamp(low+side+wisps,0.,1.);
+  float front=1.02-S*.68;
+  float rise=smoothstep(front-.02,front+.26,y+(d-.5)*.5);
+  float haze=S*(.3+.46*d);
+  float a=clamp(max(rest,max(rise*.97,haze)),0.,1.);
+  vec3 c=mix(mix(vec3(.79,.78,.71),vec3(.97,.93,.84),d),mix(vec3(.15,.19,.29),vec3(.40,.45,.57),d),K);
+  vec2 g=(q-G)*vec2(R.x/R.y,1.);
+  c=mix(c,vec3(.86,.55,.27),K*(1.-S)*.42*exp(-dot(g,g)*18.));
+  o=vec4(c*a,a);
+}`;
+      const compilar = (tipo, codigo) => {
+        const sh = gl.createShader(tipo);
+        gl.shaderSource(sh, codigo);
+        gl.compileShader(sh);
+        if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(sh));
+        return sh;
+      };
+      try {
+        const prog = gl.createProgram();
+        gl.attachShader(prog, compilar(gl.VERTEX_SHADER, vs));
+        gl.attachShader(prog, compilar(gl.FRAGMENT_SHADER, fs));
+        gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+        gl.useProgram(prog);
+        gl.bindVertexArray(gl.createVertexArray());
+        U = Object.fromEntries(['R', 'T', 'S', 'K', 'G'].map((nombre) => [nombre, gl.getUniformLocation(prog, nombre)]));
+      } catch (err) {
+        console.warn('[Ecowatt] La niebla no está disponible en este navegador.', err);
+        lienzo.hidden = true;
+      }
+    } else {
+      lienzo.hidden = true;
+    }
+
+    // Geometría de la foto con object-fit: cover dentro del hero.
+    const geometria = () => {
+      const img = $('.recorte', sets[1]);
+      const W = hero.clientWidth;
+      const Hh = hero.clientHeight;
+      const iw = img.naturalWidth || H.imagen.ancho;
+      const ih = img.naturalHeight || H.imagen.alto;
+      const esc = Math.max(W / iw, Hh / ih);
+      const [px, py] = getComputedStyle(img).objectPosition.split(' ').map((v) => parseFloat(v) / 100);
+      return { W, Hh, iw, ih, esc, ox: (W - iw * esc) * px, oy: (Hh - ih * esc) * py };
+    };
+
+    // En escritorio, baja la casa lo justo para que el techo quede debajo de los botones.
+    const escritorio = window.matchMedia('(min-width: 821px)');
+    const calcularBase = () => {
+      if (!escritorio.matches) { hero.style.removeProperty('--base'); return; }
+      const g = geometria();
+      const techo = g.oy + H.techo * g.ih * g.esc;
+      const botonesAbajo = $('.hero-acciones', hero).getBoundingClientRect().bottom - hero.getBoundingClientRect().top;
+      const base = limitar(botonesAbajo + 16 - techo, 0, g.Hh * 0.24);
+      hero.style.setProperty('--base', `${Math.round(base)}px`);
+    };
+
+    // Lleva la posición del porche (en la foto) a coordenadas de pantalla.
+    const calcularPorche = () => {
+      const g = geometria();
+      const base = $('.hero-casa').getBoundingClientRect().top - hero.getBoundingClientRect().top
+        - (parseFloat(raiz.getPropertyValue('--sink')) || 0);
+      porche = [(g.ox + H.porche.x * g.iw * g.esc) / g.W, (g.oy + H.porche.y * g.ih * g.esc + base) / g.Hh];
+    };
+
+    const medir = () => {
+      calcularBase();
+      calcularPorche();
+      if (!U) return;
+      const W = hero.clientWidth;
+      const esc = Math.min(1, 960 / W);
+      lienzo.width = Math.max(1, Math.round(W * esc));
+      lienzo.height = Math.max(1, Math.round(hero.clientHeight * esc));
+      gl.viewport(0, 0, lienzo.width, lienzo.height);
+    };
+
+    const dibujar = (ahora) => {
+      if (!U) return;
+      const T = movimientoReducido.matches ? 40 : (ahora - t0) / 1000 + 40;
+      gl.uniform2f(U.R, lienzo.width, lienzo.height);
+      gl.uniform1f(U.T, T);
+      gl.uniform1f(U.S, oleada);
+      gl.uniform1f(U.K, k);
+      gl.uniform2f(U.G, porche[0], porche[1]);
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+    };
+
+    const siguiente = () => {
+      if (enCola === null) return;
+      const t = enCola;
+      enCola = null;
+      if (t !== objetivo) pedir(t);
+    };
+
+    function paso(ahora) {
+      cuadroHero = 0;
+      if (animando && inicio >= 0) {
+        const d = ahora - inicio;
+        let y;
+        if (d < SINK) {
+          const x = d / SINK;
+          y = x * x * (3 - 2 * x) * DEPTH;
+        } else {
+          if (!cambiado) { mostrarSet(objetivo); cambiado = true; }
+          const x = limitar((d - SINK) / RISE);
+          y = Math.pow(1 - x, 3.4) * DEPTH;
+        }
+        oleada = suave(0, SINK * 0.92, d) * (1 - suave(SINK + 70, SINK + RISE * 0.92, d));
+        const dip = suave(30, 190, d) * (1 - suave(330, 720, d));
+        k = desde + (objetivo - desde) * suave(120, 520, d);
+        escribir(y * window.innerHeight, dip, k);
+        if (d >= SINK + RISE) {
+          animando = false;
+          inicio = -1;
+          oleada = 0;
+          k = objetivo;
+          escribir(0, 0, k);
+          siguiente();
+        }
+      }
+      dibujar(ahora);
+      if ((enVista && !movimientoReducido.matches) || animando) cuadroHero = requestAnimationFrame(paso);
+    }
+    const arrancar = () => { if (!cuadroHero) cuadroHero = requestAnimationFrame(paso); };
+
+    async function pedir(t) {
+      if (animando) {
+        enCola = t !== objetivo ? t : null;
+        return;
+      }
+      if (t === objetivo) return;
+      animando = true;
+      objetivo = t;
+      marcarBotones(t);
+      cargarNoche();
+      await listas(t);
+      if (movimientoReducido.matches) {
+        k = t;
+        mostrarSet(t);
+        escribir(0, 0, k);
+        animando = false;
+        dibujar(performance.now());
+        siguiente();
+        return;
+      }
+      desde = k;
+      cambiado = false;
+      inicio = performance.now();
+      arrancar();
+    }
+    botones.forEach((b, i) => b.addEventListener('click', () => pedir(i)));
+
+    // Cabecera transparente mientras está encima del hero.
+    const estadoCabecera = () => {
+      const sobre = hero.getBoundingClientRect().bottom > cabecera.offsetHeight + 2 && !nav.classList.contains('abierto');
+      cabecera.classList.toggle('sobre-hero', sobre);
+      document.body.classList.toggle('en-hero', sobre);
+    };
+    alCambiarMenu = estadoCabecera;
+    window.addEventListener('scroll', estadoCabecera, { passive: true });
+    window.addEventListener('resize', () => { medir(); estadoCabecera(); dibujar(performance.now()); });
+    $$('img', sets[1]).forEach((img) => img.addEventListener('load', calcularPorche));
+
+    // La niebla solo se anima mientras el hero está en pantalla.
+    new IntersectionObserver(([e]) => {
+      enVista = e.isIntersecting;
+      if (enVista) arrancar();
+    }).observe(hero);
+
+    escribir(0, 0, 0);
+    medir();
+    estadoCabecera();
+    arrancar();
+    if (document.fonts) document.fonts.ready.then(medir);
+    $$('img', sets[0]).forEach((img) => img.addEventListener('load', medir));
+  }
 
   /* ------------------------------------------------------------------------
      3. Calculadora de ahorro
