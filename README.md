@@ -23,6 +23,25 @@ Para verla en tu compu: `python3 -m http.server` y abre `http://localhost:8000`.
 3. **Reemplaza los placeholders** de la lista de abajo y borra cada etiqueta `<span class="ej">EDITAR</span>` que acompaña al dato que ya confirmaste.
 4. **Pon las fotos reales.** Las fotos de Ecowatt pueden reemplazar las tres imágenes ilustrativas de "Ventajas" (casas, negocios e industrias) y ocupar los espacios marcados `[Pendiente]` en "Ventajas", "Cómo funciona" y "Garantía". Pásalas antes por `python3 herramientas/estilo-imagen.py foto.jpg assets/img/secciones/nombre --anchos 1200 720 --recorte 4:3`: así quedan con la misma luz que el resto de la página, en WebP y en dos tamaños. En el HTML usa `loading="lazy"`, `width` y `height`, y un texto alternativo que describa la foto.
 
+## Publicar el demo en Netlify
+
+Para el demo se suben solo `index.html`, `aviso-de-privacidad.html` y `assets/`; `docs/` y `herramientas/` no van. Además se agrega un archivo `_headers` con `X-Robots-Tag: noindex, nofollow`, para que Google no indexe el demo con los datos de ejemplo. El archivo **no** está en el repositorio, a propósito, para que la página real no herede el "noindex":
+
+```
+/*
+  X-Robots-Tag: noindex, nofollow
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+/assets/*
+  Cache-Control: public, max-age=604800
+```
+
+Hay dos formas de subirlo:
+- Arrastra la carpeta (o el .zip) a https://app.netlify.com/drop.
+- Usa la API de Netlify con un token personal.
+
+Para el lanzamiento real en ecowatt.mx, quita el `_headers` del demo y conecta `CONFIG.formulario.endpoint`.
+
 ## Páginas por ciudad
 
 La página ya está lista para duplicarse por ciudad, por ejemplo `/paneles-solares/queretaro/`. Las instrucciones están en un comentario dentro del `<head>` de `index.html`. En resumen: copia el archivo, cambia `data-ciudad="leon"` por el slug de la ciudad (lo encuentras en `CONFIG.ciudades`) y ajusta el título, la descripción, el canonical y el H1. La calculadora, el formulario y todos los mensajes de WhatsApp toman la ciudad de ese atributo.
