@@ -886,12 +886,17 @@ void main(){
       const visible = $('[aria-hidden="true"]', el);
       if (!visible || movimientoReducido.matches) return;
       const inicio = performance.now();
+      let listo = false;
       const paso = (ahora) => {
+        if (listo) return;
         const t = Math.min(1, (ahora - inicio) / 400);
         visible.textContent = textoCifra(el, fin * (1 - Math.pow(1 - t, 3)));
         if (t < 1) requestAnimationFrame(paso);
+        else listo = true;
       };
       requestAnimationFrame(paso);
+      // Aunque el navegador pierda cuadros, la cifra termina en su valor final.
+      setTimeout(() => { listo = true; visible.textContent = textoCifra(el, fin); }, 450);
     };
     cifras.forEach((el) => {
       const final = textoCifra(el, Number(el.dataset.cifra));
