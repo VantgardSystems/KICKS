@@ -56,7 +56,6 @@
   /* Degradados */
   --grad-marca: linear-gradient(135deg, var(--c-verde) 0%, var(--c-azul) 100%);
   --grad-acento: linear-gradient(135deg, #86EFAC 0%, var(--c-acento) 45%, var(--c-acento-fuerte) 100%);
-  --grad-texto: linear-gradient(92deg, #4ADE80 0%, #A7F3D0 55%, #FDE68A 100%);
 
   /* Tipografía */
   --f-titulo: "Sora", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -87,6 +86,19 @@
   --t-media: 280ms;
   --t-lenta: 700ms;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Hero Mañana / Noche: --u escala todo el hero con la pantalla (1px en 1600×900) */
+  --u: min(calc(100vw / 1600), calc(100vh / 900));
+  --k: 1;    /* 0 = mañana, 1 = noche (lo anima main.js) */
+  --k2: 1;   /* igual que --k, pero cambia un poco después */
+  --dip: 0;  /* atenuación de textos durante el cambio */
+  --hero-ink: color-mix(in srgb, #14202f calc((1 - var(--k)) * 100%), #fff);
+  --hero-nav: color-mix(in srgb, #1b2736 calc((1 - var(--k)) * 100%), #eef1f6);
+  --hero-soft: color-mix(in srgb, #1b2736 calc((1 - var(--k)) * 100%), #dfe5ee);
+}
+
+@media (max-width: 820px) {
+  :root { --u: 1px; }
 }
 
 /* ---------------------------------------------------------------------------
@@ -167,6 +179,9 @@ button { cursor: pointer; }
   flex: none;
 }
 
+.stars { display: inline-flex; gap: 2px; color: #FACC15; }
+.stars .icon { width: 16px; height: 16px; }
+
 /* ---------------------------------------------------------------------------
    3. UTILIDADES Y LAYOUT
    --------------------------------------------------------------------------- */
@@ -212,12 +227,6 @@ button { cursor: pointer; }
 
 .skip-link:focus { opacity: 1; transform: none; }
 
-.text-gradient {
-  background: var(--grad-texto);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
 
 /* Marcadores [ ] pendientes de reemplazar (se resaltan si CONFIG.resaltarMarcadores = true) */
 .marcadores .is-placeholder,
@@ -396,7 +405,8 @@ button { cursor: pointer; }
 
 .logo__tagline--always { display: block; }
 
-.header__cta { flex: none; }
+/* Ancho fijo: así no cambia de tamaño (ni empuja nada) cuando termina de cargar la tipografía */
+.header__cta { flex: none; min-width: 140px; }
 
 .menu-toggle {
   display: grid;
@@ -466,6 +476,16 @@ button { cursor: pointer; }
 
 .nav__extra { display: grid; gap: 0.75rem; }
 
+/* Sobre el hero (sin scroll) el header toma los colores de la hora del día */
+.header:not(.is-scrolled):not(.is-open) { color: var(--hero-ink); }
+.header:not(.is-scrolled):not(.is-open) .logo__tagline { color: var(--hero-soft); }
+
+.header:not(.is-scrolled):not(.is-open) .menu-toggle {
+  border-color: color-mix(in srgb, currentColor 28%, transparent);
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  color: inherit;
+}
+
 @media (min-width: 520px) {
   .logo__tagline { display: block; }
 }
@@ -503,6 +523,13 @@ button { cursor: pointer; }
 
   .nav__link.is-active { color: var(--c-texto); }
 
+  .header:not(.is-scrolled) .nav__link {
+    color: var(--hero-nav);
+    opacity: calc(1 - var(--dip) * 0.82);
+  }
+
+  .header:not(.is-scrolled) .nav__link:hover { background: color-mix(in srgb, currentColor 10%, transparent); }
+
   .nav__link.is-active::after {
     content: "";
     position: absolute;
@@ -519,217 +546,275 @@ button { cursor: pointer; }
 }
 
 /* ---------------------------------------------------------------------------
-   6. HERO
+   6. HERO — Mañana / Noche con niebla
+   Capas (de abajo hacia arriba): cielo fijo → casa (solo se mueve en Y) →
+   desenfoque inferior → niebla WebGL2 → textos. No hay transiciones CSS en la
+   escena: un solo reloj en main.js escribe --k, --k2, --dip y --sink.
+   Todos los colores se mezclan con color-mix() sobre --k (0 = mañana, 1 = noche).
    --------------------------------------------------------------------------- */
 .hero {
   position: relative;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
   isolation: isolate;
-  overflow: hidden;
-  padding-top: calc(var(--header-h) + clamp(32px, 6vw, 72px));
-  padding-bottom: clamp(104px, 13vw, 168px);
-  background: linear-gradient(160deg, var(--c-azul) 0%, #0A2E45 48%, var(--c-verde) 100%);
+  background: #0b1426;
 }
 
-.hero__bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
-
-.flare { position: absolute; border-radius: 50%; }
-
-.flare--sol {
-  top: -280px;
-  right: -220px;
-  width: 760px;
-  height: 760px;
-  background: radial-gradient(circle, rgba(253, 230, 138, 0.30) 0%, rgba(74, 222, 128, 0.10) 38%, transparent 68%);
-}
-
-.flare--verde {
-  bottom: -340px;
-  left: -260px;
-  width: 720px;
-  height: 720px;
-  background: radial-gradient(circle, rgba(74, 222, 128, 0.20) 0%, transparent 65%);
-}
-
-.hero__grid {
+.hero__layer,
+.hero__img {
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-  background-size: 56px 56px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, #000 0%, transparent 75%);
-  mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, #000 0%, transparent 75%);
+  width: 100%;
+  height: 100%;
 }
 
-.hero__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(3rem, 6vw, 4rem);
-  align-items: center;
+.hero__img {
+  display: block;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 62%;
 }
 
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.45rem 0.95rem 0.45rem 0.7rem;
-  border: 1px solid rgba(74, 222, 128, 0.3);
-  border-radius: var(--r-full);
-  background: rgba(74, 222, 128, 0.1);
-  color: var(--c-acento-suave);
-  font-size: 0.875rem;
-  font-weight: 700;
+/* Capa 1: cielo desenfocado; el de noche se funde con --k.
+   El desenfoque (7px a 1600px) ya viene aplicado en la imagen: con filter: blur() en CSS
+   el navegador lo recalcula en cada cuadro de la niebla y la animación se vuelve lenta */
+.hero__sky img { transform: scale(1.05); }
+#skyN { opacity: var(--k); }
+
+/* Capa 2: casa y jardín. Solo se ve el set activo */
+.hero__home { will-change: transform; transform: translate3d(0, var(--sink, 0px), 0); }
+
+/* La casa aparece con un fundido cuando sus fotos terminan de cargar (solo la primera vez) */
+.js .hero__home { opacity: 0; transition: opacity 0.7s ease; }
+.js .hero.casa-lista .hero__home { opacity: 1; }
+.hero__set { position: absolute; inset: 0; visibility: hidden; }
+.hero__set.is-on { visibility: visible; }
+
+/* De la foto completa solo se ve la parte de abajo (pasto y arbustos); la casa recortada va encima */
+.hero__ground {
+  -webkit-mask-image: linear-gradient(transparent 54%, #000 64%);
+  mask-image: linear-gradient(transparent 54%, #000 64%);
 }
 
-.badge__dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--c-acento);
-  box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.2);
-  animation: pulso 2.4s ease-out infinite;
-}
-
-.hero__title {
-  margin: 1.25rem 0;
-  font-size: var(--fs-h1);
-  font-weight: 800;
-  line-height: 1.04;
-  letter-spacing: -0.035em;
-}
-
-.hero__lead {
-  max-width: 34rem;
-  color: var(--c-texto-2);
-  font-size: var(--fs-lead);
-}
-
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 2rem;
-}
-
-.hero__actions .btn { flex: 1 1 100%; }
-
-.trust {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.75rem;
-  margin-top: 2.25rem;
-  padding-top: 1.75rem;
-  border-top: 1px solid var(--c-borde);
-  color: var(--c-texto-2);
-  font-size: 0.9375rem;
-}
-
-.trust__item { display: flex; align-items: center; gap: 0.6rem; }
-.trust strong { color: var(--c-texto); font-family: var(--f-titulo); font-weight: 700; }
-
-.stars { display: inline-flex; gap: 2px; color: #FACC15; }
-.stars .icon { width: 16px; height: 16px; }
-
-.hero__media { position: relative; }
-
-.hero__media::before {
-  content: "";
-  position: absolute;
-  inset: 12% -6% -8% 12%;
-  z-index: -1;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgba(74, 222, 128, 0.35), transparent);
-  filter: blur(30px);
-}
-
-.hero__frame {
-  position: relative;
-  aspect-ratio: 8 / 7;
-  overflow: hidden;
-  border: 1px solid var(--c-borde-2);
-  border-radius: var(--r-xl);
-  box-shadow: var(--sombra-2), 0 0 0 8px rgba(255, 255, 255, 0.03);
-}
-
-.hero__frame img { width: 100%; height: 100%; object-fit: cover; }
-
-/* Brillo que cruza la imagen */
-.hero__frame::after {
-  content: "";
+/* Capa 3: desenfoque tipo tilt-shift en el primer plano */
+.hero__tilt {
   position: absolute;
   inset: 0;
-  background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.12) 50%, transparent 60%);
-  transform: translateX(-100%);
-  animation: barrido 7s var(--ease-out) 1.2s infinite;
+  pointer-events: none;
+  -webkit-backdrop-filter: blur(calc(9 * var(--u)));
+  backdrop-filter: blur(calc(9 * var(--u)));
+  -webkit-mask-image: linear-gradient(transparent 70%, #000 92%);
+  mask-image: linear-gradient(transparent 70%, #000 92%);
+}
+
+/* Capa 4: niebla (shader). Aparece una sola vez cuando el shader está listo */
+.hero__fog {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.hero__fog.is-ready { opacity: 1; }
+
+/* Respaldo si el navegador no tiene WebGL2: una niebla simple que sube con --surge */
+.hero__fog-fallback {
+  --niebla: color-mix(in srgb, #d6d1bf calc((1 - var(--k)) * 100%), #2f3a52);
+  position: absolute;
+  inset: 0;
+  display: none;
+  pointer-events: none;
+  background: linear-gradient(to top,
+    var(--niebla) 0%,
+    var(--niebla) calc(var(--surge, 0) * 85%),
+    transparent calc(var(--surge, 0) * 85% + 22%));
+}
+
+.sin-webgl .hero__fog-fallback { display: block; }
+
+/* Capa 5: textos y botones */
+.hero__ui {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-inline: var(--gutter);
   pointer-events: none;
 }
 
-.float-card {
-  position: absolute;
+.hero__ui a,
+.hero__ui button { pointer-events: auto; }
+
+.hero__title {
+  margin-top: max(calc(126 * var(--u)), calc(var(--header-h) + 24px));
+  color: var(--hero-ink);
+  font-size: max(calc(64 * var(--u)), 34px);
+  font-weight: 600;
+  line-height: 1.09;
+  letter-spacing: -0.03em;
+  text-align: center;
+}
+
+.hero__title > span { display: block; }
+.hero__title .l1,
+.hero__title .y { opacity: calc(1 - var(--dip) * 0.8); }
+.hero__title .y { display: inline; }
+
+/* "en León con": tono apagado de día, blanco de noche (cambia con --k2, un poco después) */
+.hero__title i {
+  font-style: normal;
+  color: color-mix(in srgb, #14202f calc((1 - var(--k2)) * 42%), color-mix(in srgb, #fff calc(var(--k2) * 100%), #7c8794));
+}
+
+.hero__dock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: auto;
+  padding-bottom: calc(40 * var(--u));
+}
+
+.hero__controls {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem 0.75rem 0.75rem;
-  border: 1px solid var(--c-borde-2);
-  border-radius: var(--r-md);
-  background: rgba(7, 27, 48, 0.86);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  box-shadow: var(--sombra-2);
-  line-height: 1.2;
-  animation: flotar 6s ease-in-out infinite;
+  justify-content: center;
+  gap: calc(16 * var(--u));
 }
 
-.float-card--ahorro { left: 12px; bottom: 12px; }
-.float-card--cfe { right: 12px; top: 12px; animation-delay: -3s; }
+.hero__btn {
+  height: max(calc(56 * var(--u)), 46px);
+  min-height: 0;
+  padding: 0 max(calc(26 * var(--u)), 18px);
+  font-size: max(calc(16.5 * var(--u)), 15px);
+}
 
-.float-card__icon {
+.hero__btn.btn--primary { opacity: calc(1 - var(--dip) * 0.62); }
+
+/* Botón de WhatsApp: negro de día, blanco de noche */
+.hero__btn--wa {
+  background: color-mix(in srgb, #0d1117 calc((1 - var(--k)) * 100%), #fff);
+  color: color-mix(in srgb, #fff calc((1 - var(--k)) * 100%), #0d1117);
+  opacity: calc(1 - var(--dip) * 0.62);
+  box-shadow: 0 12px 30px -14px rgba(0, 0, 0, 0.55);
+}
+
+.hero__btn--wa .icon { color: var(--c-whatsapp); }
+.hero__btn--wa:hover { transform: translateY(-1px); }
+
+/* Selector Mañana / Noche: los dos botones se funden (no se deslizan) */
+.toggle {
+  position: relative;
   display: grid;
-  place-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(74, 222, 128, 0.16);
-  color: var(--c-acento);
+  grid-template-columns: 1fr 1fr;
+  width: calc(524 * var(--u));
+  height: calc(86 * var(--u));
+  padding: calc(2 * var(--u));
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: calc(16 * var(--u));
+  /* De día el fondo es un poco más oscuro para que "Noche" (blanco) se lea bien */
+  background: color-mix(in srgb, rgba(62, 74, 84, 0.55) calc((1 - var(--k)) * 100%), rgba(120, 132, 140, 0.34));
+  -webkit-backdrop-filter: blur(calc(14 * var(--u)));
+  backdrop-filter: blur(calc(14 * var(--u)));
 }
 
-.float-card__icon--check { background: var(--c-acento); color: var(--c-texto-oscuro); }
-
-.float-card__label { display: block; color: var(--c-texto-3); font-size: 0.75rem; font-weight: 600; }
-
-.float-card__value {
-  display: block;
-  margin-top: 0.15rem;
-  color: var(--c-acento);
-  font-family: var(--f-titulo);
-  font-size: 1.25rem;
-  font-weight: 800;
+.toggle button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(3 * var(--u));
+  overflow: hidden;
+  border: 0;
+  border-radius: calc(13 * var(--u));
+  background: none;
+  color: #fff;
 }
 
-.float-card__value--sm { color: var(--c-texto); font-size: 1rem; }
-
-/* Entrada del hero (sin ocultar el h1 ni la imagen para no retrasar el LCP) */
-@media (prefers-reduced-motion: no-preference) {
-  .js .hero__content > :not(.hero__title) { animation: subir 0.8s var(--ease-out) both; }
-  .js .hero__content > :nth-child(3) { animation-delay: 0.12s; }
-  .js .hero__content > :nth-child(4) { animation-delay: 0.2s; }
-  .js .hero__content > :nth-child(5) { animation-delay: 0.28s; }
-  .js .hero__title { animation: subir-suave 0.8s var(--ease-out) both; }
-  .js .hero__frame { animation: acercar 1s var(--ease-out) both; }
-  .js .float-card--ahorro { animation: subir 0.8s var(--ease-out) 0.5s both, flotar 6s ease-in-out 1.3s infinite; }
-  .js .float-card--cfe { animation: subir 0.8s var(--ease-out) 0.65s both, flotar 6s ease-in-out -1.5s infinite; }
+.toggle button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(160deg, #f7f8dc, #e2ee9f 90%);
+  box-shadow: inset 0 0 calc(18 * var(--u)) rgba(255, 255, 255, 0.65);
+  opacity: var(--on);
 }
 
-@media (min-width: 560px) {
-  .hero__actions .btn { flex: 0 0 auto; }
-  .float-card--ahorro { left: -14px; bottom: 10%; }
-  .float-card--cfe { right: -12px; top: 9%; }
+.toggle b,
+.toggle small {
+  position: relative;
+  color: color-mix(in srgb, #1c2316 calc(var(--on) * 100%), #fff);
 }
 
-@media (min-width: 960px) {
-  .hero__inner { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
-  .hero__lead { max-width: 30rem; }
+.toggle b { font-family: var(--f-titulo); font-size: calc(23 * var(--u)); font-weight: 600; letter-spacing: -0.012em; line-height: 1.2; }
+.toggle small { font-size: calc(15 * var(--u)); line-height: 1.2; opacity: 0.72; }
+.toggle button:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+
+#bm { --on: calc(1 - var(--k)); }
+#bn { --on: var(--k); }
+
+.hero__cap {
+  margin-top: calc(22 * var(--u));
+  color: var(--hero-soft);
+  font-size: max(calc(16.4 * var(--u)), 14px);
+  line-height: 1.3;
+  text-align: center;
+}
+
+.hero .trust {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 1.5rem;
+  margin-top: calc(14 * var(--u));
+  color: var(--hero-soft);
+  font-size: max(calc(14.5 * var(--u)), 13px);
+}
+
+.hero .trust__item { display: flex; align-items: center; gap: 0.5rem; }
+.hero .trust strong { color: var(--hero-ink); font-family: var(--f-titulo); font-weight: 600; }
+.hero .stars { color: color-mix(in srgb, #b07800 calc((1 - var(--k)) * 100%), #FACC15); }
+.hero .stars .icon { width: 14px; height: 14px; }
+
+/* Los marcadores pendientes conservan el color del texto para leerse de día y de noche */
+.marcadores .hero .is-placeholder { color: inherit; background: none; }
+
+@media (max-width: 820px) {
+  .hero { min-height: 600px; }
+  .hero__img { object-position: 58% 62%; } /* recorte para celular: porche y paneles en cuadro */
+  .hero__title { margin-top: calc(var(--header-h) + 20px); font-size: clamp(32px, 9vw, 52px); }
+  .hero__dock { padding-bottom: 20px; }
+
+  .hero__controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .hero__btn { width: 100%; padding: 0 12px; font-size: 15px; white-space: nowrap; }
+  .hero__btn.btn--primary .icon { display: none; }
+  .toggle { grid-column: 1 / -1; grid-row: 2; width: 100%; height: 74px; }
+  .toggle b { font-size: 19px; }
+  .toggle small { font-size: 13px; }
+  .hero__cap { max-width: 360px; font-size: 14px; }
+  .hero__cap-extra,
+  .hero .trust__item--extra { display: none; }
+}
+
+@media (max-width: 400px) {
+  .hero__btn-extra { display: none; }
 }
 
 /* ---------------------------------------------------------------------------
@@ -738,7 +823,7 @@ button { cursor: pointer; }
 .stats {
   position: relative;
   z-index: 2;
-  margin-top: calc(-1 * clamp(64px, 9vw, 104px));
+  padding-top: clamp(48px, 7vw, 80px);
 }
 
 .stats__grid {
@@ -1367,6 +1452,41 @@ legend { padding: 0; }
 
 .service:hover::after { opacity: 1; }
 
+/* Foto de cabecera de cada servicio (llega hasta los bordes de la tarjeta) */
+.service__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  margin: -2rem -1.75rem 0;
+  overflow: hidden;
+  background: #0C2B47;
+}
+
+.service__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 50%, rgba(10, 37, 64, 0.65));
+}
+
+.service__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.service:hover .service__media img { transform: scale(1.05); }
+
+/* El ícono se monta sobre el borde de la foto */
+.service .card__icon {
+  position: relative;
+  z-index: 1;
+  margin-top: -26px;
+  border-color: rgba(74, 222, 128, 0.5);
+  background: linear-gradient(135deg, #123B36, #0E2B47);
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.7);
+}
+
 .checklist {
   list-style: none;
   display: grid;
@@ -1416,6 +1536,21 @@ legend { padding: 0; }
 
 .why__inner { display: grid; grid-template-columns: minmax(0, 1fr); gap: 3rem; align-items: center; }
 .why__cta { margin-top: 2rem; }
+
+/* Foto del instalador con la maqueta del celular encima */
+.why__visual { position: relative; margin-top: 2.5rem; }
+
+.why__photo {
+  aspect-ratio: 4 / 3;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--c-borde-2);
+  border-radius: var(--r-xl);
+  background: #0C2B47;
+  box-shadow: var(--sombra-2);
+}
+
+.why__photo img { width: 100%; height: 100%; object-fit: cover; }
 
 .why__list { list-style: none; display: grid; gap: 0.875rem; }
 
@@ -1517,7 +1652,17 @@ legend { padding: 0; }
 .why__intro.is-visible .phone__chart span:nth-child(7) { animation-delay: 0.36s; }
 
 @media (min-width: 640px) {
-  .phone { display: block; }
+  .why__visual { padding-bottom: 3rem; }
+  .why__photo { width: 80%; }
+
+  .phone {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: block;
+    width: 224px;
+    margin: 0;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -2206,6 +2351,19 @@ legend { padding: 0; }
 }
 
 .floating > * { pointer-events: auto; }
+
+.floating { transition: opacity var(--t-media), transform var(--t-media) var(--ease-out), visibility 0s; }
+
+/* En celular, mientras se ven los botones del hero (que ya incluyen WhatsApp),
+   los flotantes esperan para no tapar el texto; aparecen al bajar */
+@media (max-width: 820px) {
+  .hero-dock-visible .floating {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(16px);
+    transition: opacity var(--t-media), transform var(--t-media) var(--ease-out), visibility 0s linear var(--t-media);
+  }
+}
 body.menu-abierto .floating { display: none; } /* no tapar el menú móvil */
 
 .wa-float {
@@ -2487,12 +2645,6 @@ body.menu-abierto .floating { display: none; } /* no tapar el menú móvil */
   .reveal { opacity: 1 !important; translate: none !important; }
 }
 
-@keyframes subir { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
-@keyframes subir-suave { from { transform: translateY(16px); } to { transform: none; } }
-@keyframes acercar { from { transform: scale(0.96); } to { transform: none; } }
-@keyframes flotar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-@keyframes barrido { 0% { transform: translateX(-100%); } 30%, 100% { transform: translateX(100%); } }
-@keyframes pulso { 0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.55); } 70%, 100% { box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); } }
 @keyframes onda { 0% { transform: scale(1); opacity: 0.7; } 80%, 100% { transform: scale(1.55); opacity: 0; } }
 @keyframes aparecer { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @keyframes chat-entrar { from { opacity: 0; transform: translateY(16px) scale(0.97); } to { opacity: 1; transform: none; } }
@@ -2513,11 +2665,9 @@ body.menu-abierto .floating { display: none; } /* no tapar el menú móvil */
     scroll-behavior: auto !important;
   }
 
-  .hero__frame::after,
   .wa-float::before { display: none; }
 }
 
 @media (forced-colors: active) {
-  .text-gradient { color: CanvasText; background: none; }
   .btn, .filter, .card, .input { border: 1px solid CanvasText; }
 }

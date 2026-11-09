@@ -1071,6 +1071,402 @@ function iniciarChat() {
 }
 
 /* -------------------------------------------------------------------------
+   Hero: Mañana / Noche con niebla
+   Al cambiar de hora, la casa se hunde en la niebla, se cambia de foto en el
+   punto más hondo (la niebla cubre el techo) y vuelve a subir con la nueva luz.
+   Un solo reloj (requestAnimationFrame) calcula todo desde el clic y lo escribe
+   en variables CSS (--sink, --k, --k2, --dip) y en los uniforms del shader.
+   ------------------------------------------------------------------------- */
+const HERO_TIEMPOS = { SINK: 240, RISE: 820, DEPTH: 0.27 }; // ms bajando, ms subiendo, profundidad (fracción de la pantalla)
+
+const NIEBLA_VS = `#version 300 es
+void main(){vec2 p=vec2((gl_VertexID<<1)&2,gl_VertexID&2);gl_Position=vec4(p*2.-1.,0,1);}`;
+
+// Niebla generada (no es video): se mueve siempre y nunca se repite
+const NIEBLA_FS = `#version 300 es
+precision highp float;
+uniform vec2 R;
+uniform float T, S, K;
+out vec4 color;
+
+float hash(vec2 p) {
+  p = fract(p * vec2(123.34, 456.21));
+  p += dot(p, p + 45.32);
+  return fract(p.x * p.y);
+}
+
+float noise(vec2 p) {
+  vec2 i = floor(p), f = fract(p);
+  vec2 u = f * f * (3. - 2. * f);
+  return mix(mix(hash(i), hash(i + vec2(1, 0)), u.x),
+             mix(hash(i + vec2(0, 1)), hash(i + vec2(1, 1)), u.x), u.y);
+}
+
+float fbm(vec2 p) {
+  p = mat2(.8, .6, -.6, .8) * p + 5.3;   // giro inicial para que no se note la cuadrícula
+  float v = 0., a = .5;
+  for (int i = 0; i < 5; i++) {
+    v += a * noise(p);
+    p = mat2(1.6, 1.2, -1.2, 1.6) * p;
+    a *= .5;
+  }
+  return v;
+}
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / R;
+  float y = 1. - uv.y;                       // 0 arriba, 1 abajo
+  float aspecto = R.x / R.y;
+  vec2 p = vec2(uv.x * aspecto, y) * 2.4;
+  float t = T * .05;
+
+  vec2 w = vec2(fbm(p + vec2(t, -t * .3)), fbm(p + vec2(-t * .6, t * .2) + 3.7));  // deformación
+  float d = fbm(p * 1.3 + w * 1.7 + vec2(t * 1.5, 0.));                              // densidad
+  float e = fbm(p * .7 + w * .9 + vec2(-t * .4, t * .15) + 9.1);                      // capa lenta
+
+  // Niebla en reposo: base + costados (20%) + jirones en el aire (18%)
+  float low = smoothstep(.70, 1.04, y + (d - .5) * .34);
+  float lado = smoothstep(.24, 0., uv.x) + smoothstep(.76, 1., uv.x);
+  float side = lado * smoothstep(.25, .9, y + (e - .5) * .5) * (.55 + .45 * d) * .2;
+  float wisps = smoothstep(.56, .8, e) * smoothstep(.18, .42, y) * (1. - smoothstep(.62, .86, y)) * .18;
+  float rest = low + side + wisps;
+
+  // Oleada al cambiar de hora
+  float front = 1.02 - S * .68;
+  float rise = smoothstep(front - .02, front + .26, y + (d - .5) * .5);
+  float haze = S * (.3 + .46 * d);
+  float a = clamp(max(rest, max(rise * .97, haze)), 0., 1.);
+
+  vec3 dia = mix(vec3(.79, .78, .71), vec3(.97, .93, .84), d);
+  vec3 noche = mix(vec3(.15, .19, .29), vec3(.40, .45, .57), d);
+  vec3 c = mix(dia, noche, K);
+
+  // De noche, brillo ámbar junto al porche (desaparece durante la oleada)
+  float r = length((vec2(uv.x, y) - vec2(.72, .74)) * vec2(aspecto, 1.));
+  c = mix(c, vec3(.86, .55, .27), smoothstep(.32, 0., r) * .42 * K * (1. - S));
+
+  color = vec4(c * a, a);                    // alfa premultiplicado
+}`;
+
+function iniciarHero() {
+  const hero = $('#inicio');
+  const canvas = $('#fog');
+  const botones = [$('#bm'), $('#bn')]; // 0 = mañana, 1 = noche
+  const sets = [$('#setM'), $('#setN')];
+  if (!hero || !canvas || !botones[0] || !botones[1] || !sets[0] || !sets[1]) return;
+
+  const raiz = document.documentElement.style;
+  const { SINK, RISE, DEPTH } = HERO_TIEMPOS;
+  const limitar = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const suave = (a, b, x) => { const t = limitar((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+
+  // Estado: la página empieza de noche
+  let visible = 1;          // set que se está mostrando
+  let destino = 1;          // hora elegida
+  let k = 1, k2 = 1, desdeK = 1, desdeK2 = 1, oleada = 0;
+  let inicio = 0, animando = false, cambiado = true, enEspera = null, esperaDesde = 0;
+  let cuadro = 0, heroEnPantalla = true;
+
+  /* ---- Carga diferida de las imágenes de la mañana ---- */
+  const listo = [false, false];
+  const cargas = [];
+  function cargarModo(modo) {
+    if (cargas[modo]) return cargas[modo];
+    const elementos = $$(`[data-diferido="${modo === 0 ? 'm' : 'n'}"]`);
+    elementos.forEach((el) => {
+      if (el.dataset.srcset) { el.srcset = el.dataset.srcset; delete el.dataset.srcset; }
+      if (el.dataset.src) { el.src = el.dataset.src; delete el.dataset.src; }
+    });
+    const imagenes = elementos.filter((el) => el.tagName === 'IMG');
+    cargas[modo] = Promise.allSettled(imagenes.map((img) => (img.decode ? img.decode() : Promise.resolve())))
+      .then(() => { listo[modo] = true; });
+    return cargas[modo];
+  }
+
+  /* ---- Niebla con WebGL2 ---- */
+  let gl = null;
+  let programa = null;
+  let U = {};
+  let nieblaIntentada = false;
+  // Resolución adaptativa: empieza al 66% del ancho del hero y baja si los cuadros van lentos
+  let escala = 0.66;
+  let nieblaQuieta = false; // en equipos muy lentos la niebla solo se mueve durante el cambio de hora
+  let ultimoCuadro = 0;
+  const duraciones = [];
+
+  function sinWebGL() {
+    gl = null;
+    hero.classList.add('sin-webgl');
+  }
+
+  function ajustarCanvas() {
+    if (!gl) return;
+    // Se dibuja a máximo 960px de ancho y el navegador lo escala (la niebla es suave)
+    const ancho = Math.max(1, Math.min(960, Math.round(hero.clientWidth * escala)));
+    const alto = Math.max(1, Math.round((ancho * hero.clientHeight) / Math.max(1, hero.clientWidth)));
+    if (canvas.width !== ancho || canvas.height !== alto) {
+      canvas.width = ancho;
+      canvas.height = alto;
+    }
+    gl.viewport(0, 0, ancho, alto);
+    if (reducirMovimiento) dibujar(0);
+  }
+
+  function iniciarNiebla() {
+    if (nieblaIntentada) return;
+    nieblaIntentada = true;
+    // failIfMajorPerformanceCaveat: si el equipo solo puede dibujar por software (sin GPU),
+    // no se crea el contexto y se usa la niebla de respaldo en CSS
+    // (Para depurar en equipos sin GPU: agrega ?niebla=software a la URL)
+    const permitirSoftware = /[?&]niebla=software\b/.test(window.location.search);
+    gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: true, antialias: false, failIfMajorPerformanceCaveat: !permitirSoftware });
+    if (!gl) { sinWebGL(); return; }
+    const info = gl.getExtension('WEBGL_debug_renderer_info');
+    const renderer = String(gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER) || '');
+    if (!permitirSoftware && /swiftshader|llvmpipe|software|basic render/i.test(renderer)) { sinWebGL(); return; }
+
+    const vs = gl.createShader(gl.VERTEX_SHADER);
+    const fs = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(vs, NIEBLA_VS);
+    gl.shaderSource(fs, NIEBLA_FS);
+    gl.compileShader(vs);
+    gl.compileShader(fs);
+    programa = gl.createProgram();
+    gl.attachShader(programa, vs);
+    gl.attachShader(programa, fs);
+    gl.linkProgram(programa);
+
+    // Con KHR_parallel_shader_compile el shader compila en segundo plano sin congelar la página
+    const paralelo = gl.getExtension('KHR_parallel_shader_compile');
+    const terminar = () => {
+      if (!gl) return;
+      if (!gl.getProgramParameter(programa, gl.LINK_STATUS)) { sinWebGL(); return; }
+      prepararPrograma();
+    };
+    if (paralelo) {
+      const revisar = () => {
+        if (!gl) return;
+        if (gl.getProgramParameter(programa, paralelo.COMPLETION_STATUS_KHR)) terminar();
+        else setTimeout(revisar, 50);
+      };
+      revisar();
+    } else {
+      terminar();
+    }
+  }
+
+  function prepararPrograma() {
+    gl.useProgram(programa);
+    U = { R: gl.getUniformLocation(programa, 'R'), T: gl.getUniformLocation(programa, 'T'), S: gl.getUniformLocation(programa, 'S'), K: gl.getUniformLocation(programa, 'K') };
+    gl.clearColor(0, 0, 0, 0);
+
+    canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); sinWebGL(); });
+    let temporizador = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(temporizador);
+      temporizador = setTimeout(ajustarCanvas, 120);
+    });
+
+    ajustarCanvas();
+    dibujar(performance.now());
+    canvas.classList.add('is-ready');
+    pedirCuadro();
+  }
+
+  function dibujar(ahora) {
+    if (!gl || !U.R) return;
+    gl.uniform2f(U.R, canvas.width, canvas.height);
+    gl.uniform1f(U.T, reducirMovimiento ? 12 : ahora / 1000);
+    gl.uniform1f(U.S, oleada);
+    gl.uniform1f(U.K, k);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  /* ---- El reloj ---- */
+  function escribir(hundimiento, dip) {
+    raiz.setProperty('--sink', `${hundimiento.toFixed(1)}px`);
+    raiz.setProperty('--k', k.toFixed(4));
+    raiz.setProperty('--k2', k2.toFixed(4));
+    raiz.setProperty('--dip', dip.toFixed(4));
+    if (!gl) raiz.setProperty('--surge', oleada.toFixed(4));
+  }
+
+  function intercambiar() {
+    sets[visible].classList.remove('is-on');
+    visible = destino;
+    sets[visible].classList.add('is-on');
+    cambiado = true;
+  }
+
+  function pedirCuadro() {
+    if (!cuadro) cuadro = requestAnimationFrame(alCuadro);
+  }
+
+  function alCuadro(ahora) {
+    cuadro = 0;
+
+    if (animando) {
+      let d = ahora - inicio;
+
+      // El cambio de casa ocurre en el punto más hondo, cuando la niebla tapa el techo.
+      // Si las fotos de la otra hora aún no cargan, la casa espera ahí (máximo 4 s).
+      if (d >= SINK && !cambiado) {
+        if (!listo[destino] && (!esperaDesde || ahora - esperaDesde < 4000)) {
+          if (!esperaDesde) esperaDesde = ahora;
+          inicio = ahora - SINK;
+          d = SINK;
+        } else {
+          intercambiar();
+        }
+      }
+
+      let y = 0;
+      if (d < SINK) {
+        const x = d / SINK;
+        y = x * x * (3 - 2 * x) * DEPTH;              // baja
+      } else if (d < SINK + RISE) {
+        const x = (d - SINK) / RISE;
+        y = Math.pow(1 - x, 3.4) * DEPTH;             // sube
+      }
+
+      oleada = suave(0, SINK * 0.92, d) * (1 - suave(SINK + 70, SINK + RISE * 0.92, d));
+      const dip = suave(30, 190, d) * (1 - suave(330, 720, d));
+      k = desdeK + (destino - desdeK) * suave(120, 520, d);
+      k2 = desdeK2 + (destino - desdeK2) * suave(340, 760, d);
+      escribir(y * window.innerHeight, dip);
+
+      if (d >= SINK + RISE) {
+        animando = false;
+        oleada = 0;
+        k = destino;
+        k2 = destino;
+        escribir(0, 0);
+        const siguiente = enEspera;
+        enEspera = null;
+        if (siguiente !== null && siguiente !== destino) comenzar(siguiente);
+      }
+    }
+
+    dibujar(ahora);
+    medirCuadro(ahora);
+    if (animando || (gl && heroEnPantalla && !reducirMovimiento && !nieblaQuieta)) pedirCuadro();
+    else ultimoCuadro = 0;
+  }
+
+  /** Si la mediana de 20 cuadros pasa de 24 ms, la niebla se dibuja con menos pixeles */
+  function medirCuadro(ahora) {
+    if (!gl || reducirMovimiento) return;
+    const dt = ultimoCuadro ? ahora - ultimoCuadro : 0;
+    ultimoCuadro = ahora;
+    if (dt <= 0 || dt > 250) return; // pausas (pestaña oculta, hero fuera de pantalla)
+    duraciones.push(dt);
+    if (duraciones.length < 20) return;
+    duraciones.sort((a, b) => a - b);
+    const mediana = duraciones[10];
+    duraciones.length = 0;
+    if (mediana > 24 && escala > 0.25) {
+      escala = Math.max(0.25, escala * 0.6);
+      ajustarCanvas();
+    } else if (mediana > 40) {
+      nieblaQuieta = true;
+    }
+  }
+
+  function comenzar(modo) {
+    destino = modo;
+    botones.forEach((b, i) => b.setAttribute('aria-pressed', String(i === modo)));
+    cargarModo(modo);
+    iniciarNiebla();
+    registrarEvento('hero_hora', { hora: modo === 0 ? 'manana' : 'noche' });
+
+    // Movimiento reducido: el cambio es instantáneo (en cuanto las fotos están listas)
+    if (reducirMovimiento) {
+      cargarModo(modo).then(() => {
+        if (destino !== modo) return;
+        intercambiar();
+        k = modo;
+        k2 = modo;
+        oleada = 0;
+        escribir(0, 0);
+        dibujar(0);
+      });
+      return;
+    }
+
+    desdeK = k;
+    desdeK2 = k2;
+    inicio = performance.now();
+    esperaDesde = 0;
+    cambiado = false;
+    animando = true;
+    pedirCuadro();
+  }
+
+  function elegir(modo) {
+    // Un clic durante la animación se guarda y corre después (salvo que sea la misma hora)
+    if (animando) {
+      enEspera = modo === destino ? null : modo;
+      return;
+    }
+    if (modo !== destino) comenzar(modo);
+  }
+
+  botones.forEach((boton, i) => boton.addEventListener('click', () => elegir(i)));
+
+  // Precargar la mañana en cuanto el usuario se acerca al selector
+  const selector = $('.toggle', hero);
+  ['pointerenter', 'focusin', 'touchstart'].forEach((evento) => {
+    selector.addEventListener(evento, () => { cargarModo(0); iniciarNiebla(); }, { once: true, passive: true });
+  });
+
+  // Pausar la niebla cuando el hero no está en pantalla
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([entrada]) => {
+      heroEnPantalla = entrada.isIntersecting;
+      if (heroEnPantalla) pedirCuadro();
+    }).observe(hero);
+
+    // Avisar al CSS si los botones del hero están a la vista (en celular, los flotantes esperan)
+    const dock = $('.hero__dock', hero);
+    if (dock) {
+      new IntersectionObserver(([entrada]) => {
+        document.body.classList.toggle('hero-dock-visible', entrada.isIntersecting);
+      }, { threshold: 0.2 }).observe(dock);
+    }
+  }
+
+  // La casa de noche se pide en cuanto el navegador pinta el titular (primer pintado con contenido)
+  let casaPedida = false;
+  const pedirCasa = () => {
+    if (casaPedida) return;
+    casaPedida = true;
+    cargarModo(1).then(() => hero.classList.add('casa-lista'));
+  };
+  const tipos = window.PerformanceObserver && PerformanceObserver.supportedEntryTypes;
+  if (tipos && tipos.includes('paint')) {
+    new PerformanceObserver((lista, observador) => {
+      if (lista.getEntriesByName('first-contentful-paint').length) {
+        observador.disconnect();
+        setTimeout(pedirCasa, 0);
+      }
+    }).observe({ type: 'paint', buffered: true });
+    setTimeout(pedirCasa, 1500); // por si el navegador no reporta el pintado
+  } else {
+    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(pedirCasa, 50)));
+  }
+
+  // La niebla y las fotos de la mañana se preparan cuando la página ya cargó
+  const despuesDeCargar = () => {
+    const tarea = () => { iniciarNiebla(); cargarModo(0); };
+    if ('requestIdleCallback' in window) requestIdleCallback(tarea, { timeout: 2500 });
+    else setTimeout(tarea, 400);
+  };
+  if (document.readyState === 'complete') despuesDeCargar();
+  else window.addEventListener('load', despuesDeCargar, { once: true });
+}
+
+/* -------------------------------------------------------------------------
    Luz que sigue al cursor en las tarjetas (solo en equipos con mouse)
    ------------------------------------------------------------------------- */
 function iniciarBrilloTarjetas() {
@@ -1088,6 +1484,7 @@ function iniciarBrilloTarjetas() {
    Inicio
    ------------------------------------------------------------------------- */
 aplicarConfig();
+iniciarHero();
 iniciarHeader();
 iniciarApariciones();
 iniciarContadores();

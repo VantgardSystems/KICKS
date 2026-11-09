@@ -185,32 +185,69 @@
 
   <main id="contenido">
 
-    <!-- ===================== 2. HERO ===================== -->
+    <!-- ===================== 2. HERO: MAÑANA / NOCHE CON NIEBLA =====================
+         Capas, de abajo hacia arriba: cielo desenfocado (fijo) → casa y jardín (solo se mueven
+         en Y) → desenfoque inferior → niebla WebGL2 → textos. Un solo reloj en main.js mueve todo.
+         El titular y el cielo se pintan primero; la casa de noche se pide justo después del primer
+         cuadro y la de mañana cuando la página ya cargó, para no frenar la carga. -->
     <section class="hero" id="inicio" aria-labelledby="hero-titulo">
-      <div class="hero__bg" aria-hidden="true">
-        <span class="flare flare--sol"></span>
-        <span class="flare flare--verde"></span>
-        <span class="hero__grid"></span>
+      <div class="hero__layer hero__sky" aria-hidden="true">
+        <img id="skyM" class="hero__img" data-diferido="m" data-srcset="assets/img/hero/cielo-m-960.webp 960w, assets/img/hero/cielo-m-1600.webp 1600w" sizes="100vw" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="1600" height="905" alt="" decoding="async">
+        <img id="skyN" class="hero__img" srcset="assets/img/hero/cielo-n-960.webp 960w, assets/img/hero/cielo-n-1600.webp 1600w" sizes="100vw" src="assets/img/hero/cielo-n-1600.webp" width="1600" height="905" alt="" fetchpriority="high" decoding="async">
       </div>
 
-      <div class="container hero__inner">
-        <div class="hero__content">
-          <p class="badge"><span class="badge__dot" aria-hidden="true"></span>Paneles solares en León, Guanajuato</p>
+      <div class="hero__layer hero__home">
+        <div class="hero__set" id="setM">
+        <picture class="hero__layer hero__ground">
+          <source media="(max-width: 820px)" data-diferido="m" data-srcset="assets/img/hero/suelo-m-movil.webp" width="1741" height="1440">
+          <img class="hero__img" data-diferido="m" data-srcset="assets/img/hero/suelo-m-1440.webp 1440w, assets/img/hero/suelo-m-1920.webp 1920w, assets/img/hero/suelo-m-2560.webp 2560w" sizes="(min-aspect-ratio: 16/9) 100vw, 178vh" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="2560" height="1440" alt="" decoding="async">
+        </picture>
+        <picture class="hero__layer">
+          <source media="(max-width: 820px)" data-diferido="m" data-srcset="assets/img/hero/casa-m-movil.webp" width="1741" height="1440">
+          <img class="hero__img hero__cut" data-diferido="m" data-srcset="assets/img/hero/casa-m-1440.webp 1440w, assets/img/hero/casa-m-1920.webp 1920w, assets/img/hero/casa-m-2560.webp 2560w" sizes="(min-aspect-ratio: 16/9) 100vw, 178vh" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="2560" height="1440" alt="Casa con paneles solares en el techo, con la luz de la mañana" decoding="async">
+        </picture>
+        </div>
+        <div class="hero__set is-on" id="setN">
+        <picture class="hero__layer hero__ground">
+          <source media="(max-width: 820px)" data-diferido="n" data-srcset="assets/img/hero/suelo-n-movil.webp" width="1741" height="1440">
+          <img class="hero__img" data-diferido="n" data-srcset="assets/img/hero/suelo-n-1440.webp 1440w, assets/img/hero/suelo-n-1920.webp 1920w, assets/img/hero/suelo-n-2560.webp 2560w" sizes="(min-aspect-ratio: 16/9) 100vw, 178vh" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="2560" height="1440" alt="" decoding="async">
+        </picture>
+        <picture class="hero__layer">
+          <source media="(max-width: 820px)" data-diferido="n" data-srcset="assets/img/hero/casa-n-movil.webp" width="1741" height="1440">
+          <img class="hero__img hero__cut" data-diferido="n" data-srcset="assets/img/hero/casa-n-1440.webp 1440w, assets/img/hero/casa-n-1920.webp 1920w, assets/img/hero/casa-n-2560.webp 2560w" sizes="(min-aspect-ratio: 16/9) 100vw, 178vh" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="2560" height="1440" alt="La misma casa de noche, con las ventanas iluminadas" decoding="async">
+        </picture>
+        </div>
+      </div>
 
-          <h1 class="hero__title" id="hero-titulo">Paga hasta <span class="text-gradient">95% menos</span> de luz en León con energía solar</h1>
+      <div class="hero__tilt" aria-hidden="true"></div>
+      <canvas class="hero__fog" id="fog" aria-hidden="true"></canvas>
+      <div class="hero__fog-fallback" aria-hidden="true"></div>
 
-          <p class="hero__lead">Instalación profesional, trámite con CFE incluido y 25 años de garantía. Tú solo te dedicas a ahorrar.</p>
+      <div class="hero__ui">
+        <h1 class="hero__title" id="hero-titulo">
+          <span class="l1">Paga hasta 95% menos de luz</span>
+          <span><i>en León con</i> <span class="y">energía solar</span></span>
+        </h1>
 
-          <div class="hero__actions">
-            <a class="btn btn--primary btn--lg" href="#calculadora">
+        <div class="hero__dock">
+          <div class="hero__controls">
+            <a class="btn btn--primary hero__btn" href="#calculadora">
               Calcula tu ahorro
               <svg class="icon" aria-hidden="true"><use href="#i-flecha-abajo"/></svg>
             </a>
-            <a class="btn btn--ghost btn--lg" href="#contacto" data-wa="hero">
-              <svg class="icon icon--wa" aria-hidden="true"><use href="#i-whatsapp"/></svg>
-              Cotiza por WhatsApp
+
+            <div class="toggle" role="group" aria-label="Hora del día">
+              <button type="button" id="bm" aria-pressed="false"><b>Mañana</b><small>Tus paneles generan</small></button>
+              <button type="button" id="bn" aria-pressed="true"><b>Noche</b><small>Sigues ahorrando</small></button>
+            </div>
+
+            <a class="btn hero__btn hero__btn--wa" href="#contacto" data-wa="hero">
+              <svg class="icon" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+              <span><span class="hero__btn-extra">Cotiza por </span>WhatsApp</span>
             </a>
           </div>
+
+          <p class="hero__cap">Instalación profesional, trámite con CFE incluido y 25 años de garantía.<span class="hero__cap-extra"><br>Tú solo te dedicas a ahorrar.</span></p>
 
           <ul class="trust" aria-label="Razones para confiar en GEM">
             <li class="trust__item">
@@ -219,30 +256,9 @@
               </span>
               <span><strong data-config="calificacion">[CALIFICACIÓN]</strong> en Google · <span data-config="resenas">[RESEÑAS]</span> reseñas</span>
             </li>
-            <li class="trust__item"><span><strong data-config="instalaciones">[INSTALACIONES]</strong> instalaciones</span></li>
-            <li class="trust__item"><span><strong data-config="anios">[AÑOS]</strong> años de experiencia</span></li>
+            <li class="trust__item trust__item--extra"><span><strong data-config="instalaciones">[INSTALACIONES]</strong> instalaciones</span></li>
+            <li class="trust__item trust__item--extra"><span><strong data-config="anios">[AÑOS]</strong> años de experiencia</span></li>
           </ul>
-        </div>
-
-        <div class="hero__media">
-          <div class="hero__frame">
-            <!-- Reemplaza por una foto real (ver assets/img/LEEME.md) -->
-            <img src="assets/img/hero-casa-paneles.svg" width="800" height="700" alt="Casa en León, Guanajuato, con paneles solares instalados en el techo" fetchpriority="high" decoding="async">
-          </div>
-          <div class="float-card float-card--ahorro" aria-hidden="true">
-            <span class="float-card__icon"><svg class="icon"><use href="#i-baja"/></svg></span>
-            <span>
-              <span class="float-card__label">Tu recibo de CFE</span>
-              <span class="float-card__value">hasta −95%</span>
-            </span>
-          </div>
-          <div class="float-card float-card--cfe" aria-hidden="true">
-            <span class="float-card__icon float-card__icon--check"><svg class="icon"><use href="#i-check"/></svg></span>
-            <span>
-              <span class="float-card__label">Trámite con CFE</span>
-              <span class="float-card__value float-card__value--sm">Incluido</span>
-            </span>
-          </div>
         </div>
       </div>
     </section>
@@ -482,6 +498,9 @@
 
         <ul class="services__grid" data-stagger>
           <li class="card service reveal">
+            <figure class="service__media">
+              <img src="assets/img/fotos/servicio-residencial-800.webp" srcset="assets/img/fotos/servicio-residencial-480.webp 480w, assets/img/fotos/servicio-residencial-800.webp 800w, assets/img/fotos/servicio-residencial-1200.webp 1200w" sizes="(min-width: 1100px) 290px, (min-width: 640px) 46vw, 92vw" width="1200" height="750" loading="lazy" decoding="async" alt="Instalador colocando paneles solares en el techo de una casa">
+            </figure>
             <span class="card__icon"><svg class="icon" aria-hidden="true"><use href="#i-casa"/></svg></span>
             <h3 class="card__title">Residencial</h3>
             <p class="card__text">Sistemas para tu casa que bajan tu recibo y te sacan de la tarifa DAC.</p>
@@ -493,6 +512,9 @@
             <a class="service__link" href="#contacto" data-wa="residencial">Cotiza para tu casa <svg class="icon" aria-hidden="true"><use href="#i-flecha"/></svg></a>
           </li>
           <li class="card service reveal">
+            <figure class="service__media">
+              <img src="assets/img/fotos/servicio-comercial-800.webp" srcset="assets/img/fotos/servicio-comercial-480.webp 480w, assets/img/fotos/servicio-comercial-800.webp 800w, assets/img/fotos/servicio-comercial-1200.webp 1200w" sizes="(min-width: 1100px) 290px, (min-width: 640px) 46vw, 92vw" width="1200" height="750" loading="lazy" decoding="async" alt="Técnicos instalando paneles solares en la azotea de un negocio">
+            </figure>
             <span class="card__icon"><svg class="icon" aria-hidden="true"><use href="#i-tienda"/></svg></span>
             <h3 class="card__title">Comercial</h3>
             <p class="card__text">Para tiendas, restaurantes, oficinas, clínicas y escuelas que quieren bajar su costo de operación.</p>
@@ -504,6 +526,9 @@
             <a class="service__link" href="#contacto" data-wa="comercial">Cotiza para tu negocio <svg class="icon" aria-hidden="true"><use href="#i-flecha"/></svg></a>
           </li>
           <li class="card service reveal">
+            <figure class="service__media">
+              <img src="assets/img/fotos/servicio-industrial-800.webp" srcset="assets/img/fotos/servicio-industrial-480.webp 480w, assets/img/fotos/servicio-industrial-800.webp 800w, assets/img/fotos/servicio-industrial-1200.webp 1200w" sizes="(min-width: 1100px) 290px, (min-width: 640px) 46vw, 92vw" width="1200" height="750" loading="lazy" decoding="async" alt="Equipo instalando paneles solares en el techo de una nave industrial">
+            </figure>
             <span class="card__icon"><svg class="icon" aria-hidden="true"><use href="#i-fabrica"/></svg></span>
             <h3 class="card__title">Industrial</h3>
             <p class="card__text">Sistemas de mayor capacidad para naves y plantas en León y el Bajío.</p>
@@ -515,6 +540,9 @@
             <a class="service__link" href="#contacto" data-wa="industrial">Cotiza tu proyecto <svg class="icon" aria-hidden="true"><use href="#i-flecha"/></svg></a>
           </li>
           <li class="card service reveal">
+            <figure class="service__media">
+              <img src="assets/img/fotos/servicio-mantenimiento-800.webp" srcset="assets/img/fotos/servicio-mantenimiento-480.webp 480w, assets/img/fotos/servicio-mantenimiento-800.webp 800w, assets/img/fotos/servicio-mantenimiento-1200.webp 1200w" sizes="(min-width: 1100px) 290px, (min-width: 640px) 46vw, 92vw" width="1200" height="750" loading="lazy" decoding="async" alt="Técnicos limpiando paneles solares con cepillo y agua">
+            </figure>
             <span class="card__icon"><svg class="icon" aria-hidden="true"><use href="#i-gota"/></svg></span>
             <h3 class="card__title">Mantenimiento y limpieza</h3>
             <p class="card__text">El polvo baja la producción de tus paneles. Mantén tu sistema rindiendo al máximo.</p>
@@ -538,6 +566,10 @@
           <p class="section__lead">No somos un call center. Somos un equipo local que diseña, instala y da seguimiento a cada proyecto.</p>
           <a class="btn btn--primary btn--lg why__cta" href="#contacto">Cotiza gratis <svg class="icon" aria-hidden="true"><use href="#i-flecha"/></svg></a>
 
+          <div class="why__visual">
+            <figure class="why__photo">
+              <img src="assets/img/fotos/instalador-gem-960.webp" srcset="assets/img/fotos/instalador-gem-640.webp 640w, assets/img/fotos/instalador-gem-960.webp 960w, assets/img/fotos/instalador-gem-1280.webp 1280w" sizes="(min-width: 1024px) 440px, (min-width: 640px) 78vw, 92vw" width="1280" height="960" loading="lazy" decoding="async" alt="Instalador colocando un panel solar en un techo de teja">
+            </figure>
           <!-- Maqueta ilustrativa de la app de monitoreo (decorativa) -->
           <div class="phone" aria-hidden="true">
             <div class="phone__screen">
@@ -553,6 +585,7 @@
                 <div><small>CO₂ evitado</small><strong>86 kg</strong></div>
               </div>
             </div>
+          </div>
           </div>
         </div>
 
@@ -612,12 +645,12 @@
         </div>
         <p class="sr-only" id="proyectos-estado" aria-live="polite"></p>
 
-        <!-- EJEMPLO – reemplazar por proyectos reales (foto, colonia, kW, paneles y ahorro) -->
+        <!-- EJEMPLO – reemplazar por proyectos reales (foto, colonia, kW, paneles y ahorro). Las fotos actuales son de Pexels (ver assets/img/CREDITOS.md) -->
         <ul class="projects__grid" data-stagger>
           <li class="project reveal" data-categoria="residencial">
             <article class="project__card">
               <figure class="project__media">
-                <img src="assets/img/proyecto-residencial-1.svg" width="800" height="600" loading="lazy" decoding="async" alt="Casa en Lomas del Campestre, León, con 12 paneles solares en el techo">
+                <img src="assets/img/fotos/proyecto-residencial-1-800.webp" srcset="assets/img/fotos/proyecto-residencial-1-480.webp 480w, assets/img/fotos/proyecto-residencial-1-800.webp 800w, assets/img/fotos/proyecto-residencial-1-1200.webp 1200w" sizes="(min-width: 1024px) 380px, (min-width: 640px) 46vw, 92vw" width="1200" height="900" loading="lazy" decoding="async" alt="Casa con techo de teja y paneles solares bajo cielo despejado">
                 <span class="project__tag">Residencial</span>
               </figure>
               <div class="project__body">
@@ -634,7 +667,7 @@
           <li class="project reveal" data-categoria="comercial">
             <article class="project__card">
               <figure class="project__media">
-                <img src="assets/img/proyecto-comercial-1.svg" width="800" height="600" loading="lazy" decoding="async" alt="Restaurante en Blvd. Campestre con paneles solares en la azotea">
+                <img src="assets/img/fotos/proyecto-comercial-1-800.webp" srcset="assets/img/fotos/proyecto-comercial-1-480.webp 480w, assets/img/fotos/proyecto-comercial-1-800.webp 800w, assets/img/fotos/proyecto-comercial-1-1200.webp 1200w" sizes="(min-width: 1024px) 380px, (min-width: 640px) 46vw, 92vw" width="1200" height="900" loading="lazy" decoding="async" alt="Vista aérea de un edificio comercial con paneles solares en la azotea">
                 <span class="project__tag">Comercial</span>
               </figure>
               <div class="project__body">
@@ -651,7 +684,7 @@
           <li class="project reveal" data-categoria="residencial">
             <article class="project__card">
               <figure class="project__media">
-                <img src="assets/img/proyecto-residencial-2.svg" width="800" height="600" loading="lazy" decoding="async" alt="Casa en Jardines del Moral, León, con 8 paneles solares">
+                <img src="assets/img/fotos/proyecto-residencial-2-800.webp" srcset="assets/img/fotos/proyecto-residencial-2-480.webp 480w, assets/img/fotos/proyecto-residencial-2-800.webp 800w, assets/img/fotos/proyecto-residencial-2-1200.webp 1200w" sizes="(min-width: 1024px) 380px, (min-width: 640px) 46vw, 92vw" width="1200" height="900" loading="lazy" decoding="async" alt="Vista aérea de una casa con paneles solares sobre techo de teja">
                 <span class="project__tag">Residencial</span>
               </figure>
               <div class="project__body">
@@ -668,15 +701,15 @@
           <li class="project reveal" data-categoria="comercial">
             <article class="project__card">
               <figure class="project__media">
-                <img src="assets/img/proyecto-comercial-2.svg" width="800" height="600" loading="lazy" decoding="async" alt="Nave industrial en Zona Piel, León, con 64 paneles solares">
+                <img src="assets/img/fotos/proyecto-comercial-2-800.webp" srcset="assets/img/fotos/proyecto-comercial-2-480.webp 480w, assets/img/fotos/proyecto-comercial-2-800.webp 800w, assets/img/fotos/proyecto-comercial-2-1200.webp 1200w" sizes="(min-width: 1024px) 380px, (min-width: 640px) 46vw, 92vw" width="1200" height="900" loading="lazy" decoding="async" alt="Vista aérea de una nave industrial con la azotea cubierta de paneles solares">
                 <span class="project__tag">Industrial</span>
               </figure>
               <div class="project__body">
                 <h3 class="project__title">Nave industrial en Zona Piel</h3>
                 <p class="project__place"><svg class="icon" aria-hidden="true"><use href="#i-ubicacion"/></svg>León, Gto.</p>
                 <dl class="project__data">
-                  <div><dt>Sistema</dt><dd>35 kW</dd></div>
-                  <div><dt>Paneles</dt><dd>64</dd></div>
+                  <div><dt>Sistema</dt><dd>250 kW</dd></div>
+                  <div><dt>Paneles</dt><dd>455</dd></div>
                   <div><dt>Ahorro</dt><dd>85%</dd></div>
                 </dl>
               </div>
@@ -685,7 +718,7 @@
           <li class="project reveal" data-categoria="residencial">
             <article class="project__card">
               <figure class="project__media">
-                <img src="assets/img/proyecto-residencial-3.svg" width="800" height="600" loading="lazy" decoding="async" alt="Residencia en El Mayorazgo, León, con 18 paneles solares">
+                <img src="assets/img/fotos/proyecto-residencial-3-800.webp" srcset="assets/img/fotos/proyecto-residencial-3-480.webp 480w, assets/img/fotos/proyecto-residencial-3-800.webp 800w, assets/img/fotos/proyecto-residencial-3-1200.webp 1200w" sizes="(min-width: 1024px) 380px, (min-width: 640px) 46vw, 92vw" width="1200" height="900" loading="lazy" decoding="async" alt="Casas con paneles solares negros en el techo">
                 <span class="project__tag">Residencial</span>
               </figure>
               <div class="project__body">
@@ -702,7 +735,7 @@
           <li class="project reveal" data-categoria="comercial">
             <article class="project__card">
               <figure class="project__media">
-                <img src="assets/img/proyecto-comercial-3.svg" width="800" height="600" loading="lazy" decoding="async" alt="Plaza comercial en Blvd. Aeropuerto, León, con paneles solares en la azotea">
+                <img src="assets/img/fotos/proyecto-comercial-3-800.webp" srcset="assets/img/fotos/proyecto-comercial-3-480.webp 480w, assets/img/fotos/proyecto-comercial-3-800.webp 800w, assets/img/fotos/proyecto-comercial-3-1200.webp 1200w" sizes="(min-width: 1024px) 380px, (min-width: 640px) 46vw, 92vw" width="1200" height="900" loading="lazy" decoding="async" alt="Azotea comercial vista desde arriba con un arreglo de paneles solares">
                 <span class="project__tag">Comercial</span>
               </figure>
               <div class="project__body">
