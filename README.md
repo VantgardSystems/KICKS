@@ -11,6 +11,7 @@ assets/img/              Logo, logo inverso, favicon e ícono para iOS
 docs/plan-de-diseno.md   Paleta, tipografía, wireframes, principios y revisión del plan
 docs/imagenes-ia.md      Imágenes generadas con IA: modelos, prompts y cómo regenerarlas
 herramientas/preparar-hero.py  Recorta la casa y prepara las 3 capas del hero a partir de una foto
+herramientas/estilo-imagen.py  Da a cualquier foto la luz cálida de la página y la exporta en WebP en dos tamaños
 ```
 
 Para verla en tu compu: `python3 -m http.server` y abre `http://localhost:8000`.
@@ -19,8 +20,8 @@ Para verla en tu compu: `python3 -m http.server` y abre `http://localhost:8000`.
 
 1. **Conecta el formulario.** En `assets/js/ecowatt.js`, pon en `CONFIG.formulario.endpoint` la URL que va a recibir los datos (Formspree, Netlify Forms, un webhook o un PHP propio; llegan por POST multipart, con la foto del recibo). Mientras esté vacío, el formulario funciona en **modo demostración**: muestra el mensaje de éxito, pero no manda los datos a ningún lado.
 2. **Ajusta la calculadora.** Revisa cada valor marcado con `[Ajustar]` en `CONFIG` y luego cambia `datosDeEjemplo` a `false` para quitar la etiqueta "Valores de ejemplo".
-3. **Reemplaza los placeholders** de la lista de abajo y borra cada etiqueta `<span class="ej">Ejemplo</span>` que acompaña al dato que ya confirmaste.
-4. **Pon las fotos reales.** En los proyectos, cambia la ilustración de `.proyecto-ilus` por la foto del proyecto. En "Quiénes somos", cambia cada `.marco` por la foto del equipo, la camioneta o la bodega. Usa WebP de unos 1200 px de ancho, con `loading="lazy"` y un texto alternativo que describa la foto.
+3. **Reemplaza los placeholders** de la lista de abajo y borra cada etiqueta `<span class="ej">EDITAR</span>` que acompaña al dato que ya confirmaste.
+4. **Pon las fotos reales.** En los proyectos, cambia la ilustración de `.proyecto-ilus` por la foto del proyecto. En "Quiénes somos", cambia cada `.marco` por la foto del equipo, la camioneta o la bodega. Pásalas antes por `python3 herramientas/estilo-imagen.py foto.jpg assets/img/secciones/nombre --anchos 1200 720 --recorte 4:3`: así quedan con la misma luz que el resto de la página, en WebP y en dos tamaños. En el HTML usa `loading="lazy"`, `width` y `height`, y un texto alternativo que describa la foto.
 
 ## Páginas por ciudad
 
