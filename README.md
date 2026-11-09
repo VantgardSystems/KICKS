@@ -37,8 +37,8 @@ La página ya está lista para duplicarse por ciudad, por ejemplo `/paneles-sola
 ### Confianza y reputación
 | Dónde | Placeholder |
 |---|---|
-| Hero (franja de confianza) | `[4.9] de 5` calificación en Google |
-| Hero (franja de confianza) | `[000]` sistemas instalados |
+| Hero (fila de datos, debajo de los botones) | `[4.9]` de 5 en Google |
+| Hero (fila de datos, debajo de los botones) | `[000]` sistemas instalados |
 | Testimonios (bloque de Google) | `[4.9]` calificación y `[000]` reseñas |
 | Testimonios (3) | `[Testimonio real de cliente…]`, `[Nombre del cliente]` / `[Nombre y negocio]`, `[Colonia]` y la foto del cliente |
 | Botón "Ver reseñas en Google" | Confirmar que `https://maps.app.goo.gl/Gwjrf4gjT9DuF31M9` (tomado del sitio actual) abre la ficha de Google con las reseñas |

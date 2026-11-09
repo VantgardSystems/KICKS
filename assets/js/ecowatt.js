@@ -62,10 +62,10 @@ const CONFIG = {
   hero: {
     hundir: 240,          // ms que tarda la casa en hundirse en la niebla
     subir: 820,           // ms que tarda en volver a subir con la nueva luz
-    profundidad: 0.27,    // cuánto se hunde, como fracción de la altura de la pantalla
+    profundidad: 0.32,    // cuánto se hunde, como fracción de la altura de la ventana del hero
     imagen: { ancho: 2400, alto: 1350 }, // tamaño de las fotos del hero
     porche: { x: 0.825, y: 0.68 },       // dónde está la luz del porche en la foto de noche (0 a 1); tiñe la niebla de ámbar
-    techo: 0.30,          // dónde empieza el techo en la foto (0 = arriba); en escritorio la casa se acomoda debajo de los botones
+    nieblaReposo: 0.74,   // dónde empieza la niebla quieta, de 0 (arriba de la ventana) a 1 (abajo)
   },
 
   formulario: {
@@ -162,8 +162,9 @@ const CONFIG = {
      punto más hondo, cuando la niebla tapa el techo.
      ------------------------------------------------------------------------ */
   const hero = $('#inicio');
+  const escena = $('.hero-escena');
   const lienzo = $('#niebla');
-  if (hero && lienzo) {
+  if (hero && escena && lienzo) {
     const H = CONFIG.hero;
     const raiz = document.documentElement.style;
     const cabecera = $('.cabecera');
@@ -273,7 +274,7 @@ void main(){
     }
 
     // Geometría de la foto con object-fit: cover dentro de la capa de la casa.
-    // En escritorio la capa mide lo mismo que el hero; en celular es una banda abajo.
+    // La capa de la casa vive dentro de la ventana (.hero-escena), igual que la niebla.
     const caja = $('.hero-casa');
     const geometria = () => {
       const img = $('.recorte', sets[1]);
@@ -289,40 +290,27 @@ void main(){
         oy: (Hc - ih * esc) * py,
         izq: caja.offsetLeft,
         arriba: caja.offsetTop,
-        anchoHero: hero.clientWidth,
-        altoHero: hero.clientHeight,
+        anchoEscena: escena.clientWidth,
+        altoEscena: escena.clientHeight,
       };
-    };
-
-    // En escritorio, baja la casa lo justo para que el techo quede debajo de los botones.
-    const escritorio = window.matchMedia('(min-width: 821px)');
-    const calcularBase = () => {
-      if (!escritorio.matches) { hero.style.removeProperty('--base'); return; }
-      hero.style.setProperty('--base', '0px');
-      const g = geometria();
-      const techo = g.oy + H.techo * g.ih * g.esc;
-      const botonesAbajo = $('.hero-acciones', hero).getBoundingClientRect().bottom - hero.getBoundingClientRect().top;
-      const base = limitar(botonesAbajo + 16 - techo, 0, g.altoHero * 0.24);
-      hero.style.setProperty('--base', `${Math.round(base)}px`);
     };
 
     // Lleva la posición del porche (en la foto) a coordenadas de la niebla.
     const calcularPorche = () => {
       const g = geometria();
       porche = [
-        (g.izq + g.ox + H.porche.x * g.iw * g.esc) / g.anchoHero,
-        (g.arriba + g.oy + H.porche.y * g.ih * g.esc) / g.altoHero,
+        (g.izq + g.ox + H.porche.x * g.iw * g.esc) / g.anchoEscena,
+        (g.arriba + g.oy + H.porche.y * g.ih * g.esc) / g.altoEscena,
       ];
     };
 
     const medir = () => {
-      calcularBase();
       calcularPorche();
       if (!U) return;
-      const W = hero.clientWidth;
+      const W = escena.clientWidth;
       const esc = Math.min(1, 960 / W);
       lienzo.width = Math.max(1, Math.round(W * esc));
-      lienzo.height = Math.max(1, Math.round(hero.clientHeight * esc));
+      lienzo.height = Math.max(1, Math.round(escena.clientHeight * esc));
       gl.viewport(0, 0, lienzo.width, lienzo.height);
     };
 
@@ -334,8 +322,7 @@ void main(){
       gl.uniform1f(U.S, oleada);
       gl.uniform1f(U.K, k);
       gl.uniform2f(U.G, porche[0], porche[1]);
-      // En celular la casa está abajo: la niebla de reposo empieza más abajo para no taparla.
-      gl.uniform1f(U.F, escritorio.matches ? 0.70 : 0.9);
+      gl.uniform1f(U.F, H.nieblaReposo);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
@@ -362,7 +349,7 @@ void main(){
         oleada = suave(0, SINK * 0.92, d) * (1 - suave(SINK + 70, SINK + RISE * 0.92, d));
         const dip = suave(30, 190, d) * (1 - suave(330, 720, d));
         k = desde + (objetivo - desde) * suave(120, 520, d);
-        escribir(y * window.innerHeight, dip, k);
+        escribir(y * escena.clientHeight, dip, k);
         if (d >= SINK + RISE) {
           animando = false;
           inicio = -1;
@@ -404,10 +391,9 @@ void main(){
     }
     botones.forEach((b, i) => b.addEventListener('click', () => pedir(i)));
 
-    // Cabecera transparente mientras está encima del hero.
+    // Mientras el hero está en pantalla, en celular se esconde la burbuja del asistente.
     const estadoCabecera = () => {
       const sobre = hero.getBoundingClientRect().bottom > cabecera.offsetHeight + 2 && !nav.classList.contains('abierto');
-      cabecera.classList.toggle('sobre-hero', sobre);
       document.body.classList.toggle('en-hero', sobre);
     };
     alCambiarMenu = estadoCabecera;

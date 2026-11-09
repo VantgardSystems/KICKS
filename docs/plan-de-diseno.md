@@ -184,3 +184,28 @@ El cliente pidió una interfaz distinta, con más color y animación, y que la p
   - Los títulos usan `text-wrap: balance`.
   - Los párrafos usan `text-wrap: pretty`, para no dejar una palabra sola en la última línea.
 - **Botones y campos** heredan la fuente de la página (`font: inherit`). Antes algunos caían en Arial.
+
+### Fase 3: hero
+- **Composición:**
+  - En escritorio, el texto va a la izquierda en una columna de 420 a 560 px. A la derecha va una ventana redondeada con la casa, que llena todo el alto del hero y sale por el borde derecho de la pantalla.
+  - En celular el orden es: texto y botones, la ventana con el interruptor, y abajo los datos. El H1 y los dos botones caben en la primera pantalla, y la ventana completa queda arriba de la barra fija.
+- **Titular:**
+  - Se queda "Paga el mínimo de luz con paneles solares en León", porque habla del ahorro y lleva la ciudad para el SEO local.
+  - En escritorio mide `min(--t-h1, ancho de columna / 8.3, 9.5vh)`, así cae en tres líneas parejas: 62 px en 1280 y 67 px en 1440.
+- **Subtítulo** de una línea: "Diseñamos, instalamos y monitoreamos tu sistema solar."
+- **Botones:**
+  - "Cotiza tu sistema gratis": WhatsApp con mensaje prellenado.
+  - "Calcula tu ahorro": lleva a la calculadora.
+- **Tres datos de confianza:**
+  - 40+ años en instalaciones eléctricas (dato real).
+  - `[000]` sistemas instalados y `[4.9]` de 5 en Google, marcados EDITAR.
+  - Sustituyen a la franja de cuatro tarjetas que había debajo del hero, que los repetía.
+- **Animación:**
+  - Se conserva la de día y noche con niebla WebGL, ahora dentro de la ventana. La casa, el porche y la niebla se miden contra la ventana, no contra la pantalla.
+  - La casa (16:9) se apoya abajo y su ancho es `max(107cqw, 172cqh)`, así el techo queda a un tercio de altura en cualquier proporción.
+  - El interruptor va arriba, sobre el cielo, en celular y tableta, y abajo, sobre la niebla, en escritorio.
+- **Entrada:** una sola secuencia al cargar, de 400 ms (título, subtítulo, botones, datos y ventana). Se desactiva con "reducir movimiento".
+- **Cabecera:**
+  - Ahora es sólida y oscura en toda la página, y lleva solo el logo inverso.
+  - El botón flotante de WhatsApp y el asistente se esconden mientras el hero está en pantalla, porque tapaban el interruptor. Sin JavaScript siempre se ven.
+- **AnimatedWebs no se usó:** su catálogo pide iniciar sesión. El hero se hizo con la guía de `frontend-design`.
