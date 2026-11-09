@@ -69,11 +69,11 @@ const CONFIG = {
   },
 
   formulario: {
-    // URL que recibe el formulario por POST (multipart/form-data, incluye la foto del recibo).
+    // URL que recibe el formulario por POST (multipart/form-data): nombre, whatsapp, pago,
+    // privacidad, y ocultos tipo y ciudad (vienen de la calculadora o de data-ciudad).
     // Sirve Formspree, Netlify Forms, un webhook o un PHP propio.
     // Vacío = modo demostración: la página muestra el mensaje de éxito pero los datos NO se envían.
     endpoint: '',
-    tamanoMaximoMB: 10,
   },
 };
 
@@ -107,6 +107,8 @@ const CONFIG = {
   // Formulario final: se declara aquí porque la calculadora lo rellena.
   const form = $('#form-cotiza');
   const tocados = new Set();
+  // true cuando la persona escribe o mueve el monto en la calculadora (no basta el valor de ejemplo).
+  let montoTocado = false;
 
   /* ------------------------------------------------------------------------
      1. Enlaces de WhatsApp con mensaje ya escrito
@@ -597,7 +599,6 @@ void main(){
     };
     aplicarTipo(tipoCalc(), true);
 
-    let montoTocado = false;
     calc.form.addEventListener('submit', (e) => e.preventDefault());
 
     $$('input[name="calc-tipo"]').forEach((radio) => {
@@ -648,26 +649,9 @@ void main(){
   }
 
   /* ------------------------------------------------------------------------
-     4. Filtro de proyectos
-     ------------------------------------------------------------------------ */
-  const botonesFiltro = $$('.filtro button');
-  botonesFiltro.forEach((boton) => {
-    boton.addEventListener('click', () => {
-      const filtro = boton.dataset.filtro;
-      botonesFiltro.forEach((b) => b.setAttribute('aria-pressed', String(b === boton)));
-      let visibles = 0;
-      $$('.proyecto').forEach((p) => {
-        const mostrar = filtro === 'todos' || p.dataset.tipo === filtro;
-        p.hidden = !mostrar;
-        if (mostrar) visibles += 1;
-      });
-      $('#proyectos-estado').textContent = `Mostrando ${visibles} ${visibles === 1 ? 'proyecto' : 'proyectos'}.`;
-    });
-  });
-
-  /* ------------------------------------------------------------------------
-     5. Formulario de cotización
-     Valida al salir de cada campo; si hay error, lo quita en cuanto se corrige.
+     5. Formulario de cotización: nombre, WhatsApp y pago (más el aviso de privacidad).
+     Valida al salir de cada campo; si hay error, lo quita en cuanto la persona vuelve a él.
+     El botón nunca se deshabilita antes de tiempo: al enviar, lleva al primer error.
      ------------------------------------------------------------------------ */
   function normalizarTelefono(texto) {
     let d = String(texto).replace(/\D/g, '');
@@ -676,26 +660,16 @@ void main(){
     return d;
   }
 
-  const maxMB = CONFIG.formulario.tamanoMaximoMB;
+  // En el orden en que aparecen: al enviar se enfoca el primer campo con error.
   const reglas = {
-    tipo: () => (form.elements.tipo.value ? '' : 'Elige si los paneles son para tu casa o tu negocio.'),
+    nombre: () => (form.elements.nombre.value.trim().length >= 2 ? '' : 'Escribe tu nombre para saber cómo dirigirnos a ti.'),
+    whatsapp: () => {
+      const n = normalizarTelefono(form.elements.whatsapp.value).length;
+      if (n === 10) return '';
+      return n ? `Escribe tu número a 10 dígitos; llevas ${n}.` : 'Escribe tu número a 10 dígitos, por ejemplo 477 123 4567.';
+    },
     pago: () => (leerMonto(form.elements.pago.value) >= 50
       ? '' : 'Escribe cuánto pagas al bimestre, solo el número. Por ejemplo: 2500.'),
-    ciudad: () => (form.elements.ciudad.value ? '' : 'Elige tu ciudad. Si no aparece, elige “Otra ciudad”.'),
-    nombre: () => (form.elements.nombre.value.trim().length >= 2 ? '' : 'Escribe tu nombre.'),
-    whatsapp: () => (normalizarTelefono(form.elements.whatsapp.value).length === 10
-      ? '' : 'Escribe tu WhatsApp a 10 dígitos.'),
-    recibo: () => {
-      const archivo = form.elements.recibo.files[0];
-      if (!archivo) return '';
-      if (!/^image\//.test(archivo.type) && archivo.type !== 'application/pdf') {
-        return 'Sube una foto (JPG o PNG) o un PDF de tu recibo.';
-      }
-      if (archivo.size > maxMB * 1024 * 1024) {
-        return `La foto pesa más de ${maxMB} MB. Prueba con una más ligera o con una captura de pantalla.`;
-      }
-      return '';
-    },
     privacidad: () => (form.elements.privacidad.checked ? '' : 'Marca la casilla para aceptar el aviso de privacidad.'),
   };
 
@@ -704,6 +678,9 @@ void main(){
     const error = $('.error', campo);
     error.textContent = mensaje;
     error.hidden = !mensaje;
+    // El error ocupa el lugar de la ayuda, no se apila debajo.
+    const ayuda = $('.ayuda', campo);
+    if (ayuda) ayuda.hidden = Boolean(mensaje);
     $$('input, select', campo).forEach((control) => {
       if (mensaje) control.setAttribute('aria-invalid', 'true');
       else control.removeAttribute('aria-invalid');
@@ -718,31 +695,34 @@ void main(){
     return !mensaje;
   }
 
+  // Al enviar con errores se enfoca el primero; ese foco no debe borrar el mensaje que acaba de salir.
+  let enfocandoError = false;
   function enfocarCampo(nombre) {
     const campo = $(`[data-campo="${nombre}"]`, form);
     const control = $('input:not([type="hidden"]), select', campo);
-    if (control) control.focus();
+    if (!control) return;
+    enfocandoError = true;
+    control.focus();
+    enfocandoError = false;
   }
 
-  // Si la persona usó la calculadora, adelantamos esos datos en el formulario.
+  // Si la persona usó la calculadora, adelantamos esos datos en el formulario
+  // (tipo y ciudad van ocultos; el pago solo si lo escribió en la calculadora y aún no en el formulario).
   function rellenarFormulario(r) {
     if (!form) return;
-    if (!tocados.has('tipo')) {
-      const radio = $(`input[name="tipo"][value="${r.tipo}"]`, form);
-      if (radio) radio.checked = true;
-    }
-    if (!tocados.has('pago') && r.pago > 0) form.elements.pago.value = formatoNumero.format(r.pago);
-    if (!tocados.has('ciudad')) form.elements.ciudad.value = r.ciudad.slug;
+    form.elements.tipo.value = r.tipo;
+    form.elements.ciudad.value = r.ciudad.slug;
+    if (montoTocado && !tocados.has('pago') && r.pago > 0) form.elements.pago.value = formatoNumero.format(r.pago);
   }
 
   if (form) {
     const nombreDe = (el) => el.closest('[data-campo]')?.dataset.campo;
+    // La ciudad oculta arranca con la de la página (data-ciudad); la calculadora la puede cambiar.
+    form.elements.ciudad.value = ciudadPagina.slug;
 
     form.addEventListener('focusout', (e) => {
       const nombre = nombreDe(e.target);
-      if (!nombre || nombre === 'recibo') return;
-      // Los radios se validan al cambiar; no al pasar de una opción a otra.
-      if (e.target.type === 'radio' && form.contains(e.relatedTarget) && nombreDe(e.relatedTarget) === nombre) return;
+      if (!nombre || e.target.type === 'checkbox') return;
       if (e.target.value || tocados.has(nombre)) {
         tocados.add(nombre);
         validar(nombre);
@@ -754,25 +734,14 @@ void main(){
       if (!nombre) return;
       tocados.add(nombre);
       const error = $(`[data-campo="${nombre}"] .error`, form);
-      const esInmediato = ['tipo', 'ciudad', 'privacidad', 'recibo'].includes(nombre);
-      if (esInmediato || !error.hidden) validar(nombre);
+      if (nombre === 'privacidad' || !error.hidden) validar(nombre);
     };
     form.addEventListener('input', alCambiar);
     form.addEventListener('change', alCambiar);
-
-    // Foto del recibo
-    const archivo = form.elements.recibo;
-    const elegido = $('#f-recibo-elegido');
-    archivo.addEventListener('change', () => {
-      const f = archivo.files[0];
-      elegido.hidden = !f;
-      $('#f-recibo-nombre').textContent = f ? f.name : '';
-    });
-    $('#f-recibo-quitar').addEventListener('click', () => {
-      archivo.value = '';
-      elegido.hidden = true;
-      mostrarError('recibo', '');
-      archivo.focus();
+    // Un campo con error se limpia en cuanto la persona vuelve a él; se revisa otra vez al salir.
+    form.addEventListener('focusin', (e) => {
+      const nombre = nombreDe(e.target);
+      if (nombre && nombre !== 'privacidad' && !enfocandoError) mostrarError(nombre, '');
     });
 
     const boton = $('#form-enviar');
@@ -884,7 +853,7 @@ void main(){
   /* ------------------------------------------------------------------------
      7b. Aparición suave de las secciones al hacer scroll (300 ms)
      ------------------------------------------------------------------------ */
-  const revelables = $$('[data-revelar], .grafica');
+  const revelables = $$('[data-revelar]');
   if ('IntersectionObserver' in window && !movimientoReducido.matches && revelables.length) {
     document.documentElement.classList.add('revelar-activo');
     const vigia = new IntersectionObserver((entradas) => {

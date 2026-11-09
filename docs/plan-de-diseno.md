@@ -209,3 +209,37 @@ El cliente pidió una interfaz distinta, con más color y animación, y que la p
   - Ahora es sólida y oscura en toda la página, y lleva solo el logo inverso.
   - El botón flotante de WhatsApp y el asistente se esconden mientras el hero está en pantalla, porque tapaban el interruptor. Sin JavaScript siempre se ven.
 - **AnimatedWebs no se usó:** su catálogo pide iniciar sesión. El hero se hizo con la guía de `frontend-design`.
+
+### Fase 5: secciones y componentes
+- **Orden nuevo**, el que pidió el cliente:
+  1. Hero.
+  2. Barra de confianza: logos de marcas y certificaciones, marcados EDITAR.
+  3. Ventajas.
+  4. Cómo funciona.
+  5. Calculadora.
+  6. Testimonios de ejemplo.
+  7. Garantía y formas de pago.
+  8. Preguntas frecuentes.
+  9. Contacto.
+  10. Pie.
+  
+  Quedan 9 secciones; antes había 13. La página bajó de 23,700 a 12,600 px de alto en celular y mide 7,900 px en escritorio.
+- **Nada real se perdió:**
+  - Soluciones pasó a tres fotos en Ventajas.
+  - La deducción del 100 % y la DAC pasaron a ser ventajas.
+  - Los proyectos quedaron como lista de nombres en Opiniones.
+  - Las 8 ciudades siguen en Preguntas y en el pie.
+  - Salió "Quiénes somos"; ver README.
+- **Componentes distintos para no caer en "todo son tarjetas iguales":**
+  - Las ventajas van sin caja, con una línea arriba y un ícono suelto del mismo sprite.
+  - Cómo funciona es una línea de tiempo numerada (sí es una secuencia): vertical en celular y horizontal en escritorio.
+  - Garantía y pagos son dos paneles con filas, como una ficha técnica.
+  - Los lugares instalados son una lista de pastillas.
+- **Sin etiquetas sobre los títulos:** se quitaron en toda la página y en el aviso de privacidad, porque eran adorno de plantilla.
+- **Formulario corto** (skills forms y labels):
+  - Lleva tres campos con etiqueta visible (nombre, teléfono o WhatsApp, y pago al bimestre) y la casilla del aviso. Tipo y ciudad van ocultos.
+  - Valida al salir de cada campo y limpia el error en cuanto vuelves a él. El error ocupa el lugar de la ayuda.
+  - Al enviar con errores enfoca el primero y el mensaje sigue visible. El botón nunca se deshabilita antes de tiempo.
+  - El monto solo se pasa desde la calculadora si la persona lo escribió ahí.
+- **Botones con verbo primero** (skill verbs): "Cotiza tu sistema gratis", "Agenda tu visita por WhatsApp", "Lee las reseñas en Google", "Pide tu cotización gratis", "Llama" y "Cotiza gratis" en la barra de celular. No queda ningún "Enviar", "OK" ni "Más info".
+- **AnimatedWebs** pide iniciar sesión y el instalador de ui-ux-pro-max estaba bloqueado. Se siguió su lista de revisión a mano: contraste, foco, 44 px, reducir movimiento, sin emojis como íconos.

@@ -21,7 +21,7 @@ Para verla en tu compu: `python3 -m http.server` y abre `http://localhost:8000`.
 1. **Conecta el formulario.** En `assets/js/ecowatt.js`, pon en `CONFIG.formulario.endpoint` la URL que va a recibir los datos (Formspree, Netlify Forms, un webhook o un PHP propio; llegan por POST multipart, con la foto del recibo). Mientras esté vacío, el formulario funciona en **modo demostración**: muestra el mensaje de éxito, pero no manda los datos a ningún lado.
 2. **Ajusta la calculadora.** Revisa cada valor marcado con `[Ajustar]` en `CONFIG` y luego cambia `datosDeEjemplo` a `false` para quitar la etiqueta "Valores de ejemplo".
 3. **Reemplaza los placeholders** de la lista de abajo y borra cada etiqueta `<span class="ej">EDITAR</span>` que acompaña al dato que ya confirmaste.
-4. **Pon las fotos reales.** En los proyectos, cambia la ilustración de `.proyecto-ilus` por la foto del proyecto. En "Quiénes somos", cambia cada `.marco` por la foto del equipo, la camioneta o la bodega. Pásalas antes por `python3 herramientas/estilo-imagen.py foto.jpg assets/img/secciones/nombre --anchos 1200 720 --recorte 4:3`: así quedan con la misma luz que el resto de la página, en WebP y en dos tamaños. En el HTML usa `loading="lazy"`, `width` y `height`, y un texto alternativo que describa la foto.
+4. **Pon las fotos reales.** Las fotos de Ecowatt pueden reemplazar las tres imágenes ilustrativas de "Ventajas" (casas, negocios e industrias) y ocupar los espacios marcados `[Pendiente]` en "Ventajas", "Cómo funciona" y "Garantía". Pásalas antes por `python3 herramientas/estilo-imagen.py foto.jpg assets/img/secciones/nombre --anchos 1200 720 --recorte 4:3`: así quedan con la misma luz que el resto de la página, en WebP y en dos tamaños. En el HTML usa `loading="lazy"`, `width` y `height`, y un texto alternativo que describa la foto.
 
 ## Páginas por ciudad
 
@@ -32,8 +32,8 @@ La página ya está lista para duplicarse por ciudad, por ejemplo `/paneles-sola
 ### Imágenes generadas con IA
 | Dónde | Nota |
 |---|---|
-| Hero, "Para tu casa", "Para tu negocio" y "Para tu industria" | Son imágenes generadas con IA (Higgsfield) y llevan la etiqueta "Imagen ilustrativa". Si Ecowatt tiene fotos propias de buena calidad, conviene usarlas. Detalles en `docs/imagenes-ia.md` |
-| Proyectos y "Quiénes somos" | Usan ilustraciones y marcos de color con la leyenda "Foto real pendiente". Ahí van fotos reales de Ecowatt, nunca de IA |
+| Hero y las 3 fotos de "Ventajas" (casas, negocios, industrias) | Son imágenes generadas con IA (Higgsfield). Debajo de las de "Ventajas" dice "Imágenes ilustrativas". Si Ecowatt tiene fotos propias de buena calidad, conviene usarlas. Detalles en `docs/imagenes-ia.md` |
+| Espacios `[Pendiente]` en "Ventajas", "Cómo funciona" y "Garantía" | Familia en casa, instaladores en un techo y detalle de un panel. Los prompts están en `docs/imagenes-ia.md`; para los instaladores conviene una foto real del equipo |
 
 ### Confianza y reputación
 | Dónde | Placeholder |
@@ -41,43 +41,31 @@ La página ya está lista para duplicarse por ciudad, por ejemplo `/paneles-sola
 | Hero (fila de datos, debajo de los botones) | `[4.9]` de 5 en Google |
 | Hero (fila de datos, debajo de los botones) | `[000]` sistemas instalados |
 | Testimonios (bloque de Google) | `[4.9]` calificación y `[000]` reseñas |
-| Testimonios (3) | `[Testimonio real de cliente…]`, `[Nombre del cliente]` / `[Nombre y negocio]`, `[Colonia]` y la foto del cliente |
-| Botón "Ver reseñas en Google" | Confirmar que `https://maps.app.goo.gl/Gwjrf4gjT9DuF31M9` (tomado del sitio actual) abre la ficha de Google con las reseñas |
+| Barra de confianza (6 espacios, debajo del hero) | `[Marca de paneles]` ×2, `[Marca de inversores]` ×2 y `[Certificación]` ×2. Solo marcas que Ecowatt instala y certificaciones que tiene |
+| Testimonios (3) | Son ejemplos: `[Testimonio real de cliente…]`, `[Nombre del cliente]` / `[Nombre y negocio]`, `[Colonia]` y la foto del cliente. Cada testimonio real necesita permiso por escrito |
+| Botón "Lee las reseñas en Google" | Confirmar que `https://maps.app.goo.gl/Gwjrf4gjT9DuF31M9` (tomado del sitio actual) abre la ficha de Google con las reseñas |
 
 ### Proceso y tiempos
 | Dónde | Placeholder |
 |---|---|
-| Cómo funciona, paso 4 | Instalación en `[X días]` |
-| Cómo funciona, paso 5 | `[Confirmar: Ecowatt hace el trámite ante CFE por ti]` |
+| Cómo funciona, paso 3 (Instalación) | Instalación en `[X días]` y `[Confirmar: Ecowatt hace por ti el trámite del medidor con CFE.]` |
 | Formulario, éxito y promesa | Respuesta en menos de `[24 h]` (aparece 3 veces) |
 | Preguntas: instalación y CFE | `[X días]`, `[X semanas]`, `[Confirmar quién hace el trámite ante CFE.]` |
 
-### Experiencia
-| Dónde | Placeholder |
-|---|---|
-| Quiénes somos | Desde hace `[X]` años en sistemas solares |
-| Quiénes somos | `[Historia corta de Ecowatt: quién la fundó y cómo empezó.]` |
+### Lugares donde hemos instalado (en "Opiniones")
+Es una lista de nombres reales: Residencial La Campiña, Santa Lucía, Porta Fontana, El Molino, Santa Fe, una casa en San Miguel de Allende, una tienda de abarrotes y una cabaña sin red de CFE. No lleva cifras. Agrega paneles o recibos antes y después solo cuando estén confirmados.
 
-### Proyectos (8 tarjetas)
-| Dónde | Placeholder |
-|---|---|
-| Residencial La Campiña, Santa Lucía, Porta Fontana, El Molino, Santa Fe, casa en San Miguel de Allende y tienda de abarrotes | `[00]` paneles, recibo antes `[$0,000]` y recibo después `[$000]` |
-| Cabaña sin red de CFE | `[Ubicación]`, `[00]` paneles y `[baterías]` (capacidad) |
-| Las 8 tarjetas | Foto real del proyecto |
-
-### Garantías, marcas y certificaciones
+### Garantías
 | Dónde | Placeholder |
 |---|---|
 | Paneles | `[00] años` y `[Confirmar si es de producto, de rendimiento o ambas.]` |
 | Inversor | `[00] años` |
 | Instalación | `[00] años` y `[Confirmar alcance.]` |
-| Marcas (6 espacios) | `[Logo de marca de paneles]` ×2, `[Logo de marca de inversores]` ×2, `[Logo de marca de estructura]` y `[Logo de marca de monitoreo]` |
-| Certificaciones (4 espacios) | `[Sello de certificación]` |
 
 ### Formas de pago
 | Dónde | Placeholder |
 |---|---|
-| Contado | `[Confirmar si hay descuento por pago de contado.]` |
+| Contado | `[Confirmar si hay descuento.]` |
 | Financiamiento | `[Confirmar institución, plazos y requisitos.]` |
 | Meses sin intereses | `[Confirmar bancos y plazos.]` |
 
@@ -111,10 +99,15 @@ Está redactado como **borrador conforme a la LFPDPPP** y lo debe revisar un abo
 | Cookies | Actualizar si se agrega Google Analytics, Tag Manager o el píxel de Meta |
 | Autoridad | Confirmar la autoridad vigente en protección de datos |
 
-El formulario incluye una casilla **opcional** para promociones, separada de la casilla obligatoria del aviso, como pide la ley para las finalidades que no son necesarias. Llega en el campo `novedades`.
+El formulario pide solo nombre, WhatsApp y cuánto pagas, además de la casilla obligatoria del aviso. Tipo (casa o negocio) y ciudad viajan ocultos: salen de la calculadora o de `data-ciudad`. Ya no hay casilla de promociones: el aviso dice que solo se mandan si la persona acepta por separado (por ejemplo, cuando se lo preguntan por WhatsApp).
 
-### Fotos reales (11 espacios)
-Las 8 tarjetas de proyectos, más el equipo frente a la bodega, la camioneta y el interior de la bodega. Cada espacio trae la descripción de la foto que va ahí.
+### Contenido que salió en la Fase 5
+La página siguió el orden que pidió el cliente. Lo que no tenía lugar se integró o salió:
+- **Las tarjetas de soluciones** (casa, negocio, industria y sistemas aislados) quedaron como tres fotos en "Ventajas". La deducción del 100 % para negocios es ahora una ventaja.
+- **El bloque de la DAC** quedó como una ventaja.
+- **Los proyectos** quedaron como lista de nombres en "Opiniones".
+- **La cobertura** (8 ciudades) sigue en "Preguntas" y en el pie.
+- **Salió "Quiénes somos"**, con la historia de Ecowatt (`[EDITAR]`) y los tres espacios de fotos del equipo, la camioneta y la bodega. Si se quiere de vuelta, conviene una página propia `/nosotros/` con fotos reales.
 
 ### Calculadora (`CONFIG` en `assets/js/ecowatt.js`)
 | Valor | Qué es | Valor de referencia |
