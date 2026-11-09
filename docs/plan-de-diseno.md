@@ -243,3 +243,25 @@ El cliente pidió una interfaz distinta, con más color y animación, y que la p
   - El monto solo se pasa desde la calculadora si la persona lo escribió ahí.
 - **Botones con verbo primero** (skill verbs): "Cotiza tu sistema gratis", "Agenda tu visita por WhatsApp", "Lee las reseñas en Google", "Pide tu cotización gratis", "Llama" y "Cotiza gratis" en la barra de celular. No queda ningún "Enviar", "OK" ni "Más info".
 - **AnimatedWebs** pide iniciar sesión y el instalador de ui-ux-pro-max estaba bloqueado. Se siguió su lista de revisión a mano: contraste, foco, 44 px, reducir movimiento, sin emojis como íconos.
+
+### Fase 6: animaciones
+- **Tokens:**
+  - Transiciones de 100, 150, 200 y 300 ms; 400 ms solo para contar cifras.
+  - Entrada con ease-out y salida con ease-in.
+  - Desfase de 30 ms entre los elementos de un grupo, con un máximo de 90 ms.
+  - Solo se animan `transform` y `opacity`.
+- **Excepción documentada:** la animación de día y noche del hero (240 ms para hundirse y 820 ms para subir), que el cliente pidió y aprobó.
+- **Qué se mueve:**
+  - **Entrada del hero**: una sola secuencia de 300 ms.
+  - **Aparición al hacer scroll:** 12 px y 300 ms.
+  - **Línea de tiempo de "Cómo funciona":** la línea entre pasos se dibuja cuando cada paso aparece.
+  - **Botones:** suben 2 px al pasar el mouse y se hunden un poco al presionarlos (100 ms).
+  - **Preguntas frecuentes:** la pregunta cambia de color al pasar el mouse.
+  - **Menú de celular y ventana del aviso:** entran con un desplazamiento de 8 px.
+  - **Recibo de la calculadora:** cuenta hacia abajo en 400 ms; antes eran 1.3 s.
+- **Contador de cifras** (`data-cifra`):
+  - "40+" cuenta de 0 a 40 en 400 ms cuando aparece. Los lectores de pantalla leen siempre el valor final.
+  - Los placeholders `[000]` y `[4.9]` no cuentan hasta que se pone el dato real con `data-cifra` (admite `data-decimales`, `data-prefijo` y `data-sufijo`).
+- **Reducir movimiento:**
+  - No hay desplazamientos ni conteos: las cifras salen completas y el hero cambia al instante.
+  - Además del reinicio global, los botones no se mueven al pasar el mouse.

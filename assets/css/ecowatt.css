@@ -110,11 +110,18 @@
   --lh-sec: 1.5;
   --lh-meta: 1.4;
 
-  /* ---------- Movimiento ---------- */
+  /* ---------- Movimiento ----------
+     Transiciones: 100 / 150 / 200 / 300 ms. 400 ms solo para contar cifras.
+     Entrar: ease-out. Salir: ease-in. Solo transform y opacity.
+     Excepción documentada: la animación de día y noche del hero (240 + 820 ms). */
+  --m-100: 100ms;
   --m-150: 150ms;
   --m-200: 200ms;
   --m-300: 300ms;
+  --m-400: 400ms;
+  --escalon: 30ms;             /* desfase entre elementos de un grupo (máximo 4 → 90 ms) */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
 }
 @media (min-width: 768px) { :root { --g: var(--e-5); --seccion: var(--e-11); } }
 @media (min-width: 1200px) { :root { --g: var(--e-6); } }
@@ -177,6 +184,7 @@ small { font-size: var(--t-sec); }
 .btn .ico { width: 24px; height: 24px; }
 .btn[disabled] { opacity: 0.7; cursor: progress; }
 @media (hover: hover) { .btn:hover { transform: translateY(-2px); } }
+.btn:active { transform: scale(0.98); transition-duration: var(--m-100); }
 
 /* Principal (acento): WhatsApp y acciones clave */
 .btn-wa, .btn-sol { background: var(--verde-acento); color: var(--sobre-acento); }
@@ -344,13 +352,13 @@ small { font-size: var(--t-sec); }
 
 @media (min-width: 1200px) { .hero-datos li { padding-inline: var(--e-5); } }
 
-/* Entrada: una sola secuencia al cargar (400 ms, transform + opacity). */
+/* Entrada: una sola secuencia al cargar (300 ms, transform + opacity, 30 ms entre piezas). */
 @media (prefers-reduced-motion: no-preference) {
-  .js .hero h1, .js .hero-sub, .js .hero-acciones, .js .hero-datos { animation: hero-entra 400ms var(--ease-out) both; }
-  .js .hero-sub { animation-delay: 60ms; }
-  .js .hero-acciones { animation-delay: 120ms; }
-  .js .hero-datos { animation-delay: 200ms; }
-  .js .hero-escena { animation: hero-ventana 400ms var(--ease-out) 80ms both; }
+  .js .hero h1, .js .hero-sub, .js .hero-acciones, .js .hero-datos { animation: hero-entra var(--m-300) var(--ease-out) both; }
+  .js .hero-sub { animation-delay: var(--escalon); }
+  .js .hero-acciones { animation-delay: calc(2 * var(--escalon)); }
+  .js .hero-datos { animation-delay: calc(3 * var(--escalon)); }
+  .js .hero-escena { animation: hero-ventana var(--m-300) var(--ease-out) calc(2 * var(--escalon)) both; }
   @keyframes hero-entra { from { opacity: 0; transform: translateY(12px); } }
   @keyframes hero-ventana { from { opacity: 0; transform: scale(0.985); } }
 }
@@ -552,6 +560,8 @@ small { font-size: var(--t-sec); }
 .faq details[open] { background: var(--superficie-2); border-color: var(--borde-fuerte); }
 .faq summary { display: flex; align-items: center; justify-content: space-between; gap: var(--e-4); min-height: 64px; padding: var(--e-4) var(--e-5); cursor: pointer; list-style: none; font: var(--p-semi) var(--t-h4)/var(--lh-h3) var(--f-titulo); color: var(--texto); }
 .faq summary::-webkit-details-marker { display: none; }
+.faq summary { transition: color var(--m-150) var(--ease-out); }
+@media (hover: hover) { .faq summary:hover { color: var(--verde-claro); } }
 .faq summary::after { content: ""; flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--verde-tinte) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 6v12M6 12h12' stroke='%232bd67b' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center / 16px no-repeat; transition: transform var(--m-200) var(--ease-out); }
 .faq details[open] summary::after { transform: rotate(45deg); }
 .respuesta { display: grid; gap: var(--e-3); padding: 0 var(--e-5) var(--e-5); max-width: var(--ancho-texto); color: var(--texto-suave); }
@@ -703,8 +713,21 @@ small { font-size: var(--t-sec); }
 
 /* ---------- Aparición al hacer scroll (300 ms, transform + opacity) ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .revelar-activo [data-revelar] { opacity: 0; transform: translateY(16px); transition: opacity var(--m-300) var(--ease-out), transform var(--m-300) var(--ease-out); transition-delay: calc(var(--i, 0) * 70ms); }
+  .revelar-activo [data-revelar] { opacity: 0; transform: translateY(12px); transition: opacity var(--m-300) var(--ease-out), transform var(--m-300) var(--ease-out); transition-delay: calc(var(--i, 0) * var(--escalon)); }
   .revelar-activo [data-revelar].revelado { opacity: 1; transform: none; }
+  /* Cómo funciona: la línea entre pasos se dibuja cuando el paso aparece */
+  .revelar-activo .paso::after { transform: scaleY(0); transform-origin: top; transition: transform var(--m-300) var(--ease-out); transition-delay: calc(var(--i, 0) * var(--escalon) + var(--m-150)); }
+  .revelar-activo .paso.revelado::after { transform: none; }
+  /* Menú de celular y ventana del aviso: entran con un desplazamiento corto */
+  .nav.abierto { animation: entra-arriba var(--m-200) var(--ease-out); }
+  .aviso[open] { animation: entra-abajo var(--m-200) var(--ease-out); }
+  .aviso[open]::backdrop { animation: fundido var(--m-200) var(--ease-out); }
+  @keyframes entra-arriba { from { opacity: 0; transform: translateY(-8px); } }
+  @keyframes entra-abajo { from { opacity: 0; transform: translateY(8px); } }
+  @keyframes fundido { from { opacity: 0; } }
+}
+@media (prefers-reduced-motion: no-preference) and (min-width: 900px) {
+  .revelar-activo .paso::after { transform: scaleX(0); transform-origin: left; }
 }
 
 /* ---------- Respaldo para navegadores sin color-mix() ---------- */
@@ -714,5 +737,6 @@ small { font-size: var(--t-sec); }
 
 /* ---------- Movimiento reducido ---------- */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  .btn:hover, .btn:active, .wa-flotante:hover { transform: none; }
 }

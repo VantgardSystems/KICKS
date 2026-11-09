@@ -501,8 +501,8 @@ void main(){
       return;
     }
     calc.recibo.classList.remove('hecho');
-    const duracion = 1300;
-    const pausa = 250;
+    const duracion = 400; // conteo de cifras: el único uso del token de 400 ms
+    const pausa = 150;
     const inicio = performance.now();
     const paso = (ahora) => {
       const t = Math.min(1, Math.max(0, (ahora - inicio - pausa) / duracion));
@@ -865,6 +865,52 @@ void main(){
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
     revelables.forEach((el) => vigia.observe(el));
+  }
+
+  /* ------------------------------------------------------------------------
+     7c. Cifras que cuentan hasta su valor (400 ms) cuando aparecen.
+     Uso: <strong data-cifra="40" data-sufijo="+">40+</strong>
+     Opcionales: data-prefijo="$" y data-decimales="1" (por ejemplo 4.9).
+     Los lectores de pantalla leen siempre el valor final; con "reducir movimiento" no cuenta.
+     Los placeholders como [000] no llevan data-cifra: se agrega al poner el dato real.
+     ------------------------------------------------------------------------ */
+  const cifras = $$('[data-cifra]');
+  if (cifras.length) {
+    const textoCifra = (el, valor) => {
+      const dec = Number(el.dataset.decimales || 0);
+      const n = new Intl.NumberFormat('es-MX', { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(valor);
+      return `${el.dataset.prefijo || ''}${n}${el.dataset.sufijo || ''}`;
+    };
+    const contar = (el) => {
+      const fin = Number(el.dataset.cifra);
+      const visible = $('[aria-hidden="true"]', el);
+      if (!visible || movimientoReducido.matches) return;
+      const inicio = performance.now();
+      const paso = (ahora) => {
+        const t = Math.min(1, (ahora - inicio) / 400);
+        visible.textContent = textoCifra(el, fin * (1 - Math.pow(1 - t, 3)));
+        if (t < 1) requestAnimationFrame(paso);
+      };
+      requestAnimationFrame(paso);
+    };
+    cifras.forEach((el) => {
+      const final = textoCifra(el, Number(el.dataset.cifra));
+      const inicial = movimientoReducido.matches ? final : textoCifra(el, 0);
+      el.innerHTML = `<span aria-hidden="true">${inicial}</span><span class="sr-only">${final}</span>`;
+    });
+    if ('IntersectionObserver' in window && !movimientoReducido.matches) {
+      const vigiaCifras = new IntersectionObserver((entradas) => {
+        entradas.forEach((e) => {
+          if (!e.isIntersecting) return;
+          vigiaCifras.unobserve(e.target);
+          // Espera a que termine la entrada del hero (300 ms + 90 ms de desfase).
+          setTimeout(() => contar(e.target), 300);
+        });
+      }, { threshold: 0.6 });
+      cifras.forEach((el) => vigiaCifras.observe(el));
+    } else {
+      cifras.forEach((el) => { $('[aria-hidden="true"]', el).textContent = textoCifra(el, Number(el.dataset.cifra)); });
+    }
   }
 
   /* ------------------------------------------------------------------------
