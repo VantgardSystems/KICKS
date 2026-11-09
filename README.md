@@ -124,5 +124,5 @@ La página siguió el orden que pidió el cliente. Lo que no tenía lugar se int
 | `ciudades[].hsp` | Horas de sol pico por ciudad | 5.4 a 6.0 |
 | `datosDeEjemplo` | Cámbialo a `false` cuando todo esté confirmado | `true` |
 
-### Asistente 24/7
-Por ahora es una maqueta visual con una conversación de muestra y lleva la etiqueta "Ejemplo". Los botones "Agenda tu visita" y "Calcula tu ahorro" sí funcionan. Cuando conecten un chatbot real, reemplacen el bloque `#chat-panel`.
+### Asistente (vista previa)
+Es una maqueta visual con una conversación de muestra y la etiqueta EDITAR. Se ve en tableta y computadora. En celular se oculta porque tapaba el contenido; ahí ya está la barra con WhatsApp y llamada. Los botones "Agenda tu visita" y "Calcula tu ahorro" sí funcionan. Si conectan un asistente real (por ejemplo con Gemini), reemplacen el bloque `#chat-panel` y conserven `#chat-btn`. No le pongan "24/7" ni "te atiende las 24 horas" hasta que sea cierto.

@@ -265,3 +265,23 @@ El cliente pidió una interfaz distinta, con más color y animación, y que la p
 - **Reducir movimiento:**
   - No hay desplazamientos ni conteos: las cifras salen completas y el hero cambia al instante.
   - Además del reinicio global, los botones no se mueven al pasar el mouse.
+
+### Fase 7: responsive, accesibilidad y pulido
+- **Anchos revisados:** 320, 375, 390, 768, 1024, 1080, 1100, 1280 y 1440 px.
+  - Sin scroll horizontal y sin texto menor a 12 px.
+  - Todos los controles miden al menos 44 px. Los enlaces dentro de una oración están exentos (WCAG 2.5.8).
+  - El aviso de privacidad también pasa en 320, 375, 768 y 1280.
+- **Contraste AA calculado** de cada texto contra su fondo real: no falla ninguno. El texto de ejemplo de los campos tiene 6.8:1.
+- **Teclado:**
+  - El orden de tabulación sigue el orden visual y el foco se ve en todo.
+  - `scroll-padding` evita que el elemento enfocado quede debajo de la cabecera fija o de la barra de celular (WCAG 2.4.11).
+  - Escape cierra el menú, el asistente y el aviso.
+- **Correcciones:**
+  - En 320 px, el interruptor muestra solo "De día" y "De noche", porque las frases de abajo no cabían.
+  - En pantallas angostas, los años de garantía bajan debajo del nombre.
+  - La burbuja del asistente se oculta en celular, porque tapaba contenido en todas las secciones; ahí ya está la barra de WhatsApp y llamada.
+- **Anti-slop y honestidad:**
+  - Se quitó la insignia "24/7" y el "Te atiende las 24 horas" del asistente, que es una vista previa.
+  - Se quitó el "Es gratis" de la visita y el "monitoreo 24/7" de Preguntas: no están confirmados.
+  - Los lugares instalados pasaron de pastillas decorativas a una lista simple en columnas.
+  - La única difuminación (`backdrop-filter`) es parte de la foto del hero, no de un panel.

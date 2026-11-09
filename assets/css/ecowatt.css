@@ -128,7 +128,8 @@
 
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; color-scheme: dark; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; color-scheme: dark; scroll-padding-top: calc(var(--header-h) + var(--e-3)); scroll-padding-bottom: calc(var(--barra-h) + var(--e-3)); }
+@media (min-width: 768px) { html { scroll-padding-bottom: var(--e-3); } }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 html.sin-scroll { overflow: hidden; }
 body {
@@ -156,7 +157,6 @@ small { font-size: var(--t-sec); }
 .saltar { position: absolute; left: var(--e-3); top: -96px; z-index: 100; background: var(--verde-acento); color: var(--sobre-acento); padding: var(--e-3) var(--e-4); border-radius: var(--r-2); font-weight: var(--p-semi); text-decoration: none; }
 .saltar:focus { top: var(--e-3); }
 .wrap { width: 100%; max-width: calc(var(--ancho-max) + 2 * var(--g)); margin-inline: auto; padding-inline: var(--g); }
-[id] { scroll-margin-top: calc(var(--header-h) + var(--e-3)); }
 .ico { width: 24px; height: 24px; flex: none; }
 .ico-16 { width: 16px; height: 16px; }
 
@@ -317,6 +317,7 @@ small { font-size: var(--t-sec); }
 #b-dia { --on: calc(1 - var(--k)); }
 #b-noche { --on: var(--k); }
 
+@media (max-width: 359px) { .toggle small { display: none; } }
 @media (min-width: 560px) {
   .hero-acciones { display: flex; flex-wrap: wrap; }
   .toggle { height: 64px; }
@@ -523,10 +524,11 @@ small { font-size: var(--t-sec); }
 /* Lugares reales donde Ecowatt ha instalado */
 .instalados { display: grid; gap: var(--e-4); margin-top: var(--e-8); padding-top: var(--e-6); border-top: 1px solid var(--borde); }
 .instalados h3 { font-size: var(--t-h4); }
-.instalados-lista { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: var(--e-2); }
-.instalados-lista li { padding: var(--e-2) var(--e-4); border-radius: var(--r-pill); border: 1px solid var(--borde-fuerte); font-size: var(--t-sec); line-height: var(--lh-meta); color: var(--texto-suave); }
+.instalados-lista { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e-3) var(--e-5); }
+.instalados-lista li { padding-left: var(--e-3); border-left: 2px solid var(--borde-fuerte); font-size: var(--t-sec); line-height: var(--lh-meta); color: var(--texto-suave); }
 .instalados .btn-enlace { justify-self: start; }
 @media (min-width: 900px) {
+  .instalados-lista { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .testimonios { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .google { grid-template-columns: 1fr auto; align-items: center; padding: var(--e-6) var(--e-7); }
 }
@@ -549,6 +551,7 @@ small { font-size: var(--t-sec); }
 .pagos .ico { width: 24px; height: 24px; margin-top: 2px; color: var(--verde-acento); }
 .pagos p { font-size: var(--t-sec); line-height: var(--lh-sec); color: var(--texto-tenue); }
 .pagos b { display: block; font-size: var(--t-cuerpo); color: var(--texto); }
+@media (max-width: 479px) { .garantia { grid-template-columns: minmax(0, 1fr); } }
 @media (min-width: 900px) { .respaldo-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--e-6); } .respaldo { padding: var(--e-6); } }
 
 /* ---------- Preguntas frecuentes ---------- */
@@ -639,11 +642,11 @@ small { font-size: var(--t-sec); }
 .barra-movil .ico-circulo { width: 32px; height: 32px; }
 @media (min-width: 768px) { .barra-movil { display: none; } }
 
-/* Asistente 24/7 (maqueta visual) */
+/* Asistente (maqueta visual, solo tableta y computadora) */
 .chat-burbuja { position: fixed; right: var(--e-4); z-index: 46; bottom: calc(var(--barra-h) + var(--e-4) + env(safe-area-inset-bottom)); width: 56px; height: 56px; border-radius: 50%; border: 1px solid var(--borde-fuerte); cursor: pointer; display: grid; place-items: center; background: var(--superficie-2); color: var(--verde-claro); box-shadow: var(--sombra-3); transition: opacity var(--m-200), visibility var(--m-200); }
 .chat-burbuja .ico { width: 24px; height: 24px; }
-.chat-burbuja .insignia { position: absolute; top: -4px; right: -8px; padding: 2px var(--e-2); border-radius: var(--r-pill); background: var(--verde-acento); color: var(--sobre-acento); font: var(--p-semi) var(--t-meta)/var(--lh-meta) var(--f-texto); }
 .chat-burbuja:focus-visible { outline: 3px solid var(--verde-acento); outline-offset: 4px; }
+@media (max-width: 767px) { .chat-burbuja { display: none; } }
 .chat-panel { position: fixed; left: var(--e-3); right: var(--e-3); z-index: 47; bottom: calc(var(--barra-h) + var(--e-10) + env(safe-area-inset-bottom)); max-height: calc(100dvh - var(--header-h) - var(--barra-h) - var(--e-11)); display: flex; flex-direction: column; overflow: hidden; background: var(--superficie); border-radius: var(--r-4); border: 1px solid var(--borde-fuerte); box-shadow: var(--sombra-3); }
 @media (prefers-reduced-motion: no-preference) { .chat-panel:not([hidden]) { animation: chat-abre var(--m-200) var(--ease-out); } @keyframes chat-abre { from { opacity: 0; transform: translateY(8px); } } }
 .chat-cab { display: flex; align-items: center; gap: var(--e-3); padding: var(--e-3) var(--e-2) var(--e-3) var(--e-4); background: var(--superficie-2); border-bottom: 1px solid var(--borde); color: var(--texto); }

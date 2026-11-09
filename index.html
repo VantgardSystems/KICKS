@@ -571,7 +571,7 @@
             <summary>¿Qué mantenimiento necesita?</summary>
             <div class="respuesta">
               <p>Muy poco. Basta con limpiar el polvo de los paneles [cada X meses]. <span class="ej">EDITAR</span></p>
-              <p>Además, con el monitoreo 24/7 vemos si tu sistema baja su producción y te avisamos.</p>
+              <p>Además, con el monitoreo a distancia vemos si tu sistema baja su producción y te avisamos.</p>
             </div>
           </details>
           <details data-revelar>
@@ -745,24 +745,24 @@
     <a class="btn btn-wa" href="https://wa.me/524772992060?text=Hola%2C%20quiero%20cotizar%20paneles%20solares%20en%20Le%C3%B3n." data-wa="Hola, quiero cotizar paneles solares en {ciudad}." target="_blank" rel="noopener"><span class="ico-circulo"><svg class="ico" aria-hidden="true"><use href="#i-wa"/></svg></span>Cotiza gratis<span class="sr-only"> por WhatsApp</span></a>
   </nav>
 
-  <!-- Asistente 24/7: maqueta visual. La conversación es de muestra. -->
+  <!-- Asistente: maqueta visual (vista previa). La conversación es de muestra; se ve en tableta y computadora.
+       Si conectan un asistente real (por ejemplo con Gemini), reemplacen #chat-panel y conserven #chat-btn. -->
   <button class="chat-burbuja" id="chat-btn" type="button" aria-expanded="false" aria-controls="chat-panel">
     <svg class="ico" aria-hidden="true"><use href="#i-chat"/></svg>
-    <span class="insignia" aria-hidden="true">24/7</span>
-    <span class="sr-only">Abrir el asistente de Ecowatt</span>
+    <span class="sr-only">Abre la vista previa del asistente de Ecowatt</span>
   </button>
   <section class="chat-panel" id="chat-panel" aria-label="Asistente de Ecowatt" hidden>
     <div class="chat-cab">
       <span class="chat-avatar"><svg class="ico" aria-hidden="true"><use href="#i-sol"/></svg></span>
-      <p><b>Asistente Ecowatt</b><span>Te atiende las 24 horas</span></p>
-      <button type="button" id="chat-cerrar"><svg class="ico" aria-hidden="true"><use href="#i-cerrar"/></svg><span class="sr-only">Cerrar el asistente</span></button>
+      <p><b>Asistente Ecowatt</b><span>Vista previa</span></p>
+      <button type="button" id="chat-cerrar"><svg class="ico" aria-hidden="true"><use href="#i-cerrar"/></svg><span class="sr-only">Cierra el asistente</span></button>
     </div>
     <ol class="chat-msgs" aria-label="Conversación de muestra">
       <li class="msg msg--bot">Hola, soy el asistente de Ecowatt. Te ayudo a saber cuánto puedes ahorrar con paneles solares.</li>
       <li class="msg msg--bot">Para empezar, ¿cuánto pagas de luz al bimestre?</li>
       <li class="msg msg--yo">Como $4,000. ¿Y si se nubla?</li>
       <li class="msg msg--bot">Tus paneles siguen produciendo, solo un poco menos. Tu sistema se calcula con el promedio de todo el año, días nublados incluidos.</li>
-      <li class="msg msg--bot">¿Quieres que agendemos una visita para revisar tu techo? Es gratis.</li>
+      <li class="msg msg--bot">¿Quieres que agendemos una visita para revisar tu techo?</li>
     </ol>
     <div class="chat-opciones">
       <a class="btn btn-wa" href="https://wa.me/524772992060?text=Hola%2C%20quiero%20agendar%20una%20visita%20para%20revisar%20mi%20techo%20en%20Le%C3%B3n." data-wa="Hola, quiero agendar una visita para revisar mi techo en {ciudad}." target="_blank" rel="noopener">Agenda tu visita</a>
@@ -770,7 +770,7 @@
     </div>
     <div class="chat-escribir">
       <input type="text" placeholder="Escribe tu mensaje" aria-label="Escribe tu mensaje (disponible pronto)" disabled>
-      <button type="button" disabled><svg class="ico" aria-hidden="true" width="20" height="20"><use href="#i-enviar"/></svg><span class="sr-only">Enviar mensaje</span></button>
+      <button type="button" disabled><svg class="ico" aria-hidden="true" width="20" height="20"><use href="#i-enviar"/></svg><span class="sr-only">Manda tu mensaje (disponible pronto)</span></button>
     </div>
     <p class="chat-nota">Vista previa del asistente. <span class="ej">EDITAR</span></p>
   </section>
