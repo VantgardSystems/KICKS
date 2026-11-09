@@ -143,3 +143,44 @@ El cliente pidió una interfaz distinta, con más color y animación, y que la p
 - **Hero en celular:** la casa va en una banda abajo y el interruptor queda encima de ella, así la animación se ve completa. La niebla de reposo es más baja en celular.
 - **Sin JavaScript** (por ejemplo, si un visor lo bloquea), el día y la noche se alternan solos, con los textos ajustados.
 - **Imágenes:** generadas con IA (ver `docs/imagenes-ia.md`).
+
+## Versión 3: sistema de diseño premium (por fases)
+
+### Fase 1: sistema de diseño
+- **Paleta oscura** con verdes brillantes, verde claro, azules oscuros y texto blanco. Todos los colores, espacios, radios y sombras son tokens en `:root` de `assets/css/ecowatt.css`.
+- **Regla 60-30-10** medida en capturas: 60 % lienzo oscuro, 30 % superficies y texto claro, 10 % acento verde (solo botones, enlaces, foco e íconos clave).
+- **Escala de espacios de 8 px** (4 px solo para detalles finos) y ancho máximo de 1200 px.
+
+### Fase 2: tipografía
+- **Dos familias de una misma superfamilia** (Google Fonts):
+  - Red Hat Display para títulos y cifras: geométrica, seria y con carácter.
+  - Red Hat Text para el texto: es la versión de la familia dibujada para leerse en tamaños chicos.
+  Adobe Fonts no se usó: el conector necesita autorización y una licencia de Adobe del cliente.
+- **Tres grosores en todo el sitio:** 400 para texto, 500 para navegación y etiquetas, 600 para títulos, botones y cifras. Ya no hay 700 ni 800.
+- **Escala de tercera menor (×1.2) sobre 16 px**, en tokens `--t-*`:
+
+  | Token | Celular → escritorio | Uso |
+  |---|---|---|
+  | `--t-meta` | 12 px | avisos legales, chips, ejes de gráfica |
+  | `--t-sec` | 14 px | texto de apoyo, ayudas, errores |
+  | `--t-cuerpo` | 16 px | párrafos, campos, botones |
+  | `--t-h4` | 18 px | títulos de tarjeta chica, preguntas frecuentes |
+  | `--t-entrada` | 18 → 20 px | párrafo de entrada de cada sección |
+  | `--t-h3` | 20 → 24 px | H3 |
+  | `--t-cifra` | 24 → 32 px | cifras y tarjetas grandes |
+  | `--t-h2` | 32 → 48 px | H2 |
+  | `--t-h1` | 36 → 76 px | título del hero |
+
+  En el hero, el H1 también se limita por la altura de la pantalla: mide 61 px en 1280×800 y 76 px en pantallas grandes.
+- **Interlineado:**
+  - Baja conforme sube el tamaño: H1 1.1, H2 1.15, H3 1.25.
+  - Texto 1.6, apoyo 1.5, meta 1.4.
+  - Botones y etiquetas de una línea: 1.2.
+  - Ningún interlineado baja de 1.1.
+- **Largo de línea:**
+  - `--ancho-texto: 33em` deja unos 70 caracteres por línea. Lo más largo que se midió fueron 65 caracteres en la página principal y 72 en el aviso de privacidad.
+  - Se mide en `em`, no en `ch`, porque en Red Hat Text la letra media es más angosta que el "0", y 68ch daba 80 caracteres.
+- **Ajuste de texto:**
+  - Los títulos usan `text-wrap: balance`.
+  - Los párrafos usan `text-wrap: pretty`, para no dejar una palabra sola en la última línea.
+- **Botones y campos** heredan la fuente de la página (`font: inherit`). Antes algunos caían en Arial.
