@@ -63,7 +63,8 @@ Se midió la página sin cambiar código. Los 10 problemas principales fueron:
 - **Sin generación:** Kling tenía 0 créditos y Higgsfield, 0.05. Por eso no se generaron imágenes nuevas.
 - **Un solo estilo:** se creó `herramientas/estilo-imagen.py`, que da a todas las fotos la misma luz cálida de atardecer con sombras azul petróleo. También sirve para las fotos reales.
 - **Ajustes técnicos:** `sizes` corregido en el hero; WebP en dos tamaños, carga diferida, `width` y `height`, y texto alternativo en todas.
-- **Prompts listos:** las tres imágenes que faltan tienen su prompt en `docs/imagenes-ia.md`.
+- **Prompts listos:** las tres imágenes que faltaban tenían su prompt listo en `docs/imagenes-ia.md`.
+- **Después:** esas tres imágenes (detalle de panel, instaladores y familia) se generaron con FLUX.1-schnell en AI Horde, una red gratuita, y ya están en la página.
 
 ### Fase 5: secciones y componentes
 - **Orden:** hero, barra de confianza, 4 ventajas, cómo funciona (visita, diseño, instalación, ahorro), calculadora, testimonios de ejemplo, garantía y formas de pago, preguntas, contacto y pie.
@@ -135,9 +136,9 @@ Es un borrador conforme a la LFPDPPP y lo debe revisar un abogado. Hay que compl
 |---|---|---|
 | Casa con paneles al atardecer | Hecha (IA con el estilo cálido) | Hero |
 | Casas, negocios e industrias | Hechas (IA, "Imágenes ilustrativas") | Ventajas |
-| Detalle de un panel con reflejos | Falta: prompt listo | Garantía (`secciones/detalle-panel.webp`) |
-| Instaladores en un techo | Falta: mejor una foto real del equipo | Cómo funciona (`secciones/instalacion.webp`) |
-| Familia en casa con luz cálida | Falta: prompt listo | Ventajas (`secciones/familia.webp`), nunca como testimonio |
+| Detalle de un panel con reflejos | Hecha con FLUX.1-schnell (AI Horde) | Garantía, como banda ancha |
+| Instaladores en un techo | Hecha con FLUX.1-schnell. Conviene cambiarla por una foto real del equipo | Junto al título de "Cómo funciona" |
+| Familia en casa con luz cálida | Hecha con FLUX.1-schnell | Junto a las ventajas, nunca como testimonio |
 | Logos de marcas y certificaciones | Faltan | Barra de confianza |
 | Fotos de clientes | Faltan, con permiso | Testimonios |
 
@@ -147,7 +148,7 @@ Toda foto nueva se procesa con `python3 herramientas/estilo-imagen.py foto.jpg a
 
 1. **Una sesión de fotos y video reales, de medio día.**
    - Qué grabar: una instalación real con la cuadrilla en uniforme de Ecowatt, una casa de cliente a la hora dorada, el detalle de los paneles y un clip vertical de 10 a 15 segundos.
-   - Qué cambia: sustituye todas las imágenes de IA y llena los tres espacios pendientes. En un sitio de servicios, ver al equipo real es lo que más sube la confianza. Con `estilo-imagen.py` todo queda con la misma luz que ya tiene la página.
+   - Qué cambia: sustituye todas las imágenes de IA, empezando por la de los instaladores, que no son el equipo de Ecowatt. En un sitio de servicios, ver al equipo real es lo que más sube la confianza. Con `estilo-imagen.py` todo queda con la misma luz que ya tiene la página.
 2. **Pruebas que se puedan verificar.**
    - **Casos de estudio:** 3 a 5 casos con su recibo antes y después (con permiso), el número de paneles y el tiempo de instalación. Así los `[000]` del hero se vuelven cifras reales que cuentan solas.
    - **Reseñas y respaldo:** las reseñas de Google conectadas a la ficha real, y los logos de marcas y certificaciones verdaderos.

@@ -472,7 +472,16 @@ small { font-size: var(--t-sec); }
 .ventaja h3 { margin-top: var(--e-4); font-size: var(--t-h3); }
 .ventaja p { margin-top: var(--e-2); color: var(--texto-suave); }
 @media (min-width: 640px) { .ventajas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1100px) { .ventajas { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--e-6); } }
+/* Fotos ilustrativas (IA): esquinas de tarjeta y leyenda chica debajo */
+.foto-ilus { margin: 0; }
+.foto-ilus img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-4); background: var(--superficie-2); }
+.foto-ilus figcaption { margin-top: var(--e-2); font-size: var(--t-meta); line-height: var(--lh-meta); color: var(--texto-tenue); }
+.ventajas-cuerpo { display: grid; gap: var(--e-7); }
+@media (min-width: 1100px) {
+  .ventajas-cuerpo { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: var(--e-9); }
+  .ventajas-foto img { aspect-ratio: 1; }
+  .ventajas { gap: var(--e-6); }
+}
 
 /* Para quién: tres fotos con su leyenda encima */
 .segmentos { list-style: none; padding: 0; margin-top: var(--e-9); display: grid; gap: var(--e-3); }
@@ -497,6 +506,9 @@ small { font-size: var(--t-sec); }
 .paso p { margin-top: var(--e-2); color: var(--texto-suave); }
 .paso .def { font-size: var(--t-sec); line-height: var(--lh-sec); color: var(--texto-tenue); }
 .pasos-pie { margin-top: var(--e-8); }
+.cabeza-con-foto { display: grid; gap: var(--e-6); margin-bottom: var(--e-8); }
+.cabeza-con-foto .cabeza { margin-bottom: 0; }
+@media (min-width: 900px) { .cabeza-con-foto { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; gap: var(--e-9); } }
 @media (min-width: 900px) {
   .pasos { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--e-6); }
   .paso { padding: var(--e-10) 0 0; }
@@ -534,6 +546,9 @@ small { font-size: var(--t-sec); }
 }
 
 /* ---------- Garantía y formas de pago ---------- */
+.garantia-foto { margin-bottom: var(--e-6); }
+.garantia-foto img { aspect-ratio: 16 / 9; object-position: 50% 60%; }
+@media (min-width: 768px) { .garantia-foto img { aspect-ratio: 21 / 8; } }
 .respaldo-grid { display: grid; gap: var(--e-5); }
 .respaldo { display: grid; gap: var(--e-4); align-content: start; padding: var(--e-5); border-radius: var(--r-4); background: var(--superficie); border: 1px solid var(--borde); box-shadow: var(--luz-borde); }
 .respaldo h3 { display: flex; align-items: center; flex-wrap: wrap; gap: var(--e-3); font-size: var(--t-h3); }

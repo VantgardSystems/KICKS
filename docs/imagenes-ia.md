@@ -116,9 +116,9 @@ Por eso:
 | Imagen | Estado | Dónde va (Fase 5) | Archivo |
 |---|---|---|---|
 | Casa mexicana moderna con paneles al atardecer | **Resuelta**: es la casa del hero con la luz cálida nueva | Hero | `hero/dia-*` |
-| Detalle de un panel con reflejos | Pendiente | Tarjeta de ventajas o garantía | `secciones/detalle-panel{,-720}.webp` |
-| Instaladores con uniforme en un techo | Pendiente. **Mejor una foto real** del equipo de Ecowatt (ver la nota) | Paso "Instalación" de "Cómo funciona" | `secciones/instalacion{,-720}.webp` |
-| Familia en casa con luz cálida | Pendiente | Tarjeta de ventajas, **nunca como testimonio** | `secciones/familia{,-720}.webp` |
+| Detalle de un panel con reflejos | **Resuelta** con FLUX.1-schnell (ver abajo) | Banda ancha en "Garantía y formas de pago" | `secciones/detalle-panel{,-720}.webp` |
+| Instaladores con uniforme en un techo | **Resuelta** con FLUX.1-schnell. **Mejor una foto real** del equipo de Ecowatt en cuanto la tengan (ver la nota) | Junto al título de "Cómo funciona" | `secciones/instalacion{,-720}.webp` |
+| Familia en casa con luz cálida | **Resuelta** con FLUX.1-schnell | Junto a las ventajas, **nunca como testimonio** | `secciones/familia{,-720}.webp` |
 
 > **Nota sobre los instaladores:** una imagen de IA mostraría personas que no trabajan en Ecowatt, con un uniforme que no es el suyo. Es mejor una foto real de la cuadrilla. Si se usa IA, la ropa va sin logotipos y la imagen lleva la etiqueta "Imagen ilustrativa".
 
@@ -186,3 +186,22 @@ python3 herramientas/estilo-imagen.py familia.png assets/img/secciones/familia -
 ```
 
 En el HTML van con `loading="lazy"`, `decoding="async"`, `width` y `height`, `srcset` y `sizes`, y un `alt` que describa la escena. Las de IA llevan además la etiqueta "Imagen ilustrativa".
+
+## Imágenes generadas con FLUX.1-schnell en AI Horde
+
+Sin créditos en Kling ni en Higgsfield, se intentó con otras herramientas:
+- **Hugging Face:** el espacio público de FLUX.1-schnell rechazó las peticiones porque se acabó la cuota gratuita anónima de GPU.
+- **Pollinations:** devolvía imágenes con marca de agua y de baja calidad.
+- **AI Horde** (aihorde.net) sí funcionó. Es una red gratuita de GPUs voluntarias y se usó con la clave anónima.
+
+El modelo fue **FLUX.1-schnell**, con licencia Apache 2.0, que permite uso comercial. Cada imagen tardó de 3 a 15 minutos en la cola y se pidieron dos variantes de cada una.
+
+| Archivo | Tamaño generado | Semilla | Variante elegida y por qué |
+|---|---|---|---|
+| `detalle-panel` | 1152×768 | 2627470209 | La 2: la cuadrícula de celdas es realista y tiene un tinaco de azotea. En la 1, las celdas salieron deformes |
+| `instalacion` | 1152×896, recortada a 4:3 | 1925389325 | La 1: camisas lisas y manos y caras correctas. La 2 traía un logotipo en la camisa y texto basura en una esquina |
+| `familia` | 1152×896, recortada a 4:3 | 1678688130 | La 1: aparece la niña y la ventana al atardecer. La 2 no tenía a la niña |
+
+Las tres pasaron por `herramientas/estilo-imagen.py` con `--fuerza 0.6`, porque ya venían cálidas. Los prompts son los de la sección "Prompts listos", con el mismo bloque de estilo. Las tres llevan la leyenda "Imagen ilustrativa." debajo.
+
+Para repetirlo, el cliente está en el historial del proyecto (`horde.py`): un POST a `/api/v2/generate/async` con `"models": ["Flux.1-Schnell fp8 (Compact)"]`, `steps: 4`, `cfg_scale: 1` y `sampler_name: "k_euler"`. Luego se consulta `/generate/check/{id}` hasta que diga `done` y se descarga de `/generate/status/{id}`. Ancho y alto deben ser múltiplos de 64. Se necesita un `User-Agent` propio, porque Cloudflare bloquea el de Python.

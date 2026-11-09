@@ -33,7 +33,7 @@ La página ya está lista para duplicarse por ciudad, por ejemplo `/paneles-sola
 | Dónde | Nota |
 |---|---|
 | Hero y las 3 fotos de "Ventajas" (casas, negocios, industrias) | Son imágenes generadas con IA (Higgsfield). Debajo de las de "Ventajas" dice "Imágenes ilustrativas". Si Ecowatt tiene fotos propias de buena calidad, conviene usarlas. Detalles en `docs/imagenes-ia.md` |
-| Espacios `[Pendiente]` en "Ventajas", "Cómo funciona" y "Garantía" | Familia en casa, instaladores en un techo y detalle de un panel. Los prompts están en `docs/imagenes-ia.md`; para los instaladores conviene una foto real del equipo |
+| Familia ("Ventajas"), instaladores ("Cómo funciona") y detalle de panel ("Garantía") | Generadas con FLUX.1-schnell en AI Horde, con la leyenda "Imagen ilustrativa". Los instaladores no son el equipo de Ecowatt: cámbienlos por una foto real de la cuadrilla en cuanto la tengan |
 
 ### Confianza y reputación
 | Dónde | Placeholder |

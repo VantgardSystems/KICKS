@@ -224,14 +224,19 @@
       </div>
     </section>
 
-    <!-- 4. Ventajas: 4 beneficios (íconos del mismo sprite) y para quién es.
-         [Pendiente] Cuando haya créditos o fotos reales, aquí puede entrar secciones/familia.webp (ver docs/imagenes-ia.md). -->
+    <!-- 4. Ventajas: 4 beneficios (íconos del mismo sprite), una foto ilustrativa y para quién es.
+         La foto de la familia es generada con IA (ver docs/imagenes-ia.md); nunca se usa como testimonio. -->
     <section id="ventajas" class="seccion" aria-labelledby="ventajas-titulo">
       <div class="wrap">
         <div class="cabeza">
           <h2 id="ventajas-titulo" data-revelar>Tu casa sigue igual. Tu recibo, no.</h2>
           <p class="entrada" data-revelar>Con paneles produces tu propia luz y le compras menos a CFE. Esto es lo que cambia.</p>
         </div>
+        <div class="ventajas-cuerpo">
+          <figure class="foto-ilus ventajas-foto" data-revelar>
+            <img src="assets/img/secciones/familia.webp" srcset="assets/img/secciones/familia-720.webp 720w, assets/img/secciones/familia.webp 1152w" sizes="(min-width: 1100px) 40vw, 100vw" alt="Familia en la sala de su casa al atardecer, con las lámparas encendidas" width="1152" height="864" loading="lazy" decoding="async">
+            <figcaption>Imagen ilustrativa.</figcaption>
+          </figure>
         <ul class="ventajas" role="list">
           <li class="ventaja" data-revelar style="--i:0">
             <svg class="ico" aria-hidden="true"><use href="#i-recibo"/></svg>
@@ -254,6 +259,7 @@
             <p>Revisamos la producción de tu sistema a distancia. Si baja, te avisamos y vamos a revisarlo.</p>
           </li>
         </ul>
+        </div>
 
         <ul class="segmentos" role="list" aria-label="Dónde instalamos">
           <li class="segmento" data-revelar style="--i:0">
@@ -274,12 +280,19 @@
     </section>
 
     <!-- 5. Cómo funciona: 4 pasos.
-         [Pendiente] El paso de instalación puede llevar secciones/instalacion.webp; mejor una foto real del equipo (ver docs/imagenes-ia.md). -->
+         La foto de los instaladores es generada con IA y no muestra al equipo de Ecowatt: cámbienla por una foto real
+         de la cuadrilla en cuanto la tengan (ver docs/imagenes-ia.md). -->
     <section id="como-funciona" class="seccion fondo-alt" aria-labelledby="pasos-titulo">
       <div class="wrap">
-        <div class="cabeza">
-          <h2 id="pasos-titulo" data-revelar>Cómo funciona</h2>
-          <p class="entrada" data-revelar>Cuatro pasos de tu recibo a tu sistema funcionando. Tú nos mandas tu recibo y nosotros nos encargamos del resto.</p>
+        <div class="cabeza-con-foto">
+          <div class="cabeza">
+            <h2 id="pasos-titulo" data-revelar>Cómo funciona</h2>
+            <p class="entrada" data-revelar>Cuatro pasos de tu recibo a tu sistema funcionando. Tú nos mandas tu recibo y nosotros nos encargamos del resto.</p>
+          </div>
+          <figure class="foto-ilus pasos-foto" data-revelar>
+            <img src="assets/img/secciones/instalacion.webp" srcset="assets/img/secciones/instalacion-720.webp 720w, assets/img/secciones/instalacion.webp 1152w" sizes="(min-width: 900px) 46vw, 100vw" alt="Dos instaladores fijan un panel solar sobre los rieles de una azotea" width="1152" height="864" loading="lazy" decoding="async">
+            <figcaption>Imagen ilustrativa.</figcaption>
+          </figure>
         </div>
         <ol class="pasos" role="list">
           <li class="paso" data-revelar style="--i:0">
@@ -476,14 +489,17 @@
       </div>
     </section>
 
-    <!-- 8. Garantía y formas de pago.
-         [Pendiente] Aquí puede entrar secciones/detalle-panel.webp (ver docs/imagenes-ia.md). -->
+    <!-- 8. Garantía y formas de pago. El detalle del panel es una imagen ilustrativa generada con IA. -->
     <section id="garantias" class="seccion fondo-alt" aria-labelledby="garantias-titulo">
       <div class="wrap">
         <div class="cabeza">
           <h2 id="garantias-titulo" data-revelar>Garantía y formas de pago</h2>
           <p class="entrada" data-revelar>Tu sistema queda protegido, de los paneles a la instalación, y tú eliges cómo pagarlo.</p>
         </div>
+        <figure class="foto-ilus garantia-foto" data-revelar>
+          <img src="assets/img/secciones/detalle-panel.webp" srcset="assets/img/secciones/detalle-panel-720.webp 720w, assets/img/secciones/detalle-panel.webp 1152w" sizes="(min-width: 1240px) 1200px, 100vw" alt="Acercamiento a un panel solar que refleja el cielo del atardecer" width="1152" height="768" loading="lazy" decoding="async">
+          <figcaption>Imagen ilustrativa.</figcaption>
+        </figure>
         <div class="respaldo-grid">
           <div class="respaldo" data-revelar>
             <h3><svg class="ico" aria-hidden="true"><use href="#i-escudo"/></svg>Garantías</h3>
