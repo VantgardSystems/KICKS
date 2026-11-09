@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="es" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Calculadora de ahorro solar · Solenna</title>
+  <meta name="description" content="Sube tu factura de la luz, marca tu tejado en el mapa satélite y descubre en 2 minutos cuánto ahorrarías con placas solares. Estimación orientativa y gratuita.">
+  <meta name="theme-color" content="#06141c">
+  <meta property="og:title" content="¿Cuánto ahorrarías con placas solares? · Solenna">
+  <meta property="og:description" content="Calculadora gratuita: factura + tejado = tu ahorro estimado en 2 minutos.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2306141c'/%3E%3Ccircle cx='32' cy='32' r='12' fill='%23b9f27c'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="calculadora.css?v=20261026">
+  <script src="calculadora-config.js?v=20261026" defer></script>
+  <script src="calculadora-calc.js?v=20261026" defer></script>
+  <script src="calculadora.js?v=20261026" defer></script>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"><span class="orb orb--1"></span><span class="orb orb--2"></span><span class="orb orb--3"></span><span class="bg__grid"></span></div>
+
+  <header class="top">
+    <a class="brand" href="index.html" data-main-link aria-label="Solenna, inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 2v5M16 25v5M2 16h5M25 16h5M6 6l3.5 3.5M22.5 22.5L26 26M6 26l3.5-3.5M22.5 9.5L26 6"/></svg>
+      <span>Solenna</span>
+    </a>
+    <nav class="top__nav" aria-label="Principal">
+      <a class="top__back" href="index.html" data-main-link>← Volver a la web</a>
+      <a class="top__pill" href="index.html#contacto">Estudio gratuito</a>
+    </nav>
+  </header>
+
+  <main class="wrap" id="top">
+    <section class="intro">
+      <p class="kicker"><span class="dot"></span> Calculadora de ahorro solar · 2 minutos · gratis</p>
+      <h1>Descubre cuánto <em class="serif accent">ahorrarías</em> con placas solares en tu casa</h1>
+      <p class="lead">Sube tu factura, marca tu tejado en el mapa satélite y te damos una estimación orientativa al momento.</p>
+    </section>
+
+    <nav class="progress" aria-label="Progreso de la calculadora">
+      <div class="progress__bar"><span id="progressFill"></span></div>
+      <ol class="progress__steps">
+        <li data-p="1" class="is-current"><b>1</b><span>Factura</span></li>
+        <li data-p="2"><b>2</b><span>Ubicación</span></li>
+        <li data-p="3"><b>3</b><span>Tejado</span></li>
+        <li data-p="4"><b>4</b><span>Cálculo</span></li>
+        <li data-p="5"><b>5</b><span>Informe</span></li>
+      </ol>
+    </nav>
+
+    <noscript><div class="glass note">Esta calculadora necesita JavaScript activado. Si lo prefieres, <a href="index.html#contacto">pide tu estudio gratis aquí</a>.</div></noscript>
+
+    <!-- ============ PASO 1 · FACTURA ============ -->
+    <section class="step glass" data-step="1" aria-labelledby="s1t">
+      <header class="step__head">
+        <span class="step__n">Paso 1 de 5</span>
+        <h2 id="s1t" tabindex="-1">Sube tu factura de la luz</h2>
+        <p>Una foto con el móvil o el PDF. Nuestra IA lee los importes por ti en unos segundos.</p>
+      </header>
+
+      <div class="drop" id="drop">
+        <input type="file" id="fileInput" accept="image/*,application/pdf" class="drop__input">
+        <label for="fileInput" class="drop__label">
+          <span class="drop__icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
+          <strong>Toca para hacer una foto o elegir el archivo</strong>
+          <small>JPG, PNG o PDF · máximo 10 MB</small>
+        </label>
+        <div class="reading" id="reading" hidden>
+          <span class="spinner" aria-hidden="true"></span>
+          <div><strong>Leyendo tu factura…</strong><small id="readingFile"></small></div>
+        </div>
+      </div>
+
+      <p class="msg" id="s1msg" role="status" aria-live="polite"></p>
+
+      <div class="datos" id="datos" hidden>
+        <p class="badge-ok" id="datosBadge">✓ Datos leídos de tu factura · revísalos y corrige lo que haga falta</p>
+        <div class="fields">
+          <label class="field field--main">
+            <span>¿Cuánto pagas de luz al mes?</span>
+            <span class="field__in"><input id="fGasto" type="text" inputmode="decimal" autocomplete="off" placeholder="Ej. 95"><i>€/mes</i></span>
+          </label>
+          <details class="more" id="moreFields">
+            <summary>Más detalles de la factura <small>(opcional, mejora el cálculo)</small></summary>
+            <div class="fields fields--grid">
+              <label class="field"><span>Consumo mensual</span><span class="field__in"><input id="fConsumo" type="text" inputmode="decimal" autocomplete="off"><i>kWh</i></span></label>
+              <label class="field"><span>Precio de la energía</span><span class="field__in"><input id="fPrecio" type="text" inputmode="decimal" autocomplete="off"><i>€/kWh</i></span></label>
+              <label class="field"><span>Término fijo (potencia)</span><span class="field__in"><input id="fFijo" type="text" inputmode="decimal" autocomplete="off"><i>€/mes</i></span></label>
+              <label class="field"><span>Potencia contratada</span><span class="field__in"><input id="fPotencia" type="text" inputmode="decimal" autocomplete="off"><i>kW</i></span></label>
+            </div>
+            <p class="hint" id="fComer"></p>
+          </details>
+        </div>
+      </div>
+
+      <button type="button" class="link-btn" id="manualBtn">No tengo la factura a mano · escribir mi gasto</button>
+      <p class="fine">🔒 Tu factura se envía cifrada a un servicio de IA (Google Gemini o, si falla, Anthropic Claude) solo para leer los importes. No guardamos el archivo ni leemos tus datos personales.</p>
+
+      <div class="actions">
+        <span></span>
+        <button type="button" class="btn btn--primary" data-next="2" id="next1" disabled>Continuar <i aria-hidden="true">→</i></button>
+      </div>
+    </section>
+
+    <!-- ============ PASO 2 · UBICACIÓN ============ -->
+    <section class="step glass" data-step="2" aria-labelledby="s2t" hidden>
+      <header class="step__head">
+        <span class="step__n">Paso 2 de 5</span>
+        <h2 id="s2t" tabindex="-1">¿Dónde está tu casa?</h2>
+        <p>Escribe tu calle y municipio y elige la dirección correcta de la lista.</p>
+      </header>
+
+      <div class="combo" id="combo">
+        <label for="addr" class="sr-only">Dirección de tu vivienda</label>
+        <div class="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input id="addr" type="text" role="combobox" aria-autocomplete="list" aria-controls="addrList" aria-expanded="false" autocomplete="off" spellcheck="false" placeholder="Ej. calle Girona 12, Barcelona" enterkeyhint="search">
+          <button type="button" class="btn btn--sm" id="addrSearch">Buscar</button>
+        </div>
+        <ul class="suggest" id="addrList" role="listbox" aria-label="Sugerencias de dirección" hidden></ul>
+      </div>
+
+      <button type="button" class="link-btn" id="geoBtn">📍 Usar mi ubicación actual</button>
+
+      <div class="picked" id="picked" hidden>
+        <span class="picked__pin" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <div><strong id="pickedTitle"></strong><small id="pickedDetail"></small></div>
+      </div>
+
+      <details class="fallback" id="provBox">
+        <summary>¿No encuentras tu dirección? Elige tu provincia</summary>
+        <label class="field"><span>Provincia</span>
+          <select id="provSel"><option value="">Elige tu provincia…</option></select>
+        </label>
+        <p class="hint">Te llevaremos al mapa de tu provincia para que busques tu casa moviendo el mapa.</p>
+      </details>
+
+      <p class="msg" id="s2msg" role="status" aria-live="polite"></p>
+
+      <div class="actions">
+        <button type="button" class="btn btn--ghost" data-back="1">← Atrás</button>
+        <button type="button" class="btn btn--primary" data-next="3" id="next2" disabled>Continuar <i aria-hidden="true">→</i></button>
+      </div>
+    </section>
+
+    <!-- ============ PASO 3 · TEJADO ============ -->
+    <section class="step glass" data-step="3" aria-labelledby="s3t" hidden>
+      <header class="step__head">
+        <span class="step__n">Paso 3 de 5</span>
+        <h2 id="s3t" tabindex="-1">Dibuja tu tejado</h2>
+        <p>Toca en el mapa cada esquina de la parte del tejado donde irían las placas. Puedes arrastrar los puntos para ajustarlos.</p>
+      </header>
+
+      <div class="mapbox">
+        <div class="map" id="map" role="application" aria-label="Mapa satélite para marcar el tejado"></div>
+        <div class="map__loading" id="mapLoading"><span class="spinner" aria-hidden="true"></span> Cargando vista satélite…</div>
+        <div class="map__hint" id="mapHint">Toca la primera esquina de tu tejado</div>
+        <div class="map__tools">
+          <button type="button" class="tool" id="undoBtn" disabled>↶ Deshacer</button>
+          <button type="button" class="tool" id="clearBtn" disabled>Borrar</button>
+        </div>
+        <div class="map__area" id="areaPill" aria-live="polite"><b id="areaVal">0</b> m²<small id="areaKwp">Marca al menos 3 esquinas</small></div>
+      </div>
+
+      <details class="fallback" id="areaBox">
+        <summary>¿El mapa no carga o prefieres escribirlo? Indica los m² aproximados</summary>
+        <label class="field"><span>Superficie útil del tejado</span>
+          <span class="field__in"><input id="areaManual" type="text" inputmode="numeric" autocomplete="off" placeholder="Ej. 40"><i>m²</i></span>
+        </label>
+      </details>
+
+      <p class="msg" id="s3msg" role="status" aria-live="polite"></p>
+
+      <div class="actions">
+        <button type="button" class="btn btn--ghost" data-back="2">← Atrás</button>
+        <button type="button" class="btn btn--primary" data-next="4" id="next3" disabled>Calcular mi ahorro <i aria-hidden="true">→</i></button>
+      </div>
+    </section>
+
+    <!-- ============ PASO 4 · CÁLCULO ============ -->
+    <section class="step glass step--calc" data-step="4" aria-labelledby="s4t" hidden>
+      <div class="sun" aria-hidden="true"><span></span><span></span><span></span></div>
+      <h2 id="s4t" tabindex="-1">Calculando tu ahorro…</h2>
+      <ul class="checklist" id="checklist">
+        <li>Consultando la radiación solar de tu zona</li>
+        <li>Calculando cuántas placas caben en tu tejado</li>
+        <li>Estimando tu producción y tu ahorro</li>
+        <li>Preparando tu informe personalizado</li>
+      </ul>
+    </section>
+
+    <!-- ============ PASO 5 · INFORME (con muro de email) ============ -->
+    <section class="step step--report" data-step="5" aria-labelledby="s5t" hidden>
+      <div class="report is-locked" id="report">
+        <header class="report__hero glass">
+          <p class="tag">Tu informe de ahorro · <b>ORIENTATIVO</b></p>
+          <h2 id="s5t" tabindex="-1">Con placas solares ahorrarías unos <span class="big grad"><span data-k="ahorroAnual">1.234</span> €</span> al año</h2>
+          <p class="sub">≈ <b><span data-k="ahorroMensual">103</span> €/mes</b> · cubres el <b><span data-k="cobertura">55</span>%</b> de tu factura de la luz</p>
+        </header>
+
+        <div class="metrics">
+          <article class="metric glass"><small>Instalación recomendada</small><b><span data-k="placas">9</span> placas</b><span><span data-k="kwp">4,05</span> kWp de potencia</span></article>
+          <article class="metric glass"><small>Producción estimada</small><b><span data-k="produccion">6.480</span> kWh</b><span>al año</span></article>
+          <article class="metric glass"><small>Inversión estimada</small><b><span data-k="coste">5.650</span> €</b><span>IVA incluido, antes de ayudas</span></article>
+          <article class="metric glass metric--accent"><small>Recuperas la inversión en</small><b><span data-k="payback">7,3</span> años</b><span>después, ahorro neto</span></article>
+          <article class="metric glass"><small>Ahorro neto en 25 años</small><b><span data-k="ahorro25">16.500</span> €</b><span>descontada la inversión</span></article>
+          <article class="metric glass"><small>CO₂ evitado</small><b><span data-k="co2">19</span> t</b><span>en 25 años</span></article>
+          <article class="metric glass metric--wide"><small>Si lo financias (<span data-k="finMeses">120</span> meses)</small><b>Cuota ≈ <span data-k="cuota">65</span> €/mes</b><span>Tu ahorro cubre el <b><span data-k="coberturaCuota">94</span>%</b> de la cuota desde el primer mes</span></article>
+        </div>
+
+        <div class="panel glass">
+          <h3>Tu factura, con y sin placas</h3>
+          <div class="bars">
+            <div class="bar"><span class="bar__label">Hoy</span><span class="bar__track"><span class="bar__fill bar__fill--now" id="barNow"></span></span><b><span data-k="gasto">120</span> €/mes</b></div>
+            <div class="bar"><span class="bar__label">Con placas</span><span class="bar__track"><span class="bar__fill bar__fill--solar" id="barSolar"></span></span><b><span data-k="facturaCon">58</span> €/mes</b></div>
+          </div>
+        </div>
+
+        <div class="panel glass">
+          <h3>Lo que pagarías por la luz en 25 años</h3>
+          <div class="chart" id="chart" role="img" aria-label="Gráfica del gasto acumulado en luz con y sin placas solares durante 25 años"></div>
+          <p class="legend"><span class="lg lg--off"></span>Sin placas <span class="lg lg--on"></span>Con placas (incluye la inversión)</p>
+        </div>
+
+        <aside class="offer glass" id="offer">
+          <p class="offer__tag">🔥 Oferta de esta semana</p>
+          <h3>Si contratas antes del <span id="offerDate">domingo</span>, te descontamos <span class="grad"><span id="offerAmount">300</span> €</span></h3>
+          <p class="offer__sub">Quedan <b id="offerSlots">6</b> instalaciones disponibles esta semana · termina en <b id="offerCountdown">—</b></p>
+          <div class="offer__ctas">
+            <a class="btn btn--primary" id="ctaStudy" href="index.html#contacto">Pedir mi estudio gratis <i aria-hidden="true">→</i></a>
+            <button type="button" class="btn btn--ghost" id="restartBtn">Repetir el cálculo</button>
+          </div>
+        </aside>
+
+        <details class="panel glass how">
+          <summary>¿Cómo lo calculamos? <small>Todo es orientativo</small></summary>
+          <ul id="howList"></ul>
+          <p class="hint">El estudio gratuito en tu vivienda ajusta orientación, sombras, inclinación y precio real. Las ayudas y deducciones (IRPF, IBI) pueden reducir la inversión.</p>
+        </details>
+      </div>
+
+      <div class="gate" id="gate">
+        <form class="gate__card glass" id="gateForm" novalidate>
+          <span class="gate__lock" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+          <h3>Tu informe de ahorro está listo</h3>
+          <p>Déjanos tu email para desbloquearlo y ver todas las cifras.</p>
+          <label class="field"><span>Email</span><span class="field__in"><input id="gEmail" type="email" autocomplete="email" inputmode="email" required placeholder="tu@email.com"></span></label>
+          <label class="field"><span>Teléfono <small>(opcional, para resolver dudas)</small></span><span class="field__in"><input id="gTel" type="tel" autocomplete="tel" inputmode="tel" placeholder="600 000 000"></span></label>
+          <label class="check"><input type="checkbox" id="gConsent"><span>He leído la <a href="#privacidad" id="privLink">información de privacidad</a> y acepto que Solenna trate mis datos para enviarme este estudio y contactarme sobre él.</span></label>
+          <label class="check"><input type="checkbox" id="gMarketing"><span>Quiero recibir ofertas y novedades de Solenna (opcional).</span></label>
+          <input type="text" id="gWeb" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button type="submit" class="btn btn--primary btn--block" id="gSubmit">Ver mi informe <i aria-hidden="true">→</i></button>
+          <p class="msg" id="gMsg" role="status" aria-live="polite"></p>
+          <p class="fine">Responsable: Solenna. Finalidad: enviarte el estudio y contactarte. Base: tu consentimiento. Puedes retirarlo cuando quieras. <a href="#privacidad">Más información</a>.</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="privacy glass" id="privacidad" aria-labelledby="privT">
+      <h2 id="privT">Información de privacidad (RGPD)</h2>
+      <dl>
+        <dt>Responsable</dt><dd>Solenna Energía S.L. · <span class="edit">[EDITAR: CIF y dirección]</span> · Contacto: <span class="edit">[EDITAR: email de privacidad]</span></dd>
+        <dt>Finalidad</dt><dd>Enviarte la estimación de ahorro y contactarte para el estudio gratuito. Si marcas la casilla opcional, enviarte ofertas y novedades.</dd>
+        <dt>Base legal</dt><dd>Tu consentimiento, que puedes retirar en cualquier momento.</dd>
+        <dt>Datos</dt><dd>Email, teléfono (si lo das), gasto en luz, ubicación aproximada (municipio y coordenadas redondeadas), superficie de tejado y resultados del cálculo. La factura no se guarda: solo se usa para leer los importes.</dd>
+        <dt>Destinatarios</dt><dd>No cedemos tus datos. Proveedores que nos prestan servicio: alojamiento web (Hostinger), lectura de la factura (Google Gemini o Anthropic Claude), mapas (IGN / Esri) y búsqueda de direcciones (OpenStreetMap).</dd>
+        <dt>Conservación</dt><dd>Hasta 12 meses o hasta que retires tu consentimiento.</dd>
+        <dt>Derechos</dt><dd>Acceso, rectificación, supresión, oposición, limitación y portabilidad escribiendo a <span class="edit">[EDITAR: email de privacidad]</span>. También puedes reclamar ante la Agencia Española de Protección de Datos (aepd.es).</dd>
+      </dl>
+      <p class="fine">Información completa en nuestra <a href="privacidad.html">política de privacidad</a>.</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <nav aria-label="Legal"><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="cookies.html">Cookies</a></nav>
+    <p>© 2026 Solenna Energía S.L. · Cálculo orientativo, no vinculante.</p>
+    <p class="foot__credits">Ortofotos © Instituto Geográfico Nacional (PNOA) · Imágenes © Esri · Direcciones © colaboradores de OpenStreetMap · Radiación solar: PVGIS © Comisión Europea</p>
+  </footer>
+</body>
+</html>

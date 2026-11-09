@@ -1,0 +1,460 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solenna · Paneles solares para tu casa, sin sorpresas en la factura</title>
+  <meta name="description" content="Instalación de paneles solares residenciales llave en mano. Reduce hasta un 70% tu factura de la luz con un estudio gratuito y 25 años de garantía.">
+  <meta name="theme-color" content="#06141c">
+  <meta property="og:title" content="Solenna · Energía solar para tu casa">
+  <meta property="og:description" content="Produce tu propia energía y deja de depender del precio de la luz.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2306141c'/%3E%3Ccircle cx='32' cy='32' r='12' fill='%23b9f27c'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20261029">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+  <!-- ============ SPLASH ============ -->
+  <div class="splash" id="splash" aria-hidden="true">
+    <div class="splash__inner">
+      <svg class="splash__sun" viewBox="0 0 120 120">
+        <circle class="splash__ring" cx="60" cy="60" r="52"/>
+        <circle class="splash__core" cx="60" cy="60" r="18"/>
+      </svg>
+      <div class="splash__word">Solenna</div>
+      <div class="splash__count"><span id="splashCount">00</span>%</div>
+    </div>
+  </div>
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"></span></div>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav" id="nav">
+    <a href="#top" class="nav__logo" aria-label="Solenna, inicio">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="6"/><path d="M16 2v5M16 25v5M2 16h5M25 16h5M6 6l3.5 3.5M22.5 22.5L26 26M6 26l3.5-3.5M22.5 9.5L26 6"/></svg>
+      <span>Solenna</span>
+    </a>
+    <nav class="nav__links" aria-label="Principal">
+      <a href="#ventajas">Ventajas</a>
+      <a href="calculadora.html">Calculadora</a>
+      <a href="#proceso">Cómo trabajamos</a>
+      <a href="#opiniones">Opiniones</a>
+    </nav>
+    <a href="#contacto" class="btn btn--pill magnetic"><span>Estudio gratuito</span><i class="btn__arrow">→</i></a>
+    <button class="nav__burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span></button>
+  </header>
+
+  <div class="menu" id="menu" aria-hidden="true">
+    <a href="#ventajas">Ventajas</a>
+    <a href="calculadora.html">Calculadora de ahorro</a>
+    <a href="#proceso">Cómo trabajamos</a>
+    <a href="#opiniones">Opiniones</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+      <div class="hero__media" data-speed="0.12">
+        <picture>
+          <source media="(min-width: 1101px)" srcset="assets/img/casa-panoramica-1200.webp?v=20261029 1200w, assets/img/casa-panoramica.webp?v=20261029 1920w" sizes="100vw" width="1920" height="1088">
+          <img src="assets/img/casa-atardecer.webp?v=20261029"
+             srcset="assets/img/casa-atardecer-640.webp?v=20261029 640w, assets/img/casa-atardecer.webp?v=20261029 1024w"
+             sizes="100vw" width="1024" height="1536"
+             alt="Vivienda unifamiliar blanca con paneles solares negros en el tejado al atardecer, rodeada de olivos"
+             fetchpriority="high" decoding="async">
+        </picture>
+      </div>
+      <div class="hero__shade" aria-hidden="true"></div>
+      <canvas class="hero__canvas" id="heroCanvas" aria-hidden="true"></canvas>
+
+      <div class="hero__grid container">
+        <div class="hero__copy">
+          <p class="eyebrow reveal"><span class="dot"></span> Instalación solar residencial · Estudio sin compromiso</p>
+          <h1 class="hero__title">
+            <span class="line"><span class="word">La</span> <span class="word">luz</span> <span class="word">más</span> <span class="word">barata</span></span>
+            <span class="line"><span class="word">es</span> <span class="word">la</span> <span class="word">que</span> <em class="word serif">produces</em></span>
+            <span class="line"><em class="word serif accent">tú mismo.</em></span>
+          </h1>
+          <p class="hero__lead reveal">Paneles solares en tu tejado, llave en mano. Diseñamos, tramitamos e instalamos tu sistema para que reduzcas <strong>hasta un 70%</strong> tu factura desde el primer mes y dejes de mirar el precio de la luz.</p>
+          <div class="hero__ctas reveal">
+            <a href="#contacto" class="btn btn--primary magnetic"><span>Quiero mi estudio gratis</span><i class="btn__arrow">→</i></a>
+            <a href="calculadora.html" class="btn btn--ghost magnetic"><span>Calcula tu ahorro en 2 min</span></a>
+          </div>
+          <ul class="hero__trust reveal">
+            <li><b>4,9</b><span>★★★★★</span><small>+600 reseñas</small></li>
+            <li><b>25</b><span>años</span><small>de garantía</small></li>
+            <li><b>0 €</b><span>de entrada</span><small>financiación</small></li>
+          </ul>
+        </div>
+
+        <div class="hero__visual" id="heroVisual">
+          <div class="chip chip--prod float" data-speed="0.05">
+            <div class="chip__head"><span class="live"></span> Producción hoy</div>
+            <div class="chip__val"><span id="liveKwh">18,4</span> <small>kWh</small></div>
+            <svg class="chip__spark" viewBox="0 0 120 32" preserveAspectRatio="none"><path d="M0 30 C 20 30, 25 22, 40 18 S 60 4, 72 4 S 95 14, 120 28"/></svg>
+          </div>
+
+          <div class="chip chip--save float" data-speed="0.1">
+            <div class="chip__big">−72%</div>
+            <div class="chip__sub">en la factura de la familia Ortega</div>
+          </div>
+
+          <div class="badge-spin" aria-hidden="true">
+            <svg viewBox="0 0 100 100"><defs><path id="badgePath" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><text><textPath href="#badgePath">ESTUDIO GRATIS · ESTUDIO GRATIS · </textPath></text></svg>
+            <span>↓</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero__scroll" aria-hidden="true"><span></span>Desliza</div>
+    </section>
+
+    <!-- ============ MARQUEE ============ -->
+    <div class="marquee" aria-label="Lo que ofrecemos">
+      <div class="marquee__track">
+        <span>Estudio técnico gratuito</span><i>✦</i><span>Tramitamos las subvenciones</span><i>✦</i><span>Instalación en 1 día</span><i>✦</i><span>Monitorización desde el móvil</span><i>✦</i><span>Compensación de excedentes</span><i>✦</i><span>Baterías opcionales</span><i>✦</i>
+        <span>Estudio técnico gratuito</span><i>✦</i><span>Tramitamos las subvenciones</span><i>✦</i><span>Instalación en 1 día</span><i>✦</i><span>Monitorización desde el móvil</span><i>✦</i><span>Compensación de excedentes</span><i>✦</i><span>Baterías opcionales</span><i>✦</i>
+      </div>
+    </div>
+
+    <!-- ============ MANIFIESTO ============ -->
+    <section class="manifesto container">
+      <p class="label reveal">(01) — Por qué ahora</p>
+      <p class="manifesto__text" id="manifesto">
+        Cada mes pagas una factura que no controlas. Subidas, peajes, tramos horarios. Mientras tanto, tu tejado recibe sol gratis más de 2.500 horas al año. Nosotros solo lo conectamos con tu casa.
+      </p>
+
+      <div class="stats">
+        <div class="stat reveal"><b class="count" data-to="2400" data-sep=".">2.400</b><span>hogares ya producen su propia luz</span></div>
+        <div class="stat reveal"><b><span class="count" data-to="72">72</span>%</b><span>de ahorro medio en la factura</span></div>
+        <div class="stat reveal"><b><span class="count" data-to="6">6</span>–8</b><span>años para amortizar la inversión</span></div>
+        <div class="stat reveal"><b><span class="count" data-to="25">25</span></b><span>años de garantía en paneles</span></div>
+      </div>
+    </section>
+
+    <!-- ============ VENTAJAS ============ -->
+    <section class="benefits" id="ventajas">
+      <div class="container">
+        <div class="section-head">
+          <p class="label reveal">(02) — Ventajas</p>
+          <h2 class="h2 reveal">Tu casa, convertida en tu <em class="serif accent">propia</em> central eléctrica.</h2>
+          <p class="section-head__lead reveal">No vendemos paneles. Vendemos tranquilidad: saber cuánto vas a pagar cada mes, durante décadas.</p>
+        </div>
+
+        <div class="bento">
+          <article class="card card--xl spot tilt reveal">
+            <div class="card__num">01</div>
+            <svg class="card__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M8 34l10-10 7 7 15-15"/><path d="M32 16h8v8"/></svg>
+            <h3>Hasta un 70% menos en tu factura</h3>
+            <p>Consumes la energía que produces en el momento y el excedente se descuenta de tu factura. Desde el primer mes.</p>
+            <div class="bars" aria-hidden="true">
+              <div class="bars__col"><span style="--h:100%"></span><small>Antes</small></div>
+              <div class="bars__col"><span class="is-green" style="--h:28%"></span><small>Con Solenna</small></div>
+            </div>
+          </article>
+
+          <figure class="card card--img ph has-img reveal">
+            <img src="assets/img/panel-detalle.webp?v=20261029"
+                 srcset="assets/img/panel-detalle-800.webp?v=20261029 800w, assets/img/panel-detalle.webp?v=20261029 1536w"
+                 sizes="(max-width: 1100px) 92vw, 650px" width="1536" height="1024"
+                 alt="Detalle de un panel solar negro reflejando el cielo del atardecer" loading="lazy" decoding="async">
+            <figcaption class="card__cap"><span>Full black</span>Paneles que se integran en tu tejado, sin romper la estética de tu casa.</figcaption>
+          </figure>
+
+          <article class="card spot tilt reveal">
+            <div class="card__num">02</div>
+            <svg class="card__icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="8" width="28" height="34" rx="4"/><path d="M18 18h12M18 25h12M18 32h7"/></svg>
+            <h3>Subvenciones y papeleo, cosa nuestra</h3>
+            <p>Gestionamos licencias, legalización, bonificaciones del IBI y ayudas disponibles en tu municipio.</p>
+          </article>
+
+          <article class="card spot tilt reveal">
+            <div class="card__num">03</div>
+            <svg class="card__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6l14 6v10c0 9-6 16-14 20-8-4-14-11-14-20V12z"/><path d="M18 24l5 5 8-9"/></svg>
+            <h3>25 años de garantía real</h3>
+            <p>Paneles de primera marca con garantía de producción y nuestro propio servicio técnico, sin intermediarios.</p>
+          </article>
+
+          <article class="card card--wide card--dark spot tilt reveal">
+            <div class="card__num">04</div>
+            <svg class="card__icon" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 28c0-8 6-16 14-18 8 2 14 10 14 18a14 14 0 0 1-28 0z"/><path d="M24 22v20"/></svg>
+            <h3>Revaloriza tu vivienda y el planeta</h3>
+            <p>Una casa con autoconsumo mejora su certificado energético y su valor de venta. Y cada año evita toneladas de CO₂.</p>
+            <div class="ring" aria-hidden="true">
+              <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="ring__bg"/><circle cx="60" cy="60" r="52" class="ring__fg"/></svg>
+              <div class="ring__txt"><b>A</b><small>certificado</small></div>
+            </div>
+          </article>
+
+          <article class="card card--wide spot tilt reveal">
+            <div class="card__num">05</div>
+            <svg class="card__icon" viewBox="0 0 48 48" aria-hidden="true"><rect x="14" y="6" width="20" height="36" rx="4"/><path d="M20 36h8M18 22l4-6v5h4l-4 6v-5z"/></svg>
+            <h3>Todo bajo control desde el móvil</h3>
+            <p>Mira en tiempo real cuánto produces, cuánto consumes y cuánto estás ahorrando hoy.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CALCULADORA ============ -->
+    <section class="calc" id="ahorro">
+      <div class="calc__bg" aria-hidden="true">
+        <img src="assets/img/barrio-atardecer.webp?v=20261029" srcset="assets/img/barrio-atardecer-1000.webp?v=20261029 1000w, assets/img/barrio-atardecer.webp?v=20261029 1920w" sizes="100vw" width="1920" height="1088" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="container calc__grid">
+        <div class="calc__intro">
+          <p class="label reveal">(03) — Calcula tu ahorro</p>
+          <h2 class="h2 reveal">Mueve la barra. <br><em class="serif accent">Mira tu futuro.</em></h2>
+          <p class="reveal">Indica cuánto pagas al mes de luz y te mostramos una estimación orientativa de lo que podrías ahorrar con una instalación a tu medida.</p>
+          <p class="calc__note reveal">*Estimación basada en instalaciones medias de vivienda unifamiliar. El estudio gratuito te dará la cifra exacta.</p>
+        </div>
+
+        <div class="calc__panel reveal">
+          <label for="bill" class="calc__q">¿Cuánto pagas de luz al mes?</label>
+          <div class="calc__bill"><output id="billOut">120</output><span>€/mes</span></div>
+          <input type="range" id="bill" min="40" max="400" step="5" value="120" aria-label="Factura mensual en euros">
+          <div class="calc__range"><span>40 €</span><span>400 €</span></div>
+
+          <div class="calc__results">
+            <div class="res res--main">
+              <small>Ahorro estimado al año</small>
+              <b><span id="resYear">1.037</span> €</b>
+            </div>
+            <div class="res">
+              <small>Ahorro en 25 años</small>
+              <b><span id="res25">37.800</span> €</b>
+            </div>
+            <div class="res">
+              <small>CO₂ evitado al año</small>
+              <b><span id="resCo2">1.193</span> kg</b>
+            </div>
+          </div>
+          <a href="calculadora.html" class="btn btn--primary btn--block magnetic"><span>Calcularlo con mi factura y mi tejado</span><i class="btn__arrow">→</i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROCESO ============ -->
+    <section class="process" id="proceso">
+      <div class="container">
+        <div class="section-head section-head--row">
+          <div>
+            <p class="label reveal">(04) — Cómo trabajamos</p>
+            <h2 class="h2 reveal">De la primera llamada a <br>tu primer kWh, <em class="serif accent">en 4 pasos.</em></h2>
+          </div>
+          <p class="section-head__lead reveal">Un único interlocutor de principio a fin. Sin subcontratas, sin letra pequeña.</p>
+        </div>
+      </div>
+
+      <figure class="process__band parallax-in reveal">
+        <img src="assets/img/equipo-instalando.webp?v=20261029"
+             srcset="assets/img/equipo-instalando-960.webp?v=20261029 960w, assets/img/equipo-instalando.webp?v=20261029 1792w"
+             sizes="100vw" width="1792" height="768" data-drift
+             alt="Dos instaladores con uniforme verde llevan un panel solar hacia una casa que ya tiene paneles en el tejado"
+             loading="lazy" decoding="async">
+      </figure>
+
+      <div class="container">
+        <ol class="steps steps--cards" id="steps">
+          <div class="steps__line" aria-hidden="true"><span id="stepsFill"></span></div>
+          <li class="step reveal">
+            <span class="step__n">01</span>
+            <h3>Estudio gratuito</h3>
+            <p>Analizamos tu factura y tu tejado (incluso por satélite) y te enviamos una propuesta en 48 h.</p>
+            <span class="step__t">Día 1–2</span>
+          </li>
+          <li class="step reveal">
+            <span class="step__n">02</span>
+            <h3>Diseño a medida</h3>
+            <p>Calculamos el número exacto de paneles para tu consumo. Ni uno más, ni uno menos.</p>
+            <span class="step__t">Semana 1</span>
+          </li>
+          <li class="step reveal">
+            <span class="step__n">03</span>
+            <h3>Instalación en un día</h3>
+            <p>Nuestro equipo propio instala, limpia y deja todo funcionando en una sola jornada.</p>
+            <span class="step__t">Semana 2–3</span>
+          </li>
+          <li class="step reveal">
+            <span class="step__n">04</span>
+            <h3>A ahorrar</h3>
+            <p>Legalizamos la instalación, activamos la compensación y te enseñamos a usar tu app.</p>
+            <span class="step__t">Para siempre</span>
+          </li>
+        </ol>
+
+      </div>
+    </section>
+
+    <!-- ============ ESCENA (imagen a pantalla completa que se expande al hacer scroll) ============ -->
+    <section class="scene" id="escena" aria-label="Lo que cambia en tu día a día">
+      <div class="scene__sticky">
+        <figure class="scene__media">
+          <img src="assets/img/familia-atardecer.webp?v=20261029"
+               srcset="assets/img/familia-atardecer-1000.webp?v=20261029 1000w, assets/img/familia-atardecer.webp?v=20261029 1920w"
+               sizes="100vw" width="1920" height="1088"
+               alt="Familia sentada en la terraza de madera de su casa al atardecer, con paneles solares en el tejado"
+               loading="lazy" decoding="async">
+        </figure>
+        <div class="scene__copy container">
+          <p class="label">(05) — Lo que cambia</p>
+          <h2 class="h2 scene__title">Tu casa sigue siendo tu casa. <br><em class="serif accent">Solo que ahora trabaja para ti.</em></h2>
+          <p class="scene__lead">Lavadora a mediodía, aire acondicionado en agosto, la terraza encendida al anochecer. Sin mirar el reloj ni la factura.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIOS ============ -->
+    <section class="testi" id="opiniones">
+      <div class="container">
+        <div class="section-head section-head--row">
+          <div>
+            <p class="label reveal">(06) — Opiniones</p>
+            <h2 class="h2 reveal">Familias que ya no <em class="serif accent">temen</em> <br>a la factura.</h2>
+          </div>
+          <div class="testi__nav reveal">
+            <button class="round magnetic" id="tPrev" aria-label="Opinión anterior">←</button>
+            <span class="testi__count"><b id="tIdx">01</b> / <span id="tTotal">04</span></span>
+            <button class="round magnetic" id="tNext" aria-label="Opinión siguiente">→</button>
+          </div>
+        </div>
+
+        <div class="testi__stage" id="testiStage">
+          <article class="quote is-active">
+            <div class="quote__meta">
+              <div class="avatar" aria-hidden="true">MO</div>
+              <div><b>Marta y Javier Ortega</b><small>Chalet en Majadahonda · 10 paneles</small></div>
+              <div class="quote__saving"><b>−72%</b><small>factura</small></div>
+            </div>
+            <blockquote>“Pagábamos 180 euros al mes en invierno. El primer recibo después de la instalación fue de 48. Lo mejor fue que no tuvimos que hacer nada: ellos se encargaron de todo el papeleo.”</blockquote>
+          </article>
+          <article class="quote">
+            <div class="quote__meta">
+              <div class="avatar" aria-hidden="true">LH</div>
+              <div><b>Luis Herrero</b><small>Adosado en Valencia · 8 paneles + batería</small></div>
+              <div class="quote__saving"><b>−81%</b><small>factura</small></div>
+            </div>
+            <blockquote>“Teletrabajo en casa y el aire acondicionado en verano era un drama. Ahora lo pongo sin mirar el reloj. Vino el técnico, me explicó todo con calma y en un día estaba funcionando.”</blockquote>
+          </article>
+          <article class="quote">
+            <div class="quote__meta">
+              <div class="avatar" aria-hidden="true">CR</div>
+              <div><b>Carmen Ruiz</b><small>Casa de campo en Córdoba · 12 paneles</small></div>
+              <div class="quote__saving"><b>−68%</b><small>factura</small></div>
+            </div>
+            <blockquote>“Tenía miedo de que fuera un lío y de que me engañaran con las ayudas. Me dieron la cifra exacta antes de firmar y se ha cumplido al euro. Ya se lo he recomendado a mis dos vecinos.”</blockquote>
+          </article>
+          <article class="quote">
+            <div class="quote__meta">
+              <div class="avatar" aria-hidden="true">AP</div>
+              <div><b>Andrés y Paula Martín</b><small>Unifamiliar en Zaragoza · 9 paneles</small></div>
+              <div class="quote__saving"><b>−65%</b><small>factura</small></div>
+            </div>
+            <blockquote>“Con dos niños pequeños, lavadora y lavavajillas van a diario. Ahora los ponemos a mediodía con nuestro propio sol. La app es adictiva: los críos miran cada día cuánto hemos producido.”</blockquote>
+          </article>
+        </div>
+        <div class="testi__progress" aria-hidden="true"><span id="tBar"></span></div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACTO ============ -->
+    <section class="contact" id="contacto">
+      <div class="contact__bg" aria-hidden="true">
+        <img src="assets/img/tejado-aereo.webp?v=20261029" srcset="assets/img/tejado-aereo-1000.webp?v=20261029 1000w, assets/img/tejado-aereo.webp?v=20261029 1920w" sizes="100vw" width="1920" height="1088" alt="" loading="lazy" decoding="async">
+      </div>
+      <div class="container contact__grid">
+        <div class="contact__info">
+          <p class="label reveal">(07) — Contacto</p>
+          <h2 class="h2 h2--xl reveal">Hablemos de <em class="serif accent">tu tejado.</em></h2>
+          <p class="reveal">Déjanos tus datos y un asesor te llamará en menos de 24 horas laborables con un estudio personalizado. Sin compromiso y sin presión comercial.</p>
+
+          <ul class="contact__list reveal">
+            <li><small>Teléfono gratuito</small><a href="tel:900000000">900 000 000</a></li>
+            <li><small>Email</small><a href="mailto:hola@solenna.es">hola@solenna.es</a></li>
+            <li><small>Horario</small><span>Lunes a viernes · 9:00 – 20:00</span></li>
+          </ul>
+          <a href="calculadora.html" class="contact__calc reveal">
+            <span><small>¿Prefieres una cifra ya?</small>Sube tu factura y marca tu tejado: tu ahorro en 2 minutos</span>
+            <i aria-hidden="true">→</i>
+          </a>
+        </div>
+
+        <form class="form reveal" id="contactForm" action="mailto:hola@solenna.es" method="post" enctype="text/plain" novalidate>
+          <div class="form__row">
+            <div class="field"><input id="f-name" name="nombre" type="text" placeholder=" " required autocomplete="name"><label for="f-name">Nombre y apellidos</label></div>
+          </div>
+          <div class="form__row form__row--2">
+            <div class="field"><input id="f-phone" name="telefono" type="tel" placeholder=" " required autocomplete="tel"><label for="f-phone">Teléfono</label></div>
+            <div class="field"><input id="f-cp" name="codigo_postal" type="text" inputmode="numeric" placeholder=" " required maxlength="5"><label for="f-cp">Código postal</label></div>
+          </div>
+          <div class="form__row">
+            <div class="field"><input id="f-email" name="email" type="email" placeholder=" " autocomplete="email"><label for="f-email">Email (opcional)</label></div>
+          </div>
+
+          <fieldset class="form__chips">
+            <legend>¿Cuánto pagas de luz al mes?</legend>
+            <label><input type="radio" name="factura" value="menos de 60"><span>&lt; 60 €</span></label>
+            <label><input type="radio" name="factura" value="60-120" checked><span>60–120 €</span></label>
+            <label><input type="radio" name="factura" value="120-200"><span>120–200 €</span></label>
+            <label><input type="radio" name="factura" value="mas de 200"><span>&gt; 200 €</span></label>
+          </fieldset>
+
+          <fieldset class="form__chips">
+            <legend>Tipo de vivienda</legend>
+            <label><input type="radio" name="vivienda" value="chalet" checked><span>Chalet independiente</span></label>
+            <label><input type="radio" name="vivienda" value="adosado"><span>Adosado / pareado</span></label>
+            <label><input type="radio" name="vivienda" value="otra"><span>Otra</span></label>
+          </fieldset>
+
+          <label class="form__check"><input type="checkbox" name="privacidad" required><span>Acepto la <a href="privacidad.html">política de privacidad</a> y que me contactéis para enviarme el estudio.</span></label>
+
+          <button type="submit" class="btn btn--primary btn--block magnetic"><span>Solicitar estudio gratuito</span><i class="btn__arrow">→</i></button>
+          <p class="form__msg" id="formMsg" role="status" aria-live="polite"></p>
+
+          <div class="form__ok" id="formOk" hidden>
+            <svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="27"/><path d="M18 31l8 8 16-17"/></svg>
+            <h3>¡Recibido!</h3>
+            <p>Un asesor te llamará en menos de 24 h laborables. Mientras, ve buscando una foto de tu última factura.</p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <p class="footer__claim">El sol sale para todos.<br><em class="serif accent">Que también pague tu luz.</em></p>
+        <a href="#contacto" class="btn btn--primary magnetic"><span>Empezar ahora</span><i class="btn__arrow">→</i></a>
+      </div>
+      <div class="footer__word" aria-hidden="true">Solenna</div>
+      <div class="footer__bottom">
+        <span>© 2026 Solenna Energía S.L.</span>
+        <nav aria-label="Legal"><a href="aviso-legal.html">Aviso legal</a><a href="privacidad.html">Privacidad</a><a href="cookies.html">Cookies</a></nav>
+        <a href="#top" class="footer__up">Volver arriba ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="lib/manifest.js?v=20261029" defer></script>
+  <script src="main.js?v=20261029" defer></script>
+  <!-- Asistente de chat con IA. data-endpoint: dirección del backend en Cloudflare (pendiente de publicar) -->
+  <script src="lib/chat-widget.js?v=20261029" defer
+          data-endpoint=""
+          data-whatsapp=""
+          data-contact="#contacto"
+          data-name="Asistente Solenna"></script>
+</body>
+</html>
+
+</body></html>
