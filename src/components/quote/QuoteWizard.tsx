@@ -133,7 +133,8 @@ function Estimate({ choices, compact }: { choices: QuoteChoices; compact?: boole
 
 /* ---------- wizard ---------- */
 
-export function QuoteWizard({ initialPlan }: { initialPlan?: string }) {
+export function QuoteWizard({ initialPlan, headingLevel: Heading = "h3" }: { initialPlan?: string; headingLevel?: "h2" | "h3" }) {
+  const Sub = Heading === "h2" ? "h3" : "h4";
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [choices, setChoices] = useState<QuoteChoices>(defaultChoices);
@@ -317,7 +318,7 @@ export function QuoteWizard({ initialPlan }: { initialPlan?: string }) {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
             >
-              <h3 ref={headingRef} tabIndex={-1} className="text-2xl outline-none md:text-3xl">
+              <Heading ref={headingRef} tabIndex={-1} className="text-2xl outline-none md:text-3xl">
                 {
                   [
                     "¿Qué tipo de proyecto necesitas?",
@@ -329,7 +330,7 @@ export function QuoteWizard({ initialPlan }: { initialPlan?: string }) {
                     "Tu cotización estimada",
                   ][step]
                 }
-              </h3>
+              </Heading>
 
               {step === 0 && (
                 <fieldset className="mt-6">
@@ -632,7 +633,7 @@ export function QuoteWizard({ initialPlan }: { initialPlan?: string }) {
 
       {/* Total en vivo (escritorio) */}
       <aside aria-label="Tu estimado" className={`card hidden p-6 lg:sticky lg:top-24 ${isSummary ? "" : "lg:block"}`}>
-        <h3 className="mb-5 text-lg tracking-tight">Tu estimado</h3>
+        <Sub className="mb-5 text-lg tracking-tight">Tu estimado</Sub>
         <Estimate choices={choices} />
         <p className="sr-only" aria-live="polite">
           Total estimado {rangeText(quote)}

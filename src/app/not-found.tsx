@@ -31,7 +31,7 @@ export default function NotFound() {
           src="/images/404.webp"
           alt="Cable desconectado que brilla en naranja sobre fondo negro"
           fill
-          priority
+          preload
           sizes="(min-width: 1024px) 448px, 90vw"
           className="object-cover"
         />

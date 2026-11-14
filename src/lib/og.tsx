@@ -49,7 +49,7 @@ export async function renderOg({ eyebrow, title }: { eyebrow: string; title: str
             height: 720,
             borderRadius: 720,
             display: "flex",
-            background: "radial-gradient(circle, rgba(255,107,26,0.5), rgba(255,107,26,0) 65%)",
+            background: "radial-gradient(circle, rgba(255,107,26,0.5) 0%, rgba(255,107,26,0) 48%)",
           }}
         />
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>

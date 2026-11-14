@@ -30,7 +30,7 @@ export default async function QuotePage({ searchParams }: Props) {
           Seis preguntas y tienes un estimado. El precio final se confirma tras tu diagnóstico gratis.
         </p>
         <div className="mt-12">
-          <QuoteWizard initialPlan={initialPlan} />
+          <QuoteWizard initialPlan={initialPlan} headingLevel="h2" />
         </div>
       </div>
     </div>

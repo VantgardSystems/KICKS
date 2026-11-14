@@ -18,8 +18,8 @@ function StepBlock({ step, index, onActive }: { step: Step; index: number; onAct
 
   return (
     <li ref={ref} className="flex flex-col justify-center border-t border-line py-10 first:border-t-0 lg:min-h-[58vh] lg:border-t-0 lg:py-0">
-      <div className={`transition-opacity duration-300 ${inView ? "lg:opacity-100" : "lg:opacity-50"}`}>
-        <p className="font-mono text-sm text-flame">Paso {index + 1} de {processSteps.length}</p>
+      <div>
+        <p className={`font-mono text-sm transition-colors duration-300 ${inView ? "text-flame" : "text-flame lg:text-mute"}`}>Paso {index + 1} de {processSteps.length}</p>
         <h3 className="mt-3 text-3xl md:text-4xl">{step.title}</h3>
         <p className="mt-4 max-w-md text-lg text-mute">{step.description}</p>
         <p className="mt-6 inline-flex rounded-full border border-line-strong px-4 py-2 font-mono text-xs text-paper">

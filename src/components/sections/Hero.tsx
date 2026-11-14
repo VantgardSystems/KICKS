@@ -11,7 +11,7 @@ import { LaptopMockup, PhoneMockup } from "@/components/ui/DeviceMockups";
 const words = hero.title.split(" ");
 
 function HeroBackground() {
-  const common = { alt: "", fill: true, priority: true } as const;
+  const common = { alt: "", fill: true, loading: "eager" } as const;
   const { props: desktop } = getImageProps({ ...common, src: "/images/hero-bg.webp", sizes: "100vw" });
   const { props: mobile } = getImageProps({ ...common, src: "/images/hero-bg-mobile.webp", sizes: "100vw" });
   return (
@@ -26,6 +26,8 @@ function HeroBackground() {
 export function Hero() {
   const reduce = useReducedMotion();
   const [index, setIndex] = useState(0);
+  // La primera captura sale ya visible desde el servidor; solo los cambios se animan.
+  const [rotated, setRotated] = useState(false);
   const project = projects[index];
 
   const mx = useMotionValue(0);
@@ -47,7 +49,10 @@ export function Hero() {
 
   useEffect(() => {
     if (reduce) return;
-    const id = window.setInterval(() => setIndex((i) => (i + 1) % projects.length), 4500);
+    const id = window.setInterval(() => {
+      setRotated(true);
+      setIndex((i) => (i + 1) % projects.length);
+    }, 4500);
     return () => window.clearInterval(id);
   }, [reduce]);
 
@@ -121,7 +126,7 @@ export function Hero() {
         </div>
 
         {/* Mockups */}
-        <div className="fade-up relative mx-auto w-full max-w-[560px] lg:max-w-none" style={{ ["--d" as string]: "900ms", perspective: 1400 }}>
+        <div className="relative mx-auto w-full max-w-[560px] lg:max-w-none" style={{ perspective: 1400 }}>
           <motion.div style={{ rotateX: tiltX, rotateY: tiltY }} className="relative pr-[8%] pb-[10%]">
             <motion.div style={{ x: laptopX, y: laptopY }}>
               <motion.div
@@ -132,7 +137,7 @@ export function Hero() {
                   <AnimatePresence initial={false}>
                     <motion.div
                       key={project.slug}
-                      initial={{ opacity: 0, scale: 1.04 }}
+                      initial={rotated ? { opacity: 0, scale: 1.04 } : false}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
@@ -144,7 +149,9 @@ export function Hero() {
                         fill
                         sizes="(min-width: 1024px) 560px, 90vw"
                         className="object-cover object-top"
-                        priority={index === 0}
+                        preload={index === 0}
+                        fetchPriority={index === 0 ? "high" : "auto"}
+                        loading="eager"
                       />
                     </motion.div>
                   </AnimatePresence>
@@ -161,7 +168,7 @@ export function Hero() {
                   <AnimatePresence initial={false}>
                     <motion.div
                       key={project.slug}
-                      initial={{ opacity: 0 }}
+                      initial={rotated ? { opacity: 0 } : false}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: 0.9 }}
@@ -192,7 +199,10 @@ export function Hero() {
                   type="button"
                   aria-label={`Ver ${p.name}`}
                   aria-pressed={i === index}
-                  onClick={() => setIndex(i)}
+                  onClick={() => {
+                    setRotated(true);
+                    setIndex(i);
+                  }}
                   className="grid h-8 w-8 place-items-center"
                 >
                   <span className={`h-[3px] rounded-full transition-all duration-500 ${i === index ? "w-6 bg-flame" : "w-3 bg-white/25"}`} />

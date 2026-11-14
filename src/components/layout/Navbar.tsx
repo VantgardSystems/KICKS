@@ -55,13 +55,14 @@ export function Navbar() {
   }, [open]);
 
   return (
+    <>
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,backdrop-filter] duration-300 ${
         scrolled || open ? "border-b border-line bg-ink/75 backdrop-blur-xl" : "border-b border-transparent"
       }`}
     >
       <div className="container-x flex h-16 items-center justify-between md:h-[72px]">
-        <Link href="/" aria-label="Vantgard Systems, inicio" className="relative z-10 -ml-1 rounded-md p-1" onClick={() => setOpen(false)}>
+        <Link href="/" aria-label="VANTGARD SYSTEMS, ir al inicio" className="relative z-10 -ml-1 rounded-md p-1" onClick={() => setOpen(false)}>
           <Logo />
         </Link>
 
@@ -111,6 +112,8 @@ export function Navbar() {
         </div>
       </div>
 
+    </header>
+
       <AnimatePresence>
         {open && (
           <motion.div
@@ -124,10 +127,10 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-x-0 top-16 bottom-0 overflow-y-auto bg-ink md:top-[72px] lg:hidden"
+            className="fixed inset-x-0 top-16 bottom-0 z-[45] overflow-y-auto bg-ink md:top-[72px] lg:hidden"
           >
             <div className="bg-grid pointer-events-none absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_top_right,black,transparent_70%)]" />
-            <div className="container-x relative flex min-h-full flex-col justify-between gap-12 py-8">
+            <div className="container-x relative flex min-h-full flex-col justify-between gap-12 pt-8 pb-24">
               <ul>
                 {nav.map((item, i) => (
                   <motion.li
@@ -143,7 +146,6 @@ export function Navbar() {
                       className="flex items-baseline justify-between py-4 text-3xl font-semibold tracking-tight"
                     >
                       {item.label}
-                      <span className="font-mono text-xs text-mute">0{i + 1}</span>
                     </Link>
                   </motion.li>
                 ))}
@@ -170,6 +172,6 @@ export function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }

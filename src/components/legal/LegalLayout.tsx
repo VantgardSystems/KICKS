@@ -56,7 +56,7 @@ export function LegalLayout({ title, path, intro, sections }: Props) {
           </p>
         </header>
 
-        <div className="mt-10 grid gap-12 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-16">
+        <div className="mt-10 grid grid-cols-1 gap-12 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-16">
           <nav aria-label="Índice" className="lg:sticky lg:top-28 lg:self-start">
             <h2 className="mb-3 font-mono text-xs tracking-wider text-paper">En esta página</h2>
             <ol className="border-l border-line">
@@ -66,7 +66,7 @@ export function LegalLayout({ title, path, intro, sections }: Props) {
                     href={`#${s.id}`}
                     className="-ml-px flex gap-3 border-l border-transparent py-1.5 pl-4 text-sm text-mute transition-colors hover:border-flame hover:text-paper"
                   >
-                    <span className="font-mono text-xs leading-5 text-mute/70">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="font-mono text-xs leading-5 text-mute">{String(i + 1).padStart(2, "0")}</span>
                     {s.title}
                   </a>
                 </li>
@@ -74,7 +74,7 @@ export function LegalLayout({ title, path, intro, sections }: Props) {
             </ol>
           </nav>
 
-          <div className="prose-legal">
+          <div className="prose-legal min-w-0">
             <div className="text-lg text-paper/90">{intro}</div>
             {sections.map((s, i) => (
               <section key={s.id} aria-labelledby={s.id}>

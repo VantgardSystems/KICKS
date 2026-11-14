@@ -18,7 +18,7 @@ export function Footer() {
       <div className="container-x py-16 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.3fr_repeat(4,1fr)] lg:gap-8">
           <div>
-            <Link href="/" aria-label="Vantgard Systems, inicio" className="inline-block rounded-md">
+            <Link href="/" aria-label="VANTGARD SYSTEMS, ir al inicio" className="inline-block rounded-md">
               <Logo />
             </Link>
             <p className="mt-5 max-w-xs text-sm text-mute">

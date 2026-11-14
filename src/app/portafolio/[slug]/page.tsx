@@ -108,7 +108,8 @@ export default async function ProjectPage({ params }: Params) {
                 src={project.desktop}
                 alt={`Sitio de ${project.name} en escritorio`}
                 fill
-                priority
+                preload
+                fetchPriority="high"
                 sizes="(min-width: 1024px) 860px, 90vw"
                 className="object-cover object-top"
               />

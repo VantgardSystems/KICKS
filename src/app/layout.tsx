@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
+import localFont from "next/font/local";
 import "./globals.css";
 import { company } from "@/config/site";
 import { Providers } from "@/components/layout/Providers";
@@ -10,6 +9,20 @@ import { SiteExtras } from "@/components/layout/SiteExtras";
 import { Logo } from "@/components/ui/Logo";
 import { JsonLd } from "@/components/layout/JsonLd";
 import { organizationSchema } from "@/lib/seo";
+
+// Geist y Geist Mono (paquete "geist"), recortadas a caracteres latinos: 51 KB en vez de 140 KB.
+const GeistSans = localFont({
+  src: "../fonts/Geist-Variable-latin.woff2",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+  display: "swap",
+});
+const GeistMono = localFont({
+  src: "../fonts/GeistMono-Variable-latin.woff2",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(company.url),
