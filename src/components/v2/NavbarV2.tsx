@@ -55,9 +55,9 @@ export function NavbarV2() {
     <>
       <header className="pointer-events-none fixed inset-x-0 top-3 z-50 px-3 md:top-4">
         <div
-          className={`glass pointer-events-auto mx-auto flex h-14 max-w-[1120px] items-center justify-between gap-4 rounded-full pr-2 pl-5 transition-[background-color] duration-300 md:h-16 md:pl-6 ${
-            scrolled || open ? "bg-[#0B0C0E]/60" : ""
-          }`}
+          // Fondo oscuro bajo el vidrio: la barra se lee igual sobre fotos, negro o la sección clara.
+          style={{ backgroundColor: scrolled || open ? "rgb(11 12 14 / 0.72)" : "rgb(11 12 14 / 0.35)" }}
+          className="glass pointer-events-auto mx-auto flex h-14 max-w-[1120px] items-center justify-between gap-4 rounded-full pr-2 pl-5 transition-[background-color] duration-300 md:h-16 md:pl-6"
         >
           <Link href="/" aria-label="VANTGARD SYSTEMS, ir al inicio" className="rounded-md py-1 text-[#E9ECEF]" onClick={() => setOpen(false)}>
             <Logo />

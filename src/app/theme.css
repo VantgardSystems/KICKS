@@ -464,3 +464,66 @@
 .site .tone-light dd.num {
   color: inherit;
 }
+
+/* ---------- Unificación de componentes heredados ----------
+ * Dos familias en todo el sitio: Inter Tight (títulos y etiquetas) e Inter (texto y cifras). */
+.site .font-mono {
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+.site .h-display {
+  font-size: clamp(56px, 9vw, 120px);
+  line-height: 0.95;
+}
+.site .eyebrow {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: 12px;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: inherit;
+  opacity: 0.7;
+}
+.site .field {
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.04);
+  border-color: rgb(255 255 255 / 0.16);
+}
+.site .field:focus-visible {
+  border-radius: 16px;
+}
+.site .prose-legal {
+  color: var(--silver);
+}
+.site .prose-legal h2,
+.site .prose-legal h3 {
+  color: var(--whiteout);
+}
+.site .prose-legal a {
+  color: var(--nitro);
+}
+.site .pending {
+  font-family: var(--font-body);
+  background: rgb(251 86 7 / 0.16);
+  color: #ff8a52;
+}
+.site .card {
+  border-radius: 28px;
+  background: rgb(255 255 255 / 0.04);
+  border-color: rgb(255 255 255 / 0.1);
+}
+.site .tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Píldora del plan destacado: rellena en tinta sobre nitro. */
+.site .spec-nitro .spec-pill {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--whiteout);
+}
+.site .spec-nitro .spec-pill:hover {
+  background: #212529;
+}

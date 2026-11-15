@@ -142,7 +142,7 @@ export function ChatWidget() {
         aria-expanded={open}
         aria-controls="chat-panel"
         onClick={() => (open ? close() : setOpen(true))}
-        className="fixed right-5 bottom-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-flame text-ink shadow-[0_0_0_1px_rgb(255_107_26/0.5),0_12px_40px_-8px_rgb(255_107_26/0.7)] transition-colors duration-200 hover:bg-flame-hi md:right-6 md:bottom-6"
+        className="fixed right-5 bottom-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-flame text-ink shadow-[0_0_0_1px_rgb(251_86_7/0.5),0_12px_40px_-12px_rgb(251_86_7/0.6)] transition-colors duration-200 hover:bg-flame-hi md:right-6 md:bottom-6"
       >
         {open ? <X className="h-6 w-6" aria-hidden="true" /> : <Sparkles className="h-6 w-6" aria-hidden="true" />}
       </button>

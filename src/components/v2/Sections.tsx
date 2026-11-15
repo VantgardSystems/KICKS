@@ -376,6 +376,7 @@ export function PricingV2() {
                   ariaLabel: `Cotizar el plan ${plan.name}`,
                   onClick: () => window.dispatchEvent(new CustomEvent(PLAN_EVENT, { detail: plan.id })),
                 }}
+                pillBlock
                 className="h-full min-h-[560px]"
               >
                 <ul className="mt-8 space-y-2.5">

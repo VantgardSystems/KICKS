@@ -20,11 +20,13 @@ export function Logo({ className = "", variant = "full", tone = "light" }: LogoP
   if (variant === "mark") return <LogoMark className={className} tone={tone} />;
   return (
     <span className={`inline-flex items-baseline gap-2 leading-none ${className}`}>
-      <span className="inline-flex items-baseline text-[1.125rem] font-bold tracking-[0.04em]">
+      <span className="inline-flex items-baseline text-[1.125rem] tracking-[0.04em]" style={{ fontFamily: "var(--font-display, inherit)", fontWeight: 800 }}>
         <LogoMark tone={tone} className="-mx-[0.09em] h-[1em] w-[1em] translate-y-[0.125em]" />
         <span>ANTGARD</span>
       </span>
-      <span className="font-mono text-[0.625rem] font-medium tracking-[0.22em] opacity-70">SYSTEMS</span>
+      <span className="text-[0.625rem] tracking-[0.22em] opacity-70" style={{ fontFamily: "var(--font-geist-mono), ui-monospace, monospace" }}>
+        SYSTEMS
+      </span>
     </span>
   );
 }

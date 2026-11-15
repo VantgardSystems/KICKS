@@ -56,8 +56,8 @@ function OptionCard({
 }) {
   return (
     <label
-      className={`relative flex min-h-[72px] cursor-pointer items-start gap-4 rounded-2xl border p-4 transition-colors duration-150 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-flame ${
-        checked ? "border-flame bg-flame/[0.08]" : "border-line-strong hover:border-white/35"
+      className={`relative flex min-h-[72px] cursor-pointer items-start gap-4 rounded-[16px] border p-4 transition-colors duration-150 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-flame ${
+        checked ? "border-flame bg-flame/[0.1]" : "border-white/14 bg-white/[0.02] hover:border-white/35"
       } ${disabled ? "cursor-default opacity-80" : ""}`}
     >
       <input
@@ -122,7 +122,7 @@ function Estimate({ choices, compact }: { choices: QuoteChoices; compact?: boole
       </dl>
       <div className="mt-5 border-t border-line pt-5" aria-live="polite">
         <p className="font-mono text-xs text-mute">Rango estimado</p>
-        <p className="mt-1 font-mono text-2xl font-medium tracking-tight text-flame">{rangeText(q)}</p>
+        <p className="f-display num mt-1 text-[32px] leading-none tracking-[-0.03em]">{rangeText(q)}</p>
         <p className="mt-2 text-xs text-mute">
           {pricing.taxLabel}. {pricing.note}
         </p>
@@ -278,7 +278,7 @@ export function QuoteWizard({ initialPlan, headingLevel: Heading = "h3" }: { ini
 
   return (
     <div ref={rootRef} className={`grid scroll-mt-24 gap-5 lg:items-start ${isSummary ? "mx-auto max-w-3xl" : "lg:grid-cols-[minmax(0,1fr)_360px]"}`}>
-      <div className="card min-w-0 overflow-hidden">
+      <div className="glass min-w-0 overflow-hidden rounded-[28px]">
         {/* Progreso */}
         <div className="border-b border-line p-5 md:px-8">
           <div className="flex items-center justify-between gap-4 font-mono text-xs text-mute">
@@ -581,7 +581,7 @@ export function QuoteWizard({ initialPlan, headingLevel: Heading = "h3" }: { ini
                     {contact.name}, este es el estimado para {contact.business}. Envíalo y te contactamos para tu
                     diagnóstico gratis.
                   </p>
-                  <div className="mt-6 rounded-2xl border border-line bg-ink p-5 md:p-6">
+                  <div className="mt-6 rounded-[16px] border border-white/10 bg-black/30 p-5 md:p-6">
                     <Estimate choices={choices} />
                   </div>
                   {notice && (
@@ -632,7 +632,7 @@ export function QuoteWizard({ initialPlan, headingLevel: Heading = "h3" }: { ini
       </div>
 
       {/* Total en vivo (escritorio) */}
-      <aside aria-label="Tu estimado" className={`card hidden p-6 lg:sticky lg:top-24 ${isSummary ? "" : "lg:block"}`}>
+      <aside aria-label="Tu estimado" className={`glass hidden rounded-[28px] p-6 lg:sticky lg:top-24 ${isSummary ? "" : "lg:block"}`}>
         <Sub className="mb-5 text-lg tracking-tight">Tu estimado</Sub>
         <Estimate choices={choices} />
         <p className="sr-only" aria-live="polite">

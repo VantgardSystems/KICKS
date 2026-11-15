@@ -1,6 +1,5 @@
 "use client";
 
-import { Clock, Mail, MessageCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useRef, useState, type FormEvent } from "react";
 import { company, contactServices, whatsappUrl } from "@/config/site";
@@ -8,8 +7,8 @@ import { PrivacyLabel, PrivacyNotice } from "@/components/legal/PrivacyNotice";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, Field, useForm } from "@/components/ui/Field";
 import { WithPending } from "@/components/ui/Pending";
-import { Reveal } from "@/components/ui/Reveal";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Rise } from "@/components/v2/Sections";
+import { SpecCard } from "@/components/v2/SpecCard";
 
 const DEFAULT_SERVICE = contactServices[contactServices.length - 1];
 
@@ -90,72 +89,61 @@ export function Contact() {
   });
 
   return (
-    <section id="contacto" aria-labelledby="contacto-titulo" className="section bg-coal">
-      <div className="container-x grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-        <div>
-          <SectionHeading
-            id="contacto-titulo"
-            eyebrow="Contacto"
-            title="Cuéntanos de tu negocio"
-            description="Te respondemos en menos de 2 horas dentro de nuestro horario. El diagnóstico es gratis."
-          />
-          <Reveal delay={0.1}>
-            <ul className="mt-10 divide-y divide-line border-y border-line">
-              <li>
-                <a
-                  href={whatsappUrl("Hola, quiero información sobre una página web.")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex min-h-16 items-center gap-4 py-4"
-                >
-                  <MessageCircle className="h-5 w-5 shrink-0 text-flame" aria-hidden="true" />
-                  <span>
-                    <span className="block text-sm text-mute">WhatsApp</span>
-                    <span className="underline-offset-4 group-hover:underline">
+    <section id="contacto" aria-labelledby="contacto-titulo" className="section">
+      <div className="container-x grid gap-12 lg:grid-cols-12 lg:gap-8">
+        <div className="lg:col-span-5">
+          <Rise>
+            <p className="t-label mb-5 opacity-70">Contacto</p>
+            <h2 id="contacto-titulo" className="t-section max-w-[12ch]">
+              Cuéntanos de tu <span className="kw">negocio</span>
+            </h2>
+            <p className="t-lead mt-6 max-w-[40ch] text-[#ADB5BD]">
+              Te respondemos en menos de 2 horas dentro de nuestro horario. El diagnóstico es gratis.
+            </p>
+          </Rise>
+          <Rise delay={0.1} className="mt-10">
+            <SpecCard
+              as="div"
+              interactive={false}
+              title="Hablemos"
+              rows={[
+                {
+                  label: "WhatsApp",
+                  value: (
+                    <a href={whatsappUrl("Hola, quiero información sobre una página web.")} target="_blank" rel="noopener noreferrer" className="underline-offset-4 hover:text-[#E9ECEF] hover:underline">
                       <WithPending text={company.whatsappDisplay} />
-                    </span>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${company.email}`} className="group flex min-h-16 items-center gap-4 py-4">
-                  <Mail className="h-5 w-5 shrink-0 text-flame" aria-hidden="true" />
-                  <span className="min-w-0">
-                    <span className="block text-sm text-mute">Correo</span>
-                    <span className="break-all underline-offset-4 group-hover:underline">{company.email}</span>
-                  </span>
-                </a>
-              </li>
-              <li className="flex min-h-16 items-center gap-4 py-4">
-                <Clock className="h-5 w-5 shrink-0 text-flame" aria-hidden="true" />
-                <span>
-                  <span className="block text-sm text-mute">Horario</span>
-                  {company.hours}
-                </span>
-              </li>
-            </ul>
-            <ul className="mt-6 flex gap-2">
-              {[
-                ["Instagram", company.social.instagram],
-                ["TikTok", company.social.tiktok],
-              ].map(([label, href]) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex min-h-11 items-center rounded-full border border-line-strong px-5 text-sm transition-colors hover:border-white/40"
-                  >
-                    {label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </Reveal>
+                    </a>
+                  ),
+                },
+                {
+                  label: "Correo",
+                  value: (
+                    <a href={`mailto:${company.email}`} className="break-all underline-offset-4 hover:text-[#E9ECEF] hover:underline">
+                      {company.email}
+                    </a>
+                  ),
+                },
+                { label: "Horario", value: company.hours },
+              ]}
+            >
+              <ul className="mt-6 flex gap-2">
+                {[
+                  ["Instagram", company.social.instagram],
+                  ["TikTok", company.social.tiktok],
+                ].map(([label, href]) => (
+                  <li key={label}>
+                    <a href={href} target="_blank" rel="noopener noreferrer" className="spec-pill">
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </SpecCard>
+          </Rise>
         </div>
 
-        <Reveal delay={0.1}>
-          <form ref={formRef} onSubmit={onSubmit} noValidate className="rounded-[24px] border border-line bg-ink p-5 shadow-[inset_0_1px_0_rgb(255_255_255/0.05)] md:p-8">
+        <Rise delay={0.1} className="lg:col-span-7">
+          <form ref={formRef} onSubmit={onSubmit} noValidate className="glass rounded-[28px] p-5 md:p-8">
             <div className="grid gap-x-4 gap-y-1 sm:grid-cols-2">
               <Field label="Nombre" name="name" idPrefix="c" error={form.errors.name}>
                 {(p) => <input {...p} {...text("name")} type="text" autoComplete="name" />}
@@ -243,7 +231,7 @@ export function Contact() {
             </div>
             <PrivacyNotice purpose="responder tu mensaje y darte seguimiento" className="mt-5" />
           </form>
-        </Reveal>
+        </Rise>
       </div>
     </section>
   );

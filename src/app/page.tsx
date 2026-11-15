@@ -1,7 +1,7 @@
 import { JsonLd } from "@/components/layout/JsonLd";
 import { Contact } from "@/components/sections/Contact";
 import { Faq } from "@/components/sections/Faq";
-import { Story } from "@/components/sections/Story";
+import { StoryV2 } from "@/components/v2/StoryV2";
 import { QuoteWizard } from "@/components/quote/QuoteWizard";
 import { HeroV2 } from "@/components/v2/HeroV2";
 import { CtaBand, Heading, MarqueeV2, PortfolioV2, PricingV2, ProcessV2, ServicesV2 } from "@/components/v2/Sections";
@@ -34,7 +34,7 @@ export default function HomePage() {
       <ServicesV2 />
       <PortfolioV2 />
       <ProcessV2 />
-      <Story />
+      <StoryV2 />
       <PricingV2 />
       <QuoteSection />
       <div className="tone-dark">

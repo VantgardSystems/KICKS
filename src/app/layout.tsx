@@ -29,7 +29,6 @@ const GeistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
   display: "swap",
-  preload: false,
 });
 
 export const metadata: Metadata = {

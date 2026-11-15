@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronRight } from "lucide-react";
+import { SpecCard } from "@/components/v2/SpecCard";
 import { projects, whatsappUrl } from "@/config/site";
 import { JsonLd } from "@/components/layout/JsonLd";
 import { Button } from "@/components/ui/Button";
@@ -71,14 +72,28 @@ export default async function ProjectPage({ params }: Params) {
 
         <header className="mt-8 grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-end">
           <div>
-            <p className="eyebrow">{project.industry}</p>
-            <h1 className="h-display mt-4">{project.name}</h1>
-            <p className="mt-6 max-w-xl text-xl text-mute">{project.summary}</p>
+            <p className="t-label opacity-70">{project.industry}</p>
+            <h1 className="t-display mt-4">{project.name}</h1>
+            <p className="t-lead mt-6 max-w-xl text-[#ADB5BD]">{project.summary}</p>
           </div>
           <div className="flex flex-col gap-6 lg:items-end">
+            <dl className="grid grid-cols-3 gap-6 border-t border-white/12 pt-5 lg:w-full">
+              <div>
+                <dt className="t-label">Industria</dt>
+                <dd className="mt-1 text-[15px] text-[#ADB5BD]">{project.industry}</dd>
+              </div>
+              <div>
+                <dt className="t-label">Año</dt>
+                <dd className="num mt-1 text-[15px]">{project.year}</dd>
+              </div>
+              <div>
+                <dt className="t-label">Stack</dt>
+                <dd className="mt-1 text-[15px] text-[#ADB5BD]">{project.stack}</dd>
+              </div>
+            </dl>
             <ul className="flex flex-wrap gap-2 lg:justify-end" aria-label="Incluye">
               {project.tags.map((tag) => (
-                <li key={tag} className="rounded-full border border-line-strong px-3 py-1 font-mono text-xs text-mute">
+                <li key={tag} className="spec-pill border-white/20 text-[#ADB5BD]">
                   {tag}
                 </li>
               ))}
@@ -99,9 +114,9 @@ export default async function ProjectPage({ params }: Params) {
           </div>
         </header>
 
-        <div className="relative mt-12 overflow-hidden rounded-[24px] border border-line bg-coal px-5 pt-10 md:mt-16 md:px-16 md:pt-16">
-          <div aria-hidden="true" className="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black,transparent_75%)]" />
-          <div aria-hidden="true" className="absolute -top-40 left-1/2 h-80 w-[70%] -translate-x-1/2 rounded-full bg-flame/15 blur-3xl" />
+        <div className="film relative isolate mt-12 overflow-hidden rounded-[28px] px-5 pt-10 md:mt-16 md:px-16 md:pt-16">
+          <Image src="/images/hero-dunes.webp" alt="" fill sizes="100vw" className="-z-10 object-cover opacity-60" />
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-b from-[#0B0C0E]/30 to-[#0B0C0E]/80" />
           <div className="relative mx-auto max-w-4xl pr-[10%]">
             <LaptopMockup>
               <Image
@@ -127,40 +142,31 @@ export default async function ProjectPage({ params }: Params) {
           <div className="h-10 md:h-16" />
         </div>
 
-        <div className="mt-16 grid gap-12 md:mt-24 lg:grid-cols-3 lg:gap-16">
-          <section aria-labelledby="reto">
-            <h2 id="reto" className="text-2xl">
-              El reto
-            </h2>
-            <p className="mt-4 text-lg text-mute">{project.challenge}</p>
-          </section>
-          <section aria-labelledby="solucion">
-            <h2 id="solucion" className="text-2xl">
-              La solución
-            </h2>
-            <p className="mt-4 text-lg text-mute">{project.solution}</p>
-          </section>
-          <section aria-labelledby="resultado">
-            <h2 id="resultado" className="text-2xl">
-              Lo que quedó funcionando
-            </h2>
-            <ul className="mt-4 space-y-3">
+        <div className="mt-16 grid gap-4 md:mt-24 lg:grid-cols-3">
+          <SpecCard as="section" interactive={false} titleAs="h2" title="El reto" summary={project.challenge} className="[&_.spec-value]:text-[17px]" />
+          <SpecCard as="section" interactive={false} titleAs="h2" title="La solución" summary={project.solution} className="[&_.spec-value]:text-[17px]" />
+          <SpecCard as="section" featured interactive={false} titleAs="h2" title="Lo que quedó funcionando">
+            <ul className="mt-5 space-y-3">
               {project.results.map((r) => (
-                <li key={r} className="flex gap-3 text-lg text-paper">
-                  <Check className="mt-1.5 h-4 w-4 shrink-0 text-flame" strokeWidth={3} aria-hidden="true" />
+                <li key={r} className="flex gap-3 text-[17px] leading-snug">
+                  <span aria-hidden="true" className="mt-[0.55em] h-1.5 w-1.5 shrink-0 rounded-full bg-current" />
                   {r}
                 </li>
               ))}
             </ul>
-          </section>
+          </SpecCard>
         </div>
       </div>
 
-      <div className="mt-20 border-t border-line bg-coal md:mt-28">
-        <div className="container-x flex flex-col gap-8 py-16 md:flex-row md:items-center md:justify-between md:py-20">
+      <div className="film relative isolate mt-20 overflow-hidden md:mt-28">
+        <Image src="/images/cta-bg.webp" alt="" fill sizes="100vw" className="-z-10 object-cover" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[#0B0C0E]/55" />
+        <div className="container-x flex flex-col gap-8 py-20 md:flex-row md:items-end md:justify-between md:py-28">
           <div>
-            <h2 className="h-section max-w-xl">¿Quieres algo así para tu negocio?</h2>
-            <p className="mt-4 text-lg text-mute">Te hacemos una demo sin anticipo.</p>
+            <h2 className="t-section max-w-[14ch]">
+              ¿Quieres algo así para tu <span className="kw">negocio</span>?
+            </h2>
+            <p className="t-lead mt-4 text-[#ADB5BD]">Te hacemos una demo sin anticipo.</p>
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button href="/cotizar" size="lg">
@@ -172,7 +178,7 @@ export default async function ProjectPage({ params }: Params) {
             </Button>
           </div>
         </div>
-        <div className="container-x border-t border-line py-6">
+        <div className="container-x border-t border-white/12 py-6">
           <Link href="/#portafolio" className="inline-flex min-h-11 items-center gap-2 text-sm text-mute hover:text-paper">
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             Volver al portafolio

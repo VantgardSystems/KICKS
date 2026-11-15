@@ -31,9 +31,11 @@ interface SpecCardProps {
   index?: number;
   size?: "lg" | "md";
   className?: string;
-  as?: "article" | "li" | "div";
+  as?: "article" | "li" | "div" | "section";
   titleAs?: "h2" | "h3" | "h4";
   interactive?: boolean;
+  /** Píldora a todo lo ancho debajo de la ficha (tarjetas angostas como precios). */
+  pillBlock?: boolean;
 }
 
 // Muestras de color: el naranja aparece una sola vez por lista (≈5 % del área).
@@ -59,6 +61,7 @@ export function SpecCard({
   as: Tag = "article",
   titleAs: Title = "h3",
   interactive = true,
+  pillBlock = false,
 }: SpecCardProps) {
   const v = specVariant(featured, variant);
   const radius = size === "lg" ? "rounded-[28px]" : "rounded-[16px]";
@@ -104,7 +107,7 @@ export function SpecCard({
               ))}
             </dl>
           )}
-          {pillEl && <div className="ml-auto shrink-0">{pillEl}</div>}
+          {pillEl && <div className={pillBlock ? "w-full [&_.spec-pill]:w-full [&_.spec-pill]:justify-center" : "ml-auto shrink-0"}>{pillEl}</div>}
         </div>
       )}
     </>

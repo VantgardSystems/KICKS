@@ -25,7 +25,7 @@ interface ButtonProps {
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-flame text-ink hover:bg-flame-hi shadow-[0_0_0_1px_rgb(255_107_26/0.4),0_8px_32px_-8px_rgb(255_107_26/0.55)]",
+    "bg-flame text-[#0B0C0E] hover:bg-flame-hi active:bg-[#D94A04]",
   outline: "border border-line-strong text-paper hover:border-white/40 hover:bg-white/5",
   ghost: "text-paper hover:bg-white/5",
   light: "bg-ink text-paper hover:bg-neutral-800",
@@ -69,7 +69,7 @@ export function Button({
     y.set(0);
   };
 
-  const cls = `group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full font-medium transition-colors duration-200 select-none ${
+  const cls = `group relative inline-flex items-center justify-center gap-2 overflow-hidden whitespace-nowrap rounded-full font-medium transition-colors duration-200 select-none ${
     variants[variant]
   } ${sizes[size]} ${fullWidth ? "w-full" : ""} ${
     disabled || loading ? "pointer-events-none opacity-60" : ""
