@@ -29,6 +29,7 @@ const GeistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
   display: "swap",
+  preload: false, // solo la usa "SYSTEMS" en el logo
 });
 
 export const metadata: Metadata = {

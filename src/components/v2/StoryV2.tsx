@@ -46,7 +46,8 @@ export function StoryV2() {
   return (
     <section ref={ref} id="historia" aria-labelledby="historia-titulo" className="tone-light section relative isolate overflow-hidden">
       {/* Velo negro que se desvanece al entrar: paso suave de oscuro a claro. */}
-      {!reduce && <motion.div aria-hidden="true" style={{ opacity: shade }} className="pointer-events-none absolute inset-0 -z-10 bg-[#0B0C0E]" />}
+      {/* Siempre en el HTML (igual en servidor y navegador); con movimiento reducido lo oculta el CSS. */}
+      <motion.div aria-hidden="true" style={{ opacity: shade }} className="pointer-events-none absolute inset-0 -z-10 bg-[#0B0C0E] motion-reduce:hidden" />
       <div className="container-x">
         <Heading id="historia-titulo" label="Nuestra historia" title="Nacimos para que ningún negocio pierda un cliente por no contestar" kw="no contestar" />
 

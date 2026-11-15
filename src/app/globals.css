@@ -196,8 +196,10 @@
     inset: 0;
     z-index: 60;
     pointer-events: none;
-    opacity: 0.05;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    opacity: 0.09;
+    background-image: url("/images/grain.png");
+    background-size: 96px 96px;
+    mix-blend-mode: overlay;
   }
   .skeleton {
     border-radius: 12px;
@@ -294,11 +296,17 @@
   place-items: center;
   background: var(--color-ink);
   pointer-events: none;
-  animation: loader-out 0.35s ease 0.55s forwards;
+  animation: loader-out 0.3s ease 0.25s forwards;
+}
+/* En celular el loader tapaba la foto principal y retrasaba la primera pintura (LCP): solo se muestra en pantallas grandes. */
+@media (max-width: 767px) {
+  .loader {
+    display: none;
+  }
 }
 .loader-bar {
   transform-origin: left;
-  animation: loader-bar 0.5s var(--ease-out-expo) both;
+  animation: loader-bar 0.3s var(--ease-out-expo) both;
 }
 
 .word {

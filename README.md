@@ -1,7 +1,15 @@
 # Vantgard Systems — sitio oficial
 
 Sitio de una página con cotizador, portafolio, agente IA y páginas legales.
-Next.js (App Router) + TypeScript + Tailwind CSS + Framer Motion + Lenis.
+Next.js (App Router) + TypeScript + Tailwind CSS 4 + Framer Motion + Lenis. Se publica en Netlify.
+
+## Sistema visual
+
+- **Paleta**: ink `#0B0C0E`, blackstone `#212529`, graphite `#343A40`, steel `#6C757D`, silver `#ADB5BD`, whiteout `#E9ECEF`, snow `#F8F9FA` y nitro `#FB5607` (hover `#FF6A1F`, presionado `#D94A04`). Los botones naranjas llevan texto negro.
+- **Tipografía**: Inter Tight 800 para títulos y etiquetas, Inter 400 para texto (autoalojadas, solo latín, en `src/fonts/`).
+- **Componente firma**: `SpecCard` (`src/components/v2/SpecCard.tsx`), una ficha técnica con título grande, pares etiqueta/valor y píldora. Variante de vidrio por defecto y nitro para lo destacado.
+- **Estilos**: tokens en `src/app/globals.css` (`@theme`) y sistema en `src/app/theme.css` (vidrio, grano, botones, fichas, escala tipográfica).
+- **Ritmo**: todo oscuro, con *Nuestra historia* como única sección clara.
 
 ## Verlo en tu computadora
 
@@ -48,9 +56,10 @@ Busca `[PENDIENTE]` en `src/config/site.ts`. En el sitio se ven resaltados en na
 7. **Precios de extras y mantenimiento**: son una propuesta; ajústalos en `extras`, `maintenance` y `projectTypes`.
 8. **Links de demos**: `demoUrl` de cada proyecto. Vacío = el botón pide la demo por WhatsApp.
 9. **Capturas reales del portafolio**: reemplaza los archivos de `public/portfolio/` (mismo nombre).
-10. **Dominio**: `NEXT_PUBLIC_SITE_URL` en Vercel.
+10. **Dominio**: `NEXT_PUBLIC_SITE_URL` en Netlify.
 11. **Revisión legal**: el aviso de privacidad, los términos y la política de cookies son un borrador completo. Pide a un abogado que los revise antes de publicar.
 12. **Fecha de los textos legales**: `company.legal.lastUpdated` cuando los cambies.
+13. **Ficha técnica**: tiempos de entrega e "incluye" de cada servicio (`services[].delivery`, `services[].includes`) y año y stack de cada proyecto (`projects[].year`, `projects[].stack`).
 
 ## Variables de entorno
 
@@ -82,22 +91,27 @@ Ninguna key llega al navegador: solo se usan en las rutas `/api/*`.
 2. Crea una API key en *API Keys* y pégala en `RESEND_API_KEY`.
 3. Pon en `CONTACT_FROM` un remitente de tu dominio, por ejemplo `Vantgard Systems <web@vantgardsystems.com>`.
 
-## Publicar en Vercel
+## Publicar en Netlify
 
-1. Sube el repositorio a GitHub (ya está en `vantgardsystems/kicks`).
-2. En <https://vercel.com/new> elige el repositorio. Vercel detecta Next.js; no cambies nada del build.
-3. En *Environment Variables* agrega las de la tabla de arriba.
-4. Da clic en **Deploy**.
-5. En *Settings → Domains* conecta tu dominio y pon esa URL en `NEXT_PUBLIC_SITE_URL`. Vuelve a desplegar.
-6. Para medir visitas, agrega `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` o `NEXT_PUBLIC_GA_ID`. El sitio solo carga la analítica si el visitante acepta las cookies.
-7. En <https://search.google.com/search-console> agrega el dominio, copia el código de la meta de verificación en `GOOGLE_SITE_VERIFICATION` y envía `https://tu-dominio/sitemap.xml`.
+1. Entra a <https://app.netlify.com/start> y elige **GitHub**.
+2. Selecciona el repositorio `VantgardSystems/KICKS` y la rama que quieras publicar (hoy el sitio está en `ccr-bbf1e48a-w9izl8`; cuando lo pases a `main`, usa `main`).
+3. No cambies nada del build: `netlify.toml` ya trae el comando, la carpeta y el runtime oficial de Next.js.
+4. En *Site configuration → Environment variables* agrega las de la tabla de arriba.
+5. Da clic en **Deploy**. Cada cambio que entre a esa rama se publica solo.
+6. En *Domain management* conecta tu dominio y pon esa URL en `NEXT_PUBLIC_SITE_URL`. Vuelve a desplegar.
+7. Para medir visitas, agrega `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` o `NEXT_PUBLIC_GA_ID`. El sitio solo carga la analítica si el visitante acepta las cookies.
+8. En <https://search.google.com/search-console> agrega el dominio, copia el código de la meta de verificación en `GOOGLE_SITE_VERIFICATION` y envía `https://tu-dominio/sitemap.xml`.
+
+¿Prefieres Vercel? También funciona: importa el repo en <https://vercel.com/new>, agrega las mismas variables y despliega.
 
 ## Imágenes
 
-- `public/images/`: fondo del hero, servicios, proceso, historia y 404. Son renders 3D hechos por código (negro con luz naranja). Para cambiarlas, reemplaza el archivo con el mismo nombre en WebP.
+- `public/images/`: las 16 fotos del sitio (hero, dunas, franja CTA, servicios, proceso, historia y 404) en WebP y AVIF. Son renders fotorrealistas en blanco y negro con acento naranja, hechos con Blender Cycles; las escenas y el grade están en `scripts/render/`.
+- Para cambiarlas (por ejemplo, por fotos hechas con IA), reemplaza el archivo con **el mismo nombre y las mismas medidas**. No hay que tocar código.
 - `public/portfolio/`: capturas del portafolio (**placeholders**). Formato: `nombre-desktop.webp` (1440×900) y `nombre-mobile.webp` (780×1688).
+- `public/images/grain.png`: textura de grano de película (se repite; más ligera que un filtro).
 - Logo e iconos: `src/components/ui/Logo.tsx`, `src/app/icon.svg`, `src/app/favicon.ico`, `src/app/apple-icon.png`, `public/icon-192.png`, `public/icon-512.png`.
-- Open Graph: se generan con código en `src/lib/og.tsx` (una por página).
+- Open Graph: se generan con código en `src/lib/og.tsx` (una por página, con Inter Tight).
 
 ## Estructura
 
@@ -106,14 +120,15 @@ src/
   config/site.ts          contenido editable
   app/                    páginas, rutas API, SEO (sitemap, robots, manifest, OG)
   components/
-    layout/               navbar, footer, cookies, volver arriba
-    sections/             hero, servicios, portafolio, proceso, historia, precios, FAQ, contacto
+    v2/                   navbar, portada, SpecCard, botón, secciones y footer del sistema nuevo
+    sections/             preguntas frecuentes y contacto
+    layout/               cookies, analítica, volver arriba
     quote/                wizard del cotizador
     chat/                 Asistente Vantgard
     legal/                plantilla legal y aviso simplificado
     ui/                   botón, campos, mockups, contador, etc.
   lib/                    precios, validación, correo, rate limit, prompt del agente, SEO
-  fonts/                  Geist y Geist Mono recortadas a caracteres latinos
+  fonts/                  Inter Tight, Inter y Geist Mono (logo), recortadas a latín; og/ en TTF para las imágenes de redes
 ```
 
 ## Seguridad y privacidad
@@ -128,8 +143,10 @@ src/
 
 | Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO |
 | --- | --- | --- | --- | --- |
-| Inicio (móvil, 4G simulado) | 91 | 100 | 100 | 100 |
+| Inicio (celular, 4G simulado) | 83–87 | 100 | 100 | 100 |
 | Inicio (escritorio) | 99 | 100 | 100 | 100 |
-| /cotizar (móvil) | 91 | 100 | 100 | 100 |
-| /portafolio/solenna (móvil) | 95 | 100 | 100 | 100 |
-| /aviso-de-privacidad (móvil) | 100 | 100 | 100 | 100 |
+| /cotizar (celular) | 93 | 100 | 100 | 100 |
+| /portafolio/solenna (celular) | 92 | 100 | 100 | 100 |
+| /aviso-de-privacidad (celular) | 100 | 100 | 100 | 100 |
+
+En la portada del celular el LCP real medido es de ~0.2 s; la nota de rendimiento baja por la simulación de red lenta con el peso de React y Framer Motion.

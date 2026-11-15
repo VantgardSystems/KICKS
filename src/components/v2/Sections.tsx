@@ -235,7 +235,7 @@ export function PortfolioV2() {
                     </div>
                     <div>
                       <dt className="t-label">Año</dt>
-                      <dd className="num mt-1 text-[15px] opacity-75">{p.year}</dd>
+                      <dd className="num mt-1 text-[15px]">{p.year}</dd>
                     </div>
                     <div>
                       <dt className="t-label">Stack</dt>
@@ -537,9 +537,12 @@ export function FooterV2() {
           <p>Hecho en México</p>
         </div>
       </div>
-      <p aria-hidden="true" className="giant pointer-events-none -mt-[0.18em] -mb-[0.12em] text-center select-none">
-        VANTGARD
-      </p>
+      {/* Palabra gigante decorativa (SVG: no es texto que se lea, no entra en el árbol de accesibilidad). */}
+      <svg aria-hidden="true" focusable="false" viewBox="0 0 1000 170" className="giant-svg pointer-events-none block w-full select-none">
+        <text x="500" y="152" textAnchor="middle" fontSize="196" letterSpacing="-9" fill="rgb(233 236 239 / 0.06)" style={{ fontFamily: "var(--font-display)", fontWeight: 800 }}>
+          VANTGARD
+        </text>
+      </svg>
     </footer>
   );
 }

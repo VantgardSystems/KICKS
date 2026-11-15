@@ -2,17 +2,15 @@
 
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { preload } from "react-dom";
 import { formatMXN, hero, plans, pricing } from "@/config/site";
 import { Btn } from "./Btn";
 import { SpecCard } from "./SpecCard";
 
 const fromPrice = formatMXN(Math.min(...plans.map((p) => p.price)));
 
-const reveal = (d: number) => ({
-  initial: { opacity: 0, y: 28 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.9, delay: d, ease: [0.16, 1, 0.3, 1] as const },
-});
+/* Entrada con CSS (no espera al JavaScript): el titular cuenta como pintado desde el primer frame. */
+const reveal = (d: number) => ({ className: "fade-up", style: { ["--d" as string]: `${Math.round(d * 1000)}ms` } });
 
 /** Titular con la última palabra como palabra clave (naranja). */
 function Headline() {
@@ -51,27 +49,30 @@ function Backdrop() {
 
 /** Portada cinemática: foto a sangre, titular enorme abajo a la izquierda y ficha de vidrio a la derecha. */
 export function HeroV2() {
+  // La foto es el LCP: se pide desde el <head>, antes que el CSS y el JavaScript.
+  preload("/images/hero-bg-mobile.webp", { as: "image", fetchPriority: "high", media: "(max-width: 767px)" });
+  preload("/images/hero-bg.webp", { as: "image", fetchPriority: "high", media: "(min-width: 768px)" });
   return (
     <section aria-labelledby="hero-title" className="tone-dark relative isolate flex min-h-[100svh] items-end overflow-hidden">
       <Backdrop />
       <div className="container-x grid w-full gap-10 pt-32 pb-12 md:pb-16 lg:grid-cols-12 lg:items-end lg:gap-8">
         <div className="lg:col-span-8">
-          <motion.div {...reveal(0.1)}>
+          <div {...reveal(0.1)}>
             <Headline />
-          </motion.div>
-          <motion.p {...reveal(0.25)} className="t-lead mt-6 max-w-[46ch] text-[#ADB5BD]">
+          </div>
+          <p style={reveal(0.25).style} className="fade-up t-lead mt-6 max-w-[46ch] text-[#ADB5BD]">
             {hero.subtitle}
-          </motion.p>
-          <motion.div {...reveal(0.35)} className="mt-8 flex flex-col gap-3 sm:flex-row">
+          </p>
+          <div style={reveal(0.35).style} className="fade-up mt-8 flex flex-col gap-3 sm:flex-row">
             <Btn href={hero.primaryCta.href} size="lg">
               {hero.primaryCta.label}
             </Btn>
             <Btn href={hero.secondaryCta.href} size="lg" variant="secondary">
               {hero.secondaryCta.label}
             </Btn>
-          </motion.div>
+          </div>
         </div>
-        <motion.div {...reveal(0.5)} className="lg:col-span-4">
+        <div style={reveal(0.5).style} className="fade-up lg:col-span-4">
           <SpecCard
             interactive={false}
             title="Demo sin anticipo"
@@ -83,7 +84,7 @@ export function HeroV2() {
             ]}
             pill={{ label: "Cotizar", href: "/#cotizar" }}
           />
-        </motion.div>
+        </div>
       </div>
     </section>
   );
