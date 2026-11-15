@@ -11,6 +11,17 @@
   --color-line: rgb(255 255 255 / 0.1);
   --color-line-strong: rgb(255 255 255 / 0.18);
 
+  /* Paleta del rediseño (ficha técnica B&N + nitro) */
+  --color-blackstone: #212529;
+  --color-graphite: #343a40;
+  --color-steel: #6c757d;
+  --color-silver: #adb5bd;
+  --color-whiteout: #e9ecef;
+  --color-snow: #f8f9fa;
+  --color-nitro: #fb5607;
+  --color-nitro-hi: #ff6a1f;
+  --color-nitro-lo: #d94a04;
+
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 

@@ -11,7 +11,7 @@ export function LogoMark({ className, tone = "light" }: { className?: string; to
   return (
     <svg viewBox="0 0 32 32" className={className} aria-hidden="true" focusable="false">
       <path d="M3 5h7.2L16 20.4 20.3 9h7.1L19.3 28h-6.6L3 5Z" fill={fill} />
-      <path d="M21.8 5H29l-1.6 4h-7.1l1.5-4Z" fill="#FF6B1A" />
+      <path d="M21.8 5H29l-1.6 4h-7.1l1.5-4Z" style={{ fill: "var(--logo-accent, #FF6B1A)" }} />
     </svg>
   );
 }

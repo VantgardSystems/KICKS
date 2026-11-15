@@ -402,6 +402,9 @@ export interface Service {
   imageAlt: string;
   /** Tamaño en el bento grid. */
   size: "lg" | "md";
+  /** Ficha técnica: tiempo de entrega y lo principal que incluye. [PENDIENTE] confirma tiempos. */
+  delivery: string;
+  includes: string;
 }
 
 export const services: Service[] = [
@@ -414,6 +417,8 @@ export const services: Service[] = [
     image: "/images/servicio-landing.webp",
     imageAlt: "Ventana de navegador en 3D negro mate con brillo naranja",
     size: "lg",
+    delivery: "7–10 días",
+    includes: "Formulario y WhatsApp",
   },
   {
     id: "sitios",
@@ -424,6 +429,8 @@ export const services: Service[] = [
     image: "/images/servicio-sitio.webp",
     imageAlt: "Cohete en 3D negro mate con brillo naranja",
     size: "md",
+    delivery: "10–15 días",
+    includes: "Hasta 5 páginas",
   },
   {
     id: "tiendas",
@@ -434,6 +441,8 @@ export const services: Service[] = [
     image: "/images/servicio-tienda.webp",
     imageAlt: "Carrito de compras en 3D negro mate con brillo naranja",
     size: "md",
+    delivery: "15–20 días",
+    includes: "Carrito y pagos",
   },
   {
     id: "citas",
@@ -444,6 +453,8 @@ export const services: Service[] = [
     image: "/images/servicio-citas.webp",
     imageAlt: "Calendario en 3D negro mate con brillo naranja",
     size: "md",
+    delivery: "7–10 días",
+    includes: "Agenda y recordatorios",
   },
   {
     id: "agentes",
@@ -454,6 +465,8 @@ export const services: Service[] = [
     image: "/images/servicio-agente.webp",
     imageAlt: "Burbuja de chat con chispa en 3D negro mate con brillo naranja",
     size: "lg",
+    delivery: "5–7 días",
+    includes: "Entrenado con tu negocio",
   },
   {
     id: "mantenimiento",
@@ -465,6 +478,8 @@ export const services: Service[] = [
     image: "/images/servicio-mantenimiento.webp",
     imageAlt: "Engrane en 3D negro mate con brillo naranja",
     size: "md",
+    delivery: "Mensual",
+    includes: "Respaldos y cambios",
   },
 ];
 
@@ -491,6 +506,9 @@ export interface Project {
   desktop: string;
   mobile: string;
   status: "live" | "development";
+  /** Ficha técnica del portafolio. [PENDIENTE] confirma año y stack. */
+  year: string;
+  stack: string;
 }
 
 export const projects: Project[] = [
@@ -510,6 +528,8 @@ export const projects: Project[] = [
     desktop: "/portfolio/solenna-desktop.webp",
     mobile: "/portfolio/solenna-mobile.webp",
     status: "live",
+    year: "2026",
+    stack: "Next.js · Agente IA",
   },
   {
     slug: "empire-kicks",
@@ -527,6 +547,8 @@ export const projects: Project[] = [
     desktop: "/portfolio/empire-kicks-desktop.webp",
     mobile: "/portfolio/empire-kicks-mobile.webp",
     status: "live",
+    year: "2026",
+    stack: "Next.js · Catálogo",
   },
   {
     slug: "sneaker-district",
@@ -544,6 +566,8 @@ export const projects: Project[] = [
     desktop: "/portfolio/sneaker-district-desktop.webp",
     mobile: "/portfolio/sneaker-district-mobile.webp",
     status: "live",
+    year: "2026",
+    stack: "Next.js · Pagos",
   },
   {
     slug: "clinica-de-cirugia",
@@ -561,6 +585,8 @@ export const projects: Project[] = [
     desktop: "/portfolio/clinica-desktop.webp",
     mobile: "/portfolio/clinica-mobile.webp",
     status: "live",
+    year: "2026",
+    stack: "Next.js · Agenda",
   },
 ];
 

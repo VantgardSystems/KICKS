@@ -6,6 +6,7 @@ import { Providers } from "@/components/layout/Providers";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SiteExtras } from "@/components/layout/SiteExtras";
+import { HideOnLab } from "@/components/layout/HideOnLab";
 import { Logo } from "@/components/ui/Logo";
 import { JsonLd } from "@/components/layout/JsonLd";
 import { organizationSchema } from "@/lib/seo";
@@ -81,11 +82,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Saltar al contenido
         </a>
         <Providers>
-          <Navbar />
+          <HideOnLab>
+            <Navbar />
+          </HideOnLab>
           <main id="contenido" tabIndex={-1} className="outline-none">
             {children}
           </main>
-          <Footer />
+          <HideOnLab>
+            <Footer />
+          </HideOnLab>
           <SiteExtras />
         </Providers>
         <JsonLd data={organizationSchema()} />
