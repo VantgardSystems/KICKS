@@ -143,7 +143,7 @@ src/
 
 | Página | Rendimiento | Accesibilidad | Buenas prácticas | SEO |
 | --- | --- | --- | --- | --- |
-| Inicio (celular, 4G simulado) | 83–87 | 100 | 100 | 100 |
+| Inicio (celular, 4G simulado) | 88–89 | 100 | 100 | 100 |
 | Inicio (escritorio) | 99 | 100 | 100 | 100 |
 | /cotizar (celular) | 93 | 100 | 100 | 100 |
 | /portafolio/solenna (celular) | 92 | 100 | 100 | 100 |

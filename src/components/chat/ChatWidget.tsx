@@ -159,16 +159,16 @@ export function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, transition: { duration: 0.15, ease: "easeIn" } }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            style={{ transformOrigin: "bottom right" }}
-            className="fixed inset-x-3 top-3 bottom-[88px] z-50 flex flex-col overflow-hidden rounded-[24px] border border-line-strong bg-raised shadow-[0_32px_80px_-16px_rgb(0_0_0/0.95)] sm:inset-x-auto sm:top-auto sm:right-6 sm:bottom-[96px] sm:h-[min(640px,calc(100dvh-128px))] sm:w-[400px]"
+            style={{ transformOrigin: "bottom right", backgroundColor: "rgb(11 12 14 / 0.88)" }}
+            className="fixed inset-x-3 top-3 bottom-[88px] z-50 flex flex-col overflow-hidden glass rounded-[28px] shadow-[0_32px_80px_-16px_rgb(0_0_0/0.95)] sm:inset-x-auto sm:top-auto sm:right-6 sm:bottom-[96px] sm:h-[min(640px,calc(100dvh-128px))] sm:w-[400px]"
           >
             <header className="flex items-center justify-between gap-3 border-b border-line px-5 py-4">
               <div className="flex items-center gap-3">
-                <span className="grid h-9 w-9 place-items-center rounded-full bg-flame/15">
-                  <Sparkles className="h-4 w-4 text-flame" aria-hidden="true" />
+                <span className="grid h-9 w-9 place-items-center rounded-full bg-[#FB5607] text-[#0B0C0E]">
+                  <Sparkles className="h-4 w-4" aria-hidden="true" />
                 </span>
                 <div>
-                  <h2 className="text-base font-semibold tracking-normal">{assistant.name}</h2>
+                  <h2 className="f-display text-[18px] leading-tight">{assistant.name}</h2>
                   <p className="flex items-center gap-1.5 font-mono text-xs text-mute">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
                     En línea 24/7
@@ -185,7 +185,7 @@ export function ChatWidget() {
               </button>
             </header>
 
-            <p className="border-b border-line bg-flame/[0.07] px-5 py-2.5 text-xs text-paper/90">
+            <p className="border-b border-white/10 bg-white/[0.03] px-5 py-2.5 text-xs text-[#ADB5BD]">
               {assistant.disclosure}
             </p>
 
@@ -197,7 +197,7 @@ export function ChatWidget() {
                       className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-[0.9375rem] leading-relaxed whitespace-pre-wrap ${
                         m.role === "user"
                           ? "rounded-br-md bg-flame text-ink"
-                          : "rounded-bl-md border border-line bg-ink text-paper"
+                          : "rounded-bl-md border border-white/10 bg-white/[0.04] text-paper"
                       }`}
                     >
                       <span className="sr-only">{m.role === "user" ? "Tú: " : "Asistente: "}</span>
@@ -209,7 +209,7 @@ export function ChatWidget() {
 
               {lastIsEmpty && (
                 <div className="flex justify-start" aria-label="El asistente está escribiendo">
-                  <p className="flex gap-1.5 rounded-2xl rounded-bl-md border border-line bg-ink px-4 py-3.5">
+                  <p className="flex gap-1.5 rounded-2xl rounded-bl-md border border-white/10 bg-white/[0.04] px-4 py-3.5">
                     {[0, 1, 2].map((d) => (
                       <span
                         key={d}
@@ -228,7 +228,7 @@ export function ChatWidget() {
                       <button
                         type="button"
                         onClick={() => void send(q)}
-                        className="min-h-10 rounded-full border border-line-strong px-4 text-left text-sm text-paper transition-colors hover:border-flame hover:text-flame-hi"
+                        className="min-h-10 rounded-full border border-white/20 px-4 text-left text-sm text-[#E9ECEF] transition-colors hover:border-[#FB5607] hover:bg-[#FB5607] hover:text-[#0B0C0E]"
                       >
                         {q}
                       </button>
@@ -256,7 +256,7 @@ export function ChatWidget() {
                 <Link
                   href="/cotizar"
                   onClick={() => setOpen(false)}
-                  className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-line-strong text-sm hover:border-white/40"
+                  className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-white/20 text-sm transition-colors hover:border-white/50 hover:bg-white/5"
                 >
                   <Calculator className="h-4 w-4 text-flame" aria-hidden="true" />
                   Abrir cotizador
@@ -265,7 +265,7 @@ export function ChatWidget() {
                   href={WA_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-line-strong text-sm hover:border-white/40"
+                  className="inline-flex min-h-10 items-center justify-center gap-2 rounded-full border border-white/20 text-sm transition-colors hover:border-white/50 hover:bg-white/5"
                 >
                   <MessageCircle className="h-4 w-4 text-flame" aria-hidden="true" />
                   Hablar por WhatsApp

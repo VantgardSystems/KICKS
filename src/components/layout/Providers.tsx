@@ -1,7 +1,7 @@
 "use client";
 
 import { MotionConfig } from "framer-motion";
-import Lenis from "lenis";
+import type Lenis from "lenis";
 import { useEffect, type ReactNode } from "react";
 
 /** Scroll suave (Lenis) + enlaces a secciones + configuración global de animaciones. */
@@ -10,7 +10,14 @@ export function Providers({ children }: { children: ReactNode }) {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const fine = window.matchMedia("(pointer: fine)").matches;
     // En táctil el scroll nativo ya es fluido: no lo interceptamos.
-    const lenis = !reduce && fine ? new Lenis({ duration: 1.05, autoRaf: true }) : null;
+    // Lenis solo se descarga en computadora (en celular el scroll nativo ya es fluido).
+    let lenis: Lenis | null = null;
+    let cancelled = false;
+    if (!reduce && fine) {
+      import("lenis").then(({ default: L }) => {
+        if (!cancelled) lenis = new L({ duration: 1.05, autoRaf: true });
+      });
+    }
 
     const goTo = (el: HTMLElement) => {
       if (lenis) lenis.scrollTo(el);
@@ -36,6 +43,7 @@ export function Providers({ children }: { children: ReactNode }) {
     document.addEventListener("click", onClick, true);
 
     return () => {
+      cancelled = true;
       document.removeEventListener("click", onClick, true);
       lenis?.destroy();
     };

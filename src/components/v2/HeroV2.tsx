@@ -34,7 +34,10 @@ function Backdrop() {
     <div ref={ref} aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden bg-[#0B0C0E]">
       <motion.div style={{ y }} className="film absolute inset-[-6%_0]">
         <picture>
+          {/* AVIF pesa menos de la mitad; WebP queda de respaldo. */}
+          <source media="(min-width: 768px)" type="image/avif" srcSet="/images/hero-bg.avif" />
           <source media="(min-width: 768px)" srcSet="/images/hero-bg.webp" />
+          <source type="image/avif" srcSet="/images/hero-bg-mobile.avif" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/hero-bg-mobile.webp" alt="" fetchPriority="high" className="h-full w-full object-cover" />
         </picture>
@@ -50,8 +53,8 @@ function Backdrop() {
 /** Portada cinemática: foto a sangre, titular enorme abajo a la izquierda y ficha de vidrio a la derecha. */
 export function HeroV2() {
   // La foto es el LCP: se pide desde el <head>, antes que el CSS y el JavaScript.
-  preload("/images/hero-bg-mobile.webp", { as: "image", fetchPriority: "high", media: "(max-width: 767px)" });
-  preload("/images/hero-bg.webp", { as: "image", fetchPriority: "high", media: "(min-width: 768px)" });
+  preload("/images/hero-bg-mobile.avif", { as: "image", type: "image/avif", fetchPriority: "high", media: "(max-width: 767px)" });
+  preload("/images/hero-bg.avif", { as: "image", type: "image/avif", fetchPriority: "high", media: "(min-width: 768px)" });
   return (
     <section aria-labelledby="hero-title" className="tone-dark relative isolate flex min-h-[100svh] items-end overflow-hidden">
       <Backdrop />

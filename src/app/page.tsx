@@ -2,7 +2,7 @@ import { JsonLd } from "@/components/layout/JsonLd";
 import { Contact } from "@/components/sections/Contact";
 import { Faq } from "@/components/sections/Faq";
 import { StoryV2 } from "@/components/v2/StoryV2";
-import { QuoteWizard } from "@/components/quote/QuoteWizard";
+import { LazyQuoteWizard } from "@/components/quote/LazyQuoteWizard";
 import { HeroV2 } from "@/components/v2/HeroV2";
 import { CtaBand, Heading, MarqueeV2, PortfolioV2, PricingV2, ProcessV2, ServicesV2 } from "@/components/v2/Sections";
 import { faqSchema, localBusinessSchema, plansSchema, servicesSchema } from "@/lib/seo";
@@ -19,7 +19,7 @@ function QuoteSection() {
           text="Responde seis preguntas y ve el estimado en vivo. Sin registrarte y sin compromiso."
         />
         <div className="mt-14 md:mt-20">
-          <QuoteWizard />
+          <LazyQuoteWizard />
         </div>
       </div>
     </section>
