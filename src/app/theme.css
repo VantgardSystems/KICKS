@@ -1,0 +1,530 @@
+/*
+ * Laboratorio de diseño (/lab). Todo vive bajo .site para no tocar el sitio actual.
+ * Remapea los tokens viejos a la paleta nueva: los componentes existentes
+ * (cotizador, FAQ, contacto) se adaptan solos.
+ */
+
+.site {
+  --ink: #0b0c0e;
+  --blackstone: #212529;
+  --graphite: #343a40;
+  --steel: #6c757d;
+  --silver: #adb5bd;
+  --whiteout: #e9ecef;
+  --snow: #f8f9fa;
+  --nitro: #fb5607;
+  --nitro-hi: #ff6a1f;
+  --nitro-lo: #d94a04;
+
+  --logo-accent: #fb5607;
+
+  --font-sans: var(--font-body);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  background: var(--ink);
+  color: var(--whiteout);
+  font-family: var(--font-body);
+  font-weight: var(--w-body);
+  font-size: 17px;
+  line-height: 1.6;
+}
+@media (min-width: 1024px) {
+  .site {
+    font-size: 18px;
+  }
+}
+.site ::selection {
+  background: var(--nitro);
+  color: var(--ink);
+}
+.site :focus-visible {
+  outline-color: var(--nitro);
+}
+
+/* ---------- Tipografía ---------- */
+.site {
+  --font-display: var(--f-intertight), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--f-inter), ui-sans-serif, system-ui, sans-serif;
+  --w-display: 800;
+  --w-body: 400;
+  --tr-display: -0.04em;
+}
+.site h1,
+.site h2,
+.site h3,
+.site h4,
+.site .f-display {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  letter-spacing: var(--tr-display);
+}
+.site h3,
+.site h4 {
+  letter-spacing: calc(var(--tr-display) * 0.6);
+}
+/* Máximo dos pesos por pantalla: todo lo demás va en el peso del cuerpo. */
+.site strong,
+.site b,
+.site .font-medium,
+.site .font-semibold {
+  font-weight: var(--w-body);
+}
+
+.site .t-display {
+  font-size: clamp(56px, 9vw, 120px);
+  line-height: 0.95;
+}
+.site .t-display-sm {
+  font-size: clamp(44px, 6.4vw, 92px);
+  line-height: 0.95;
+}
+.site .t-section {
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1;
+}
+.site .t-card {
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1;
+}
+.site .t-label {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: 12px;
+  line-height: 1.3;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.site .t-lead {
+  font-size: clamp(18px, 1.5vw, 21px);
+  line-height: 1.5;
+}
+
+/* Palabra clave y números en naranja (texto grande o sobre negro). */
+.site .kw {
+  font-style: normal;
+}
+.site .kw,
+.site .num {
+  color: var(--nitro);
+}
+.site .tone-light .kw,
+.site .tone-light .num {
+  color: var(--nitro-lo);
+}
+.site .on-nitro .num,
+.site .on-nitro .kw {
+  color: inherit;
+}
+
+/* ---------- Tonos de sección ---------- */
+.site .tone-dark {
+  background: var(--ink);
+  color: var(--whiteout);
+}
+.site .tone-light {
+  --color-ink: #f8f9fa;
+  --color-coal: #ffffff;
+  --color-raised: #ffffff;
+  --color-paper: #0b0c0e;
+  --color-mute: #495057;
+  --color-line: rgb(11 12 14 / 0.12);
+  --color-line-strong: rgb(11 12 14 / 0.22);
+  --logo-accent: #d94a04;
+  background: var(--whiteout);
+  color: var(--ink);
+}
+.site section.bg-coal {
+  background: transparent;
+}
+.site .tone-light .field {
+  background: #fff;
+  color: var(--ink);
+  border-color: rgb(11 12 14 / 0.18);
+}
+.site .tone-light .text-neutral-600,
+.site .tone-light .text-neutral-700 {
+  color: #495057;
+}
+/* Botones naranjas siempre con texto negro (contraste AA). */
+.site .bg-flame,
+.site .bg-flame:hover {
+  color: var(--ink) !important;
+}
+.site .text-flame,
+.site .text-flame-hi {
+  color: var(--nitro);
+}
+.site .tone-light .text-flame,
+.site .tone-light .text-flame-hi {
+  color: var(--nitro-lo);
+}
+
+/* ---------- Superficies ---------- */
+.site .glass {
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.12), rgb(255 255 255 / 0.05) 55%);
+  -webkit-backdrop-filter: blur(24px) saturate(1.15);
+  backdrop-filter: blur(24px) saturate(1.15);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14);
+}
+.site .tone-light .glass {
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.7), rgb(255 255 255 / 0.45));
+  border-color: rgb(11 12 14 / 0.1);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site .glass {
+    background: rgb(33 37 41 / 0.94);
+  }
+}
+
+/* Fotografía: grano de película + aberración cromática muy sutil en los bordes. */
+.site .film {
+  position: relative;
+  isolation: isolate;
+}
+.site .film::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("/images/grain.png");
+  background-size: 96px 96px;
+}
+.site .film::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: screen;
+  background:
+    linear-gradient(90deg, rgb(255 40 40 / 0.05), transparent 6%, transparent 94%, rgb(0 190 255 / 0.05)),
+    linear-gradient(180deg, rgb(255 40 40 / 0.03), transparent 8%, transparent 92%, rgb(0 190 255 / 0.03));
+}
+/* Mientras llegan las fotos con IA: las imágenes actuales se pasan a B&N. */
+/* ---------- Botones ---------- */
+.site .btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 24px;
+  font-family: var(--font-body);
+  font-weight: var(--w-body);
+  font-size: 16px;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease,
+    transform 300ms var(--ease-expo);
+  overflow: hidden;
+}
+.site .btn-lg {
+  min-height: 56px;
+  padding: 0 28px;
+  font-size: 17px;
+}
+.site .btn-primary {
+  background: var(--nitro);
+  color: var(--ink);
+}
+.site .btn-primary:hover {
+  background: var(--nitro-hi);
+}
+.site .btn-primary:active {
+  background: var(--nitro-lo);
+}
+.site .btn-secondary {
+  border: 1px solid rgb(233 236 239 / 0.28);
+  color: var(--whiteout);
+}
+.site .btn-secondary:hover {
+  border-color: rgb(233 236 239 / 0.6);
+  background: rgb(233 236 239 / 0.06);
+}
+.site .tone-light .btn-secondary {
+  border-color: rgb(11 12 14 / 0.25);
+  color: var(--ink);
+}
+.site .tone-light .btn-secondary:hover {
+  border-color: rgb(11 12 14 / 0.6);
+  background: rgb(11 12 14 / 0.04);
+}
+.site .btn {
+  border-radius: 999px;
+}
+.site .btn-arrow {
+  display: none;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+}
+.site .btn-arrow {
+  display: inline-block;
+}
+.site .btn {
+  padding-right: 20px;
+}
+.site .btn-arrow svg {
+  position: absolute;
+  inset: 0;
+  transition: transform 450ms var(--ease-expo);
+}
+.site .btn-arrow svg + svg {
+  transform: translateX(-140%);
+}
+.site .btn:hover .btn-arrow svg:first-child {
+  transform: translateX(140%);
+}
+.site .btn:hover .btn-arrow svg + svg {
+  transform: translateX(0);
+}
+
+/* ---------- SpecCard ---------- */
+.site .spec {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    transform 500ms var(--ease-expo),
+    border-color 300ms ease;
+}
+.site .spec::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(255 255 255 / 0.09), transparent 45%);
+}
+@media (hover: hover) {
+  .site .spec-interactive:hover {
+    transform: translateY(-4px);
+  }
+  .site .spec-interactive:hover::after {
+    opacity: 1;
+  }
+}
+.site .spec-glass {
+  color: var(--whiteout);
+}
+.site .spec-blackstone {
+  background: var(--blackstone);
+  border: 1px solid rgb(255 255 255 / 0.07);
+  color: var(--whiteout);
+}
+.site .spec-whiteout {
+  background: var(--whiteout);
+  color: var(--ink);
+}
+.site .tone-light .spec-whiteout {
+  background: var(--snow);
+  border: 1px solid rgb(11 12 14 / 0.08);
+}
+.site .tone-light .spec-blackstone {
+  border-color: transparent;
+}
+.site .spec-nitro {
+  background: var(--nitro);
+  color: var(--ink);
+}
+.site .spec-nitro::after {
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(255 255 255 / 0.2), transparent 45%);
+}
+.site .spec .spec-label {
+  opacity: 1;
+}
+.site .spec-glass .spec-value,
+.site .spec-blackstone .spec-value {
+  color: var(--silver);
+}
+.site .spec-whiteout .spec-value {
+  color: #495057;
+}
+.site .spec-nitro .spec-value {
+  color: rgb(11 12 14 / 0.78);
+}
+.site .spec-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease;
+}
+.site .spec-glass .spec-pill,
+.site .spec-blackstone .spec-pill {
+  border-color: rgb(233 236 239 / 0.35);
+}
+.site .spec-glass .spec-pill:hover,
+.site .spec-blackstone .spec-pill:hover {
+  background: var(--whiteout);
+  color: var(--ink);
+}
+.site .spec-whiteout .spec-pill:hover,
+.site .spec-nitro .spec-pill:hover {
+  background: var(--ink);
+  color: var(--whiteout);
+}
+
+/* ---------- Marquee con contorno ---------- */
+.site .outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px #6c757d;
+}
+
+/* ---------- Footer: palabra gigante ---------- */
+.site .giant {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  letter-spacing: -0.05em;
+  line-height: 0.8;
+  color: rgb(233 236 239 / 0.06);
+  font-size: clamp(64px, 17vw, 290px);
+}
+
+/* Cursor "Ver" del portafolio */
+.site .view-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 80;
+  width: 88px;
+  height: 88px;
+  margin: -44px 0 0 -44px;
+  border-radius: 999px;
+  background: var(--nitro);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  pointer-events: none;
+  transform: scale(0);
+  transition: transform 300ms var(--ease-expo);
+}
+.site .view-cursor[data-on="true"] {
+  transform: scale(1);
+}
+@media (hover: none) {
+  .site .view-cursor {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site .spec-interactive:hover {
+    transform: none;
+  }
+}
+
+/* Componentes heredados (se rediseñan en la fase 3) */
+.site section.bg-coal {
+  color: inherit;
+}
+.site .eyebrow {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: inherit;
+  opacity: 0.7;
+}
+.site .h-section {
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1;
+}
+.site .tone-light .bg-ink {
+  background: #0b0c0e;
+}
+.site .tone-light .ring-neutral-300 {
+  --tw-ring-color: #adb5bd;
+}
+
+/* Naranja chico solo sobre negro: en tarjetas claras los números van en tinta. */
+.site .spec-whiteout .num,
+.site .tone-light .spec .num,
+.site .tone-light dd.num {
+  color: inherit;
+}
+
+/* ---------- Unificación de componentes heredados ----------
+ * Dos familias en todo el sitio: Inter Tight (títulos y etiquetas) e Inter (texto y cifras). */
+.site .font-mono {
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+.site .h-display {
+  font-size: clamp(56px, 9vw, 120px);
+  line-height: 0.95;
+}
+.site .eyebrow {
+  font-family: var(--font-display);
+  font-weight: var(--w-display);
+  font-size: 12px;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: inherit;
+  opacity: 0.7;
+}
+.site .field {
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.04);
+  border-color: rgb(255 255 255 / 0.16);
+}
+.site .field:focus-visible {
+  border-radius: 16px;
+}
+.site .prose-legal {
+  color: var(--silver);
+}
+.site .prose-legal h2,
+.site .prose-legal h3 {
+  color: var(--whiteout);
+}
+.site .prose-legal a {
+  color: var(--nitro);
+}
+.site .pending {
+  font-family: var(--font-body);
+  background: rgb(251 86 7 / 0.16);
+  color: #ff8a52;
+}
+.site .card {
+  border-radius: 28px;
+  background: rgb(255 255 255 / 0.04);
+  border-color: rgb(255 255 255 / 0.1);
+}
+.site .tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Píldora del plan destacado: rellena en tinta sobre nitro. */
+.site .spec-nitro .spec-pill {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--whiteout);
+}
+.site .spec-nitro .spec-pill:hover {
+  background: #212529;
+}
