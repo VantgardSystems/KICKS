@@ -135,7 +135,7 @@ export function ServicesV2() {
                 index={i}
                 title={s.title}
                 summary={s.description}
-                image={{ src: s.image, alt: s.imageAlt, sizes: "(min-width: 1024px) 50vw, 100vw", temp: true, aspect: i === 5 ? "aspect-[4/3] lg:aspect-[21/8]" : "aspect-[4/3]" }}
+                image={{ src: s.image, alt: s.imageAlt, sizes: "(min-width: 1024px) 50vw, 100vw", aspect: i === 5 ? "aspect-[4/3] lg:aspect-[21/8]" : "aspect-[4/3]" }}
                 rows={[
                   { label: "Entrega", value: s.delivery },
                   { label: "Incluye", value: s.includes },
@@ -283,7 +283,7 @@ function ProcessStep({ step, index, onActive }: { step: (typeof processSteps)[nu
         className={`transition-opacity duration-500 ${inView ? "lg:opacity-100" : "lg:opacity-50"}`}
       >
         <div className="film relative mt-6 aspect-[4/3] overflow-hidden rounded-[16px] lg:hidden">
-          <Image src={step.image} alt={step.imageAlt} fill sizes="100vw" className="photo-temp object-cover" />
+          <Image src={step.image} alt={step.imageAlt} fill sizes="100vw" className="object-cover" />
         </div>
       </SpecCard>
     </li>
@@ -319,7 +319,7 @@ export function ProcessV2() {
                     alt=""
                     fill
                     sizes="(min-width: 1024px) 50vw, 0px"
-                    className={`photo-temp object-cover transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${i === active ? "scale-100 opacity-100" : "scale-105 opacity-0"}`}
+                    className={`object-cover transition-[opacity,transform] duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${i === active ? "scale-100 opacity-100" : "scale-105 opacity-0"}`}
                   />
                 ))}
                 <span className="f-display num absolute bottom-6 left-8 text-[clamp(96px,12vw,180px)] leading-none text-[#E9ECEF]">0{active + 1}</span>
@@ -426,7 +426,7 @@ export function CtaBand() {
   return (
     <section ref={ref} aria-labelledby="cta-titulo" className="tone-dark relative isolate overflow-hidden">
       <motion.div aria-hidden="true" style={{ y }} className="film absolute inset-[-10%_0] -z-10">
-        <Image src="/images/hero-bg.webp" alt="" fill sizes="100vw" className="photo-temp object-cover" />
+        <Image src="/images/cta-bg.webp" alt="" fill sizes="100vw" className="object-cover" />
       </motion.div>
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[#0B0C0E]/55" />
       <div className="container-x flex min-h-[70vh] flex-col items-start justify-end gap-8 py-20 md:flex-row md:items-end md:justify-between md:py-24">

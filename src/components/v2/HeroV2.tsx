@@ -12,8 +12,11 @@ import { SpecCard } from "./SpecCard";
 
 const LiquidChrome = dynamic(() => import("./LiquidChrome").then((m) => m.LiquidChrome), { ssr: false });
 
-// Hasta que lleguen las fotos con IA se usan las actuales en B&N.
-const PHOTO = { src: "/images/hero-bg.webp", mobile: "/images/hero-bg-mobile.webp", temp: true };
+// Fotografía B&N con acento naranja (render fotorrealista, ya viene con el grade final).
+const PHOTOS = {
+  car: { src: "/images/hero-bg.webp", mobile: "/images/hero-bg-mobile.webp" },
+  dunes: { src: "/images/hero-dunes.webp", mobile: "/images/hero-dunes.webp" },
+};
 const fromPrice = formatMXN(Math.min(...plans.map((p) => p.price)));
 
 /** Titular con una palabra clave marcable (naranja o serif itálica, según el tema). */
@@ -27,7 +30,8 @@ function Headline({ className }: { className: string }) {
   );
 }
 
-function Backdrop({ align = "left" }: { align?: "left" | "center" }) {
+function Backdrop({ align = "left", photo = "car" }: { align?: "left" | "center"; photo?: keyof typeof PHOTOS }) {
+  const PHOTO = PHOTOS[photo];
   const { state } = useLab();
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
@@ -45,7 +49,7 @@ function Backdrop({ align = "left" }: { align?: "left" | "center" }) {
           <picture>
             <source media="(min-width: 768px)" srcSet={PHOTO.src} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={PHOTO.mobile} alt="" fetchPriority="high" className={`h-full w-full object-cover ${PHOTO.temp ? "photo-temp" : ""}`} />
+            <img src={PHOTO.mobile} alt="" fetchPriority="high" className="h-full w-full object-cover" />
           </picture>
         </motion.div>
       )}
@@ -123,7 +127,7 @@ function HeroCinematic() {
 function HeroSpec() {
   return (
     <section aria-labelledby="hero-title" className="tone-dark relative isolate flex min-h-[100svh] items-center overflow-hidden">
-      <Backdrop align="center" />
+      <Backdrop align="center" photo="dunes" />
       <div className="container-x w-full pt-28 pb-16">
         <motion.div
           {...reveal(0.15)}

@@ -23,7 +23,7 @@ interface SpecCardProps {
   /** Contenido libre entre título y ficha (lista de incluidos, etc.). */
   children?: ReactNode;
   /** Foto de la tarjeta. */
-  image?: { src: string; alt: string; sizes: string; temp?: boolean; aspect?: string };
+  image?: { src: string; alt: string; sizes: string; aspect?: string };
   /** Variante fija. Si no se da, sale de la opción "Tarjetas" del tema. */
   variant?: SpecVariant;
   /** La tarjeta destacada (plan principal) va en nitro sólido. */
@@ -120,11 +120,13 @@ export function SpecCard({
     return (
       <Tag
         onPointerMove={interactive ? onMove : undefined}
-        className={`spec spec-glass ${interactive ? "spec-interactive" : ""} film ${radius} flex min-h-[520px] flex-col justify-end p-3 ${className}`}
+        className={`spec spec-glass ${interactive ? "spec-interactive" : ""} ${radius} flex flex-col bg-[#0B0C0E] p-3 ${className}`}
       >
-        <Image src={image.src} alt={image.alt} fill sizes={image.sizes} className={`-z-10 object-cover ${image.temp ? "photo-temp" : ""}`} />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-        <div className={`glass relative z-[3] flex flex-col justify-between rounded-[20px] ${pad}`}>{body}</div>
+        {/* Foto arriba con proporción fija; la ficha de vidrio monta solo su borde inferior. */}
+        <div className={`film relative overflow-hidden rounded-[20px] ${image.aspect ?? "aspect-[4/3]"}`}>
+          <Image src={image.src} alt={image.alt} fill sizes={image.sizes} className="object-cover" />
+        </div>
+        <div className={`glass relative z-[3] mx-2 -mt-20 flex flex-1 flex-col justify-between rounded-[20px] ${pad}`}>{body}</div>
       </Tag>
     );
   }
@@ -136,7 +138,7 @@ export function SpecCard({
     >
       {image && (
         <div className={`film relative overflow-hidden rounded-[18px] ${image.aspect ?? "aspect-[4/3]"}`}>
-          <Image src={image.src} alt={image.alt} fill sizes={image.sizes} className={`object-cover ${image.temp ? "photo-temp" : ""}`} />
+          <Image src={image.src} alt={image.alt} fill sizes={image.sizes} className="object-cover" />
         </div>
       )}
       <div className={`flex flex-1 flex-col justify-between ${image ? "px-3 pt-6 pb-3 md:px-5 md:pb-5" : ""}`}>{body}</div>
