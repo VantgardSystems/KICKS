@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { MouseEvent, PointerEvent, ReactNode } from "react";
-import { useLab } from "@/components/lab/LabContext";
 
 export type SpecVariant = "glass" | "blackstone" | "whiteout" | "nitro";
 
@@ -28,7 +27,7 @@ interface SpecCardProps {
   variant?: SpecVariant;
   /** La tarjeta destacada (plan principal) va en nitro sólido. */
   featured?: boolean;
-  /** Posición en la lista, para alternar muestras de color. */
+  /** Posición en la lista (reservado para variaciones). */
   index?: number;
   size?: "lg" | "md";
   className?: string;
@@ -38,15 +37,10 @@ interface SpecCardProps {
 }
 
 // Muestras de color: el naranja aparece una sola vez por lista (≈5 % del área).
-const swatchCycle: SpecVariant[] = ["whiteout", "blackstone", "nitro", "blackstone", "whiteout", "blackstone"];
-
-export function useSpecVariant(featured?: boolean, index = 0, fixed?: SpecVariant): SpecVariant {
-  const { state } = useLab();
+/** Variante por defecto: vidrio. El plan destacado va en nitro sólido. */
+export function specVariant(featured?: boolean, fixed?: SpecVariant): SpecVariant {
   if (fixed) return fixed;
-  if (featured) return "nitro";
-  if (state.cards === "glass") return "glass";
-  if (state.cards === "solid") return "blackstone";
-  return swatchCycle[index % swatchCycle.length];
+  return featured ? "nitro" : "glass";
 }
 
 /** Componente firma: ficha técnica con título grande, pares etiqueta/valor y píldora. */
@@ -66,7 +60,7 @@ export function SpecCard({
   titleAs: Title = "h3",
   interactive = true,
 }: SpecCardProps) {
-  const v = useSpecVariant(featured, index, variant);
+  const v = specVariant(featured, variant);
   const radius = size === "lg" ? "rounded-[28px]" : "rounded-[16px]";
   const pad = size === "lg" ? "p-6 md:p-8" : "p-5 md:p-6";
   // En vidrio con foto, la ficha flota sobre la imagen; en sólidos la foto va arriba.

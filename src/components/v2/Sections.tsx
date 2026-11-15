@@ -19,7 +19,7 @@ import {
   upcomingProjects,
   whatsappUrl,
 } from "@/config/site";
-import { PLAN_EVENT } from "@/components/sections/Pricing";
+import { PLAN_EVENT } from "@/lib/events";
 import { Logo } from "@/components/ui/Logo";
 import { CookieSettingsButton } from "@/components/layout/CookieSettingsButton";
 import { Year } from "@/components/layout/Year";

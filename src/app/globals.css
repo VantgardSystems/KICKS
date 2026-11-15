@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #0a0a0a;
-  --color-coal: #111111;
-  --color-raised: #161616;
-  --color-paper: #fafafa;
-  --color-mute: #a1a1aa;
-  --color-flame: #ff6b1a;
-  --color-flame-hi: #ff8a3d;
-  --color-line: rgb(255 255 255 / 0.1);
-  --color-line-strong: rgb(255 255 255 / 0.18);
+  --color-ink: #0b0c0e;
+  --color-coal: #212529;
+  --color-raised: #212529;
+  --color-paper: #e9ecef;
+  --color-mute: #adb5bd;
+  --color-flame: #fb5607;
+  --color-flame-hi: #ff6a1f;
+  --color-line: rgb(255 255 255 / 0.12);
+  --color-line-strong: rgb(255 255 255 / 0.2);
 
   /* Paleta del rediseño (ficha técnica B&N + nitro) */
   --color-blackstone: #212529;
@@ -22,7 +22,7 @@
   --color-nitro-hi: #ff6a1f;
   --color-nitro-lo: #d94a04;
 
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--f-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 
   --radius-card: 20px;

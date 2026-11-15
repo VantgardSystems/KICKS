@@ -59,7 +59,7 @@ export function NavbarV2() {
             scrolled || open ? "bg-[#0B0C0E]/60" : ""
           }`}
         >
-          <Link href="/lab" aria-label="VANTGARD SYSTEMS, ir al inicio" className="rounded-md py-1 text-[#E9ECEF]" onClick={() => setOpen(false)}>
+          <Link href="/" aria-label="VANTGARD SYSTEMS, ir al inicio" className="rounded-md py-1 text-[#E9ECEF]" onClick={() => setOpen(false)}>
             <Logo />
           </Link>
           <nav aria-label="Principal" className="hidden lg:block">

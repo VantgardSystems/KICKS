@@ -1,4 +1,0 @@
-Fuentes del laboratorio de diseño (/lab), recortadas a caracteres latinos.
-- Inter, Inter Tight, Instrument Sans, Instrument Serif: SIL Open Font License 1.1 (vía Fontsource).
-- Satoshi, Clash Display, General Sans: Indian Type Foundry, ITF Free Font License (vía Fontshare), uso comercial permitido.
-Al elegir una opción se borran las demás.

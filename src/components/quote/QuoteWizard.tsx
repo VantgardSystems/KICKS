@@ -16,7 +16,7 @@ import {
   type ExtraId,
 } from "@/config/site";
 import { PrivacyLabel, PrivacyNotice } from "@/components/legal/PrivacyNotice";
-import { PLAN_EVENT } from "@/components/sections/Pricing";
+import { PLAN_EVENT } from "@/lib/events";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, Field, useForm } from "@/components/ui/Field";
 import {
