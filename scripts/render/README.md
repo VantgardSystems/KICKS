@@ -1,7 +1,7 @@
 # Fotografía del sitio (renders)
 
 Las 16 imágenes de `public/images/` salen de estas escenas de Blender (Cycles) con un grade común.
-Si después las reemplazas por fotos de IA, usa los mismos nombres y medidas.
+Si después las reemplazas por fotos de IA, usa los mismos nombres y medidas. El plan, el modelo y los prompts están en `ia-prompts.md`.
 
 ```bash
 python -m venv .venv && .venv/bin/pip install bpy==5.3.0 pillow
