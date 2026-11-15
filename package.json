@@ -9,8 +9,6 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@vercel/analytics": "latest",
-    "@vercel/speed-insights": "latest",
     "framer-motion": "^14.14.0",
     "geist": "^1.9.2",
     "lenis": "^1.3.27",

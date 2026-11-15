@@ -63,6 +63,10 @@ Busca `[PENDIENTE]` en `src/config/site.ts`. En el sitio se ven resaltados en na
 | `CONTACT_FROM` | Remitente verificado en Resend | `onboarding@resend.dev` (solo pruebas) |
 | `CONTACT_TO` | Correo que recibe los avisos | `erick.castro@vantgardsystems.com` |
 | `GOOGLE_SITE_VERIFICATION` | Código de Search Console | No se agrega la meta |
+| `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` | Analítica con Plausible (sin cookies) | Sin analítica |
+| `NEXT_PUBLIC_GA_ID` | Analítica con Google Analytics 4 (`G-XXXXXXX`) | Sin analítica |
+
+La analítica solo se carga si el visitante acepta las cookies. Usa una sola: Plausible o GA4.
 
 Ninguna key llega al navegador: solo se usan en las rutas `/api/*`.
 
@@ -85,7 +89,7 @@ Ninguna key llega al navegador: solo se usan en las rutas `/api/*`.
 3. En *Environment Variables* agrega las de la tabla de arriba.
 4. Da clic en **Deploy**.
 5. En *Settings → Domains* conecta tu dominio y pon esa URL en `NEXT_PUBLIC_SITE_URL`. Vuelve a desplegar.
-6. En el proyecto activa **Analytics** y **Speed Insights** (pestañas del mismo nombre). El sitio solo las carga si el visitante acepta las cookies.
+6. Para medir visitas, agrega `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` o `NEXT_PUBLIC_GA_ID`. El sitio solo carga la analítica si el visitante acepta las cookies.
 7. En <https://search.google.com/search-console> agrega el dominio, copia el código de la meta de verificación en `GOOGLE_SITE_VERIFICATION` y envía `https://tu-dominio/sitemap.xml`.
 
 ## Imágenes
@@ -116,9 +120,9 @@ src/
 
 - Headers en `next.config.ts`: CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy y HSTS.
 - Formularios y chat: validación en navegador y servidor, honeypot, verificación de origen y límite de peticiones por IP.
-- El límite por IP vive en memoria de cada instancia. Frena abuso básico; para un límite global usa Upstash o Vercel KV en `src/lib/rate-limit.ts`.
+- El límite por IP vive en memoria de cada función. Frena abuso básico; para un límite global usa Upstash Redis o Netlify Blobs en `src/lib/rate-limit.ts`.
 - El chat tiene un máximo de mensajes por sesión (`assistant.maxMessagesPerSession`) para cuidar la cuota de Gemini.
-- La analítica solo se carga si el visitante acepta en el banner de cookies.
+- La analítica (Plausible o GA4) solo se carga si el visitante acepta en el banner de cookies.
 
 ## Calidad medida (build de producción, Lighthouse)
 

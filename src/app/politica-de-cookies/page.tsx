@@ -19,8 +19,8 @@ const rows = [
   ["vg-consent", "Necesaria", "Recuerda si aceptaste o rechazaste la analítica.", "Hasta que la borres"],
   ["vg-quote-draft", "Necesaria", "Guarda el avance del cotizador (sin datos personales).", "Hasta que envíes o reinicies"],
   ["vg-chat", "Necesaria", "Mantiene la conversación con el asistente mientras navegas.", "Hasta cerrar la pestaña"],
-  ["Vercel Analytics", "Analítica (opcional)", "Cuenta visitas de forma anónima, sin identificarte.", "Solo si la aceptas"],
-  ["Vercel Speed Insights", "Analítica (opcional)", "Mide la velocidad de carga del sitio.", "Solo si la aceptas"],
+  ["_ga, _ga_* (Google Analytics)", "Analítica (opcional)", "Cuenta visitas de forma estadística. Solo si usamos Google Analytics.", "Hasta 13 meses, solo si la aceptas"],
+  ["Plausible", "Analítica (opcional)", "Cuenta visitas sin cookies ni datos personales. Solo si usamos Plausible.", "No guarda nada en tu navegador"],
 ];
 
 const sections: LegalSection[] = [

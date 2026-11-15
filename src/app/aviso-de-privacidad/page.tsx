@@ -119,8 +119,11 @@ const sections: LegalSection[] = [
             <strong>Resend:</strong> envía los correos de los formularios y de las cotizaciones.
           </li>
           <li>
-            <strong>Vercel:</strong> aloja el sitio y, si lo aceptas, genera la analítica y las medidas de
-            velocidad.
+            <strong>Netlify:</strong> aloja el sitio y procesa los formularios y el chat en sus servidores.
+          </li>
+          <li>
+            <strong>Google Analytics o Plausible:</strong> solo si aceptas la analítica, miden de forma estadística
+            las visitas al sitio.
           </li>
           <li>
             <strong>WhatsApp (Meta):</strong> si decides escribirnos o enviar tu cotización por WhatsApp, la
@@ -197,7 +200,7 @@ const sections: LegalSection[] = [
       <>
         <p>
           Este sitio usa almacenamiento local del navegador para recordar tu elección de cookies y el avance del
-          cotizador. La analítica de Vercel solo se carga si la aceptas. Puedes cambiar tu elección cuando quieras
+          cotizador. La analítica (Google Analytics o Plausible) solo se carga si la aceptas. Puedes cambiar tu elección cuando quieras
           en «Configurar cookies», al pie de la página, o desde la configuración de tu navegador.
         </p>
         <p>

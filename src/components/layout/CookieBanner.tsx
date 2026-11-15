@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { AnalyticsScripts } from "./AnalyticsScripts";
 import { useEffect, useState } from "react";
 import { CONSENT_EVENT, OPEN_CONSENT_EVENT, readConsent, saveConsent, type Consent } from "@/lib/consent";
 
@@ -46,12 +45,7 @@ export function CookieBanner() {
 
   return (
     <>
-      {consent?.analytics && (
-        <>
-          <Analytics />
-          <SpeedInsights />
-        </>
-      )}
+      {consent?.analytics && <AnalyticsScripts />}
 
       {open && (
         <section

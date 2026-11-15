@@ -1,7 +1,7 @@
 /**
  * Límite de peticiones en memoria (ventana deslizante por IP).
- * En Vercel cada instancia tiene su propia memoria: frena abuso básico.
- * Para un límite global usa Upstash/Vercel KV (ver README).
+ * En Netlify cada función tiene su propia memoria: frena abuso básico.
+ * Para un límite global usa Upstash Redis o Netlify Blobs (ver README).
  */
 
 const buckets = new Map<string, number[]>();
