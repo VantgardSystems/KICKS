@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verane — Invest in Skyline</title>
+<meta name="description" content="Verane finds remarkable homes and towers over a calm, lit harbour, from quiet garden villas to lofty sky suites.">
+<meta name="theme-color" content="#6372c8">
+<link rel="preconnect" href="https://images.higgs.ai" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" crossorigin="anonymous" fetchpriority="high" href="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261119_114206_b326116b-1b08-4b0a-95c7-e0b20c6986ee.png&amp;w=2048&amp;q=85">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtq.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/pinyonscript/v24/6xKpdSJbL9-e9LuoeQiDRQR8WOXaOg.woff2">
+<style>
+/* ---------- fonts (latin subsets) ---------- */
+@font-face{font-family:Poppins;font-style:normal;font-weight:300;font-display:swap;src:url(https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLDz8Z1xlFQ.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Poppins;font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/poppins/v24/pxiEyp8kv8JHgFVrJJfecg.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Poppins;font-style:normal;font-weight:500;font-display:swap;src:url(https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLGT9Z1xlFQ.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Poppins;font-style:normal;font-weight:600;font-display:swap;src:url(https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLEj6Z1xlFQ.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Pinyon Script';font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/pinyonscript/v24/6xKpdSJbL9-e9LuoeQiDRQR8WOXaOg.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Outfit;font-style:normal;font-weight:100 900;font-display:swap;src:url(https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtq.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* ---------- tokens ---------- */
+:root{
+  --sky:#6372c8;
+  --room:#151f3f;
+  --s:1;            /* UI scale, set by script */
+  --travel:340vh;   /* scroll travel, set by script to 3.4 x stage height */
+  --sheet:url("https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261119_114207_afc537ef-59b8-44f3-bea8-6e64ae6af08f.png&w=1400&q=85");
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#151f3f;color:#fff}
+body{font-family:Poppins,system-ui,sans-serif;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+a{color:inherit;text-decoration:none}
+a:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;left:0;top:0;width:100%;height:0;z-index:20;opacity:0}
+.nav>*{position:absolute;left:0;top:0;white-space:nowrap}
+.logo{font-weight:600;font-size:max(14px,calc(22px * var(--s)));letter-spacing:.12em;line-height:1.2}
+.pill{display:flex;gap:calc(4px * var(--s));padding:calc(5px * var(--s));border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.35);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.pill a{display:block;font-weight:400;font-size:max(11px,calc(15px * var(--s)));line-height:1.1;padding:calc(10px * var(--s)) calc(20px * var(--s));border-radius:999px}
+.pill a.on{background:#fff;color:#2b2a52}
+.eng{display:flex;align-items:center;gap:calc(8px * var(--s));font-weight:400;font-size:max(11px,calc(15px * var(--s)));line-height:1.1}
+.eng svg{width:max(16px,calc(24px * var(--s)));height:max(16px,calc(24px * var(--s)));fill:none;stroke:#fff;stroke-width:1.3;flex:none}
+.signup{display:block;font-weight:400;font-size:max(11px,calc(15px * var(--s)));line-height:1.1;padding:calc(12px * var(--s)) calc(21px * var(--s));border-radius:999px;background:#fff;color:#2b2a52}
+.phone .pill a{font-size:max(11.5px,calc(12px * var(--s)));padding:calc(8px * var(--s)) max(9px,calc(11px * var(--s)))}
+
+/* ---------- story / stage ---------- */
+#story{position:relative;height:calc(100vh + var(--travel))}
+.stage{position:sticky;top:0;height:100vh;overflow:hidden;background:#6372c8}
+@supports (height:100svh){.stage{height:100svh}}
+.L{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+
+/* view layer: sky gradient + skyline plate + loop video */
+#view{width:100%;height:100%}
+.sky{position:absolute;left:0;top:0;background:linear-gradient(to bottom,rgb(98,115,201) 0%,rgb(98,115,201) 38.9%,rgb(103,118,203) 41.1%,rgb(110,121,206) 43.4%,rgb(117,124,208) 45.7%,rgb(125,127,210) 48%,rgb(133,131,211) 50.3%,rgb(141,134,211) 52.6%,rgb(148,136,212) 54.9%,rgb(156,139,212) 57.2%,rgb(165,142,210) 59.5%,rgb(175,144,208) 61.8%,rgb(187,148,204) 64.1%,rgb(196,150,199) 66.4%,rgb(204,153,195) 68.7%,rgb(210,154,189) 71%,rgb(215,155,184) 73.2%,rgb(220,155,178) 75.6%,rgb(224,152,171) 77.9%,rgb(227,148,163) 80.1%)}
+#heroImg,#heroVid{display:block;-webkit-mask-image:linear-gradient(to bottom,transparent 61%,#000 65.2%);mask-image:linear-gradient(to bottom,transparent 61%,#000 65.2%)}
+#heroVid{object-fit:fill;opacity:0;transition:opacity .4s linear}
+#heroVid.on{opacity:1}
+/* the plate's bottom rows mirrored under it, so the skyline's overshoot never opens a gap */
+#view .sea{display:block;object-fit:cover;object-position:50% 100%;transform-origin:50% 50%}
+
+/* headline, tower cut-out, script */
+#head{width:100%;pointer-events:none}
+#word{position:absolute;left:0;top:0;font-family:Outfit,system-ui,sans-serif;font-weight:330;line-height:1;letter-spacing:0;color:#fff;white-space:nowrap;transform-origin:0 0}
+#tower{width:100%;height:100%;pointer-events:none}
+#tower img{position:absolute;left:0;top:0;display:block;
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2048 1360' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cfilter id='b' x='-1' y='-1' width='3' height='3'%3E%3CfeGaussianBlur stdDeviation='14'/%3E%3C/filter%3E%3C/defs%3E%3Cpolygon fill='%23fff' points='978,1222 986,1150 990,700 994,420 990,340 994,316 1054,316 1058,340 1062,420 1065,1000 1068,1200 1074,1222'/%3E%3Cellipse cx='1024' cy='322' rx='62' ry='38' fill='%23fff' filter='url(%23b)'/%3E%3C/svg%3E");
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2048 1360' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cfilter id='b' x='-1' y='-1' width='3' height='3'%3E%3CfeGaussianBlur stdDeviation='14'/%3E%3C/filter%3E%3C/defs%3E%3Cpolygon fill='%23fff' points='978,1222 986,1150 990,700 994,420 990,340 994,316 1054,316 1058,340 1062,420 1065,1000 1068,1200 1074,1222'/%3E%3Cellipse cx='1024' cy='322' rx='62' ry='38' fill='%23fff' filter='url(%23b)'/%3E%3C/svg%3E");
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+#script{font-family:'Pinyon Script',cursive;font-weight:400;line-height:1;color:#fff;white-space:nowrap;pointer-events:none}
+
+/* phone scrim behind the paragraph */
+.shade{display:none;position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(to top,rgba(30,20,60,.55),transparent);opacity:0;pointer-events:none}
+.phone .shade{display:block}
+
+/* room layer: keyed plate on a canvas + extensions so it never shows an edge */
+#room{visibility:hidden;background:linear-gradient(to bottom,transparent 75%,#4a3d6a 75%)}
+#room::before{content:"";position:absolute;left:-4000px;right:-4000px;bottom:100%;height:6000px;background:#151f3f}
+#room::after{content:"";position:absolute;left:-4000px;right:-4000px;top:100%;height:6000px;background:linear-gradient(#4a3d6a,#2e2850 900px,#221d40)}
+/* sampled from the plate's own edge columns (wall, shadow under the ledge, floor), after the canvas's bottom fade */
+#room .ext{position:absolute;top:0;height:100%;width:4000px;background:linear-gradient(#101b39,#121c3d 22%,#101a3a 63%,#0d1838 70.6%,#0a122e 73.5%,#080f28 85.3%,#0f1738 86.8%,#1f2247 89.7%,#2e2c56 92.6%,#3a3460 95.6%,#4a3d6a)}
+#room .ext.l{right:100%}
+#room .ext.r{left:100%}
+#roomCv{position:absolute;left:0;top:0;width:100%;height:100%;display:block;-webkit-mask-image:linear-gradient(to bottom,#000 86%,transparent 100%);mask-image:linear-gradient(to bottom,#000 86%,transparent 100%)}
+
+/* "Shape Your Future." */
+#build{display:flex;align-items:center;gap:calc(28px * var(--s));opacity:0;transform:none}
+.thumb{position:relative;flex:none;width:calc(121px * var(--s));height:calc(95px * var(--s));border-radius:calc(14px * var(--s));background:var(--sheet) 2% 2%/205% 205% no-repeat #8a7fb8;box-shadow:0 calc(6px * var(--s)) calc(18px * var(--s)) rgba(30,20,70,.35)}
+.play{position:absolute;left:50%;top:50%;width:calc(34px * var(--s));height:calc(38px * var(--s));transform:translate(-40%,-50%);fill:#fff;stroke:#fff;stroke-width:6;stroke-linejoin:round}
+.bt{font-weight:300;font-size:max(18px,calc(36px * var(--s)));line-height:1.06;white-space:nowrap}
+.phone .thumb{width:calc(76px * var(--s));height:calc(60px * var(--s))}
+.phone .play{width:calc(21px * var(--s));height:calc(24px * var(--s))}
+.phone .bt{font-size:max(20px,calc(26px * var(--s)))}
+
+/* paragraph */
+#para{font-weight:300;font-size:max(11px,calc(13.4px * var(--s)));line-height:1.45;opacity:0}
+#para span{display:block;white-space:nowrap}
+.short #para span,.phone #para span{display:inline;white-space:normal}
+.phone #para{font-size:max(12px,calc(12.5px * var(--s)))}
+
+/* property cards */
+.card{--cs:var(--s);--ph:1;width:calc(266px * var(--cs));background:#fff;color:#24233a;border-radius:calc(24px * var(--cs));padding:calc(12px * var(--cs)) calc(12px * var(--cs)) calc(18px * var(--cs));box-shadow:0 calc(14px * var(--cs)) calc(40px * var(--cs)) rgba(8,10,40,.35);visibility:hidden;will-change:transform,opacity}
+.card .ph{height:calc(150px * var(--cs) * var(--ph));border-radius:calc(18px * var(--cs));background:var(--sheet) 1% 1%/205% 205% no-repeat #c9c3dc}
+.card .row{display:flex;justify-content:space-between;align-items:center;gap:calc(8px * var(--cs));padding:calc(9px * var(--cs)) calc(6px * var(--cs)) 0}
+.card h2{font-weight:500;font-size:max(12px,calc(14px * var(--cs)));line-height:1.3;color:#24233a;white-space:nowrap}
+.card .row p{font-weight:400;font-size:max(11px,calc(12.5px * var(--cs)));line-height:1.3;color:#a3a2b3;white-space:nowrap}
+.card .price{font-weight:400;font-size:max(12px,calc(16px * var(--cs)));line-height:2;color:#8e8da0;padding-left:calc(12px * var(--cs));border-left:1px solid #e6e5ee;white-space:nowrap}
+.card .spec{display:flex;gap:calc(22px * var(--cs));padding:calc(10px * var(--cs)) calc(6px * var(--cs)) 0;list-style:none;font-weight:400;font-size:max(11px,calc(12px * var(--cs)));line-height:1.3;color:#55546a}
+.card .spec li{display:flex;align-items:center;gap:calc(6px * var(--cs));white-space:nowrap}
+.card .spec svg{flex:none;width:max(13px,calc(16px * var(--cs)));height:max(13px,calc(16px * var(--cs)));fill:none;stroke:#9c9bb0;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.card.compact .row{flex-direction:column;align-items:flex-start;gap:0}
+.card.compact h2,.card.compact .row p{line-height:1.35}
+.card.compact .price{padding-left:0;border-left:0;line-height:1.35}
+.card.compact .spec{gap:max(7px,calc(16px * var(--cs)))}
+#c2 .ph{background-position:99% 1%}
+#c3 .ph{background-position:1% 99%}
+#c4 .ph{background-position:99% 99%}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <a class="logo" href="#">VERANE</a>
+  <nav class="pill" aria-label="Primary">
+    <a class="on" href="#" aria-current="page">Home</a>
+    <a href="#">About Us</a>
+    <a href="#">Property List</a>
+    <a href="#">Contact Us</a>
+  </nav>
+  <span class="eng"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><ellipse cx="12" cy="12" rx="4.2" ry="9.5"/><path d="M2.5 12h19M4.2 7h15.6M4.2 17h15.6"/></svg>Eng</span>
+  <a class="signup" href="#">Sign up</a>
+</header>
+
+<main id="story">
+  <div class="stage">
+    <h1 class="vh">Invest in Skyline</h1>
+
+    <div id="view" class="L">
+      <div class="sky"></div>
+      <img id="heroImg" class="L" crossorigin="anonymous" fetchpriority="high" alt="A twilight harbour skyline with one slender glass supertall glowing at its centre" src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261119_114206_b326116b-1b08-4b0a-95c7-e0b20c6986ee.png&amp;w=2048&amp;q=85">
+      <img class="sea L" crossorigin="anonymous" alt="" aria-hidden="true" src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261119_114206_b326116b-1b08-4b0a-95c7-e0b20c6986ee.png&amp;w=2048&amp;q=85">
+      <video id="heroVid" class="L" muted loop playsinline preload="auto" crossorigin="anonymous" aria-hidden="true" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261119_131845_acb065cd-9dea-4e18-8f20-1d2634228a92.mp4"></video>
+    </div>
+
+    <div id="head" class="L" aria-hidden="true"><span id="word">SKYLINE</span></div>
+
+    <div id="tower" class="L"><img crossorigin="anonymous" alt="" src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261119_114206_b326116b-1b08-4b0a-95c7-e0b20c6986ee.png&amp;w=2048&amp;q=85"></div>
+
+    <span id="script" class="L" aria-hidden="true">Invest in</span>
+
+    <div class="shade"></div>
+
+    <div id="room" class="L" aria-hidden="true"><span class="ext l"></span><span class="ext r"></span><canvas id="roomCv" width="2048" height="1360"></canvas></div>
+
+    <div id="build" class="L">
+      <div class="thumb" aria-hidden="true"><svg class="play" viewBox="0 0 34 38"><path d="M5 4.5 30 19 5 33.5z"/></svg></div>
+      <p class="bt">Shape Your<br>Future.</p>
+    </div>
+
+    <p id="para" class="L"><span>Discover remarkable homes and towers set over a calm lit harbor,</span> <span>from quiet garden villas to lofty sky suites with sweeping views. A</span> <span>calm advisor guides you from the very first visit to the final</span> <span>key, so you find the place that fits.</span> </p>
+
+    <article class="card L" id="c1">
+      <div class="ph" role="img" aria-label="Dark-grey ranch house with a pink tree at dusk"></div>
+      <div class="row"><div><h2>Lumen Gardens</h2><p>Soft Modern Retreats</p></div><span class="price">$412,000</span></div>
+      <ul class="spec">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v14M3 15h18v4M21 15v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="11.5" r="2"/></svg>3<span class="vh"> bedrooms</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18v2a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM6 12V6.5a2.5 2.5 0 0 1 4.5-1.5M7 19l-1 2M17 19l1 2"/></svg>2<span class="vh"> bathrooms</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20H4zM10 20v-5h4v5"/></svg>180 m²</li>
+      </ul>
+    </article>
+
+    <article class="card L" id="c2">
+      <div class="ph" role="img" aria-label="Cream two-storey family house at dusk"></div>
+      <div class="row"><div><h2>Maple Terrace</h2><p>Classic Family House</p></div><span class="price">$528,000</span></div>
+      <ul class="spec">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v14M3 15h18v4M21 15v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="11.5" r="2"/></svg>4<span class="vh"> bedrooms</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18v2a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM6 12V6.5a2.5 2.5 0 0 1 4.5-1.5M7 19l-1 2M17 19l1 2"/></svg>3<span class="vh"> bathrooms</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20H4zM10 20v-5h4v5"/></svg>240 m²</li>
+      </ul>
+    </article>
+
+    <article class="card L" id="c3">
+      <div class="ph" role="img" aria-label="Timber-and-glass A-frame cottage at dusk"></div>
+      <div class="row"><div><h2>Cedar Hollows</h2><p>Timber Glass Cottage</p></div><span class="price">$365,000</span></div>
+      <ul class="spec">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v14M3 15h18v4M21 15v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="11.5" r="2"/></svg>2<span class="vh"> bedrooms</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18v2a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM6 12V6.5a2.5 2.5 0 0 1 4.5-1.5M7 19l-1 2M17 19l1 2"/></svg>2<span class="vh"> bathrooms</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20H4zM10 20v-5h4v5"/></svg>150 m²</li>
+      </ul>
+    </article>
+
+    <article class="card L" id="c4">
+      <div class="ph" role="img" aria-label="Stone manor under a pink sky"></div>
+      <div class="row"><div><h2>Rosewood Lane</h2><p>Twilight Stone Manor</p></div><span class="price">$486,000</span></div>
+      <ul class="spec">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5v14M3 15h18v4M21 15v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="11.5" r="2"/></svg>4<span class="vh"> bedrooms</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18v2a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM6 12V6.5a2.5 2.5 0 0 1 4.5-1.5M7 19l-1 2M17 19l1 2"/></svg>3<span class="vh"> bathrooms</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20H4zM10 20v-5h4v5"/></svg>260 m²</li>
+      </ul>
+    </article>
+  </div>
+</main>
+
+<script>
+(() => {
+'use strict';
+
+/* ================= elements ================= */
+const $ = (s) => document.querySelector(s);
+const root = document.documentElement;
+const story = $('#story'), stage = $('.stage');
+const view = $('#view'), sky = $('.sky'), heroImg = $('#heroImg'), heroVid = $('#heroVid'), sea = $('.sea');
+const head = $('#head'), word = $('#word'), tower = $('#tower'), towerImg = $('#tower img');
+const script = $('#script'), shade = $('.shade'), room = $('#room'), cv = $('#roomCv');
+const build = $('#build'), para = $('#para'), cards = [...document.querySelectorAll('.card')];
+const nav = $('.nav'), logo = $('.logo'), pill = $('.pill'), eng = $('.eng'), signup = $('.signup');
+
+const ROOM_URL = 'https://images.higgs.ai/?default=1&output=webp&url=' +
+  encodeURIComponent('https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261119_114205_7235737c-137f-49d3-b967-ff0d65b5c4d3.png') +
+  '&w=2048&q=85';
+
+/* ================= maths ================= */
+const clamp = (v, a = 0, b = 1) => (v < a ? a : v > b ? b : v);
+const lerp = (a, b, t) => a + (b - a) * t;
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+
+/* cubic-bezier(x1,y1,x2,y2), solved for x with Newton iteration (bisection fallback) */
+function bez(x1, y1, x2, y2) {
+  const cx = 3 * x1, bx = 3 * (x2 - x1) - cx, ax = 1 - cx - bx;
+  const cy = 3 * y1, by = 3 * (y2 - y1) - cy, ay = 1 - cy - by;
+  const X = (u) => ((ax * u + bx) * u + cx) * u;
+  const Y = (u) => ((ay * u + by) * u + cy) * u;
+  const dX = (u) => (3 * ax * u + 2 * bx) * u + cx;
+  return (t) => {
+    if (t <= 0) return 0;
+    if (t >= 1) return 1;
+    let u = t;
+    for (let i = 0; i < 8; i++) {
+      const e = X(u) - t;
+      if (Math.abs(e) < 1e-7) return Y(u);
+      const d = dX(u);
+      if (Math.abs(d) < 1e-6) break;
+      u -= e / d;
+    }
+    let lo = 0, hi = 1;
+    u = t;
+    for (let i = 0; i < 40; i++) {
+      const x = X(u);
+      if (Math.abs(x - t) < 1e-7) break;
+      if (x < t) lo = u; else hi = u;
+      u = (lo + hi) / 2;
+    }
+    return Y(u);
+  };
+}
+
+/* monotone cubic interpolation (Fritsch–Carlson) */
+function monotone(xs, ys) {
+  const n = xs.length, d = [], m = new Array(n);
+  for (let i = 0; i < n - 1; i++) d[i] = (ys[i + 1] - ys[i]) / (xs[i + 1] - xs[i]);
+  m[0] = d[0];
+  m[n - 1] = d[n - 2];
+  for (let i = 1; i < n - 1; i++) m[i] = d[i - 1] * d[i] <= 0 ? 0 : (d[i - 1] + d[i]) / 2;
+  for (let i = 0; i < n - 1; i++) {
+    if (d[i] === 0) { m[i] = 0; m[i + 1] = 0; continue; }
+    const a = m[i] / d[i], b = m[i + 1] / d[i], h = a * a + b * b;
+    if (h > 9) { const t = 3 / Math.sqrt(h); m[i] = t * a * d[i]; m[i + 1] = t * b * d[i]; }
+  }
+  return (x) => {
+    if (x <= xs[0]) return ys[0];
+    if (x >= xs[n - 1]) return ys[n - 1];
+    let i = 0;
+    while (x > xs[i + 1]) i++;
+    const h = xs[i + 1] - xs[i], t = (x - xs[i]) / h, t2 = t * t, t3 = t2 * t;
+    return (2 * t3 - 3 * t2 + 1) * ys[i] + (t3 - 2 * t2 + t) * h * m[i] +
+           (-2 * t3 + 3 * t2) * ys[i + 1] + (t3 - t2) * h * m[i + 1];
+  };
+}
+
+const E = {
+  pan:   bez(.45, .6, .65, 1),
+  rise1: bez(.08, .9, .45, .95),
+  rise2: bez(.45, 0, .55, 1),
+  nav:   bez(.33, 0, .2, 1),
+  word:  bez(.3, .15, .2, 1),
+  build: bez(.25, .75, .2, 1),
+  exit:  bez(.5, 0, .75, .4),
+  push:  bez(.45, 0, .55, 1),
+  card:  bez(.2, .8, .25, 1)
+};
+
+/* pull-back through the window: ln of the room scale (relative to its end scale) against reel seconds.
+   ln S = 1.93 puts the two mullions just outside a 16:10 frame, so the pull-back opens inside the centre pane. */
+const LN0 = 1.93;
+const lnS = monotone(
+  [9.0, 9.2, 9.5, 9.8, 10.1, 10.4, 10.63, 10.8, 10.97, 11.1, 11.3],
+  [1.93, 1.749, 1.406, 1.056, 0.720, 0.413, 0.219, 0.106, 0.028, 0, 0]
+);
+const CARD_IN = 10.4, CARD_DUR = 1.0, CARD_LAG = 0.3;
+const STEP_BOTTOM = 1224;   /* room plate: lit edge of the lowest step (top step at y 1045) */
+
+/* ================= style writes (cached) ================= */
+const memo = new WeakMap();
+function put(el, prop, val) {
+  let c = memo.get(el);
+  if (!c) memo.set(el, (c = {}));
+  if (c[prop] !== val) { c[prop] = val; el.style[prop] = val; }
+}
+const px = (v) => v.toFixed(2) + 'px';
+function box(el, x, y, w, h) {
+  el.style.left = px(x); el.style.top = px(y); el.style.width = px(w); el.style.height = px(h);
+}
+
+/* ================= text ink metrics ================= */
+const mctx = document.createElement('canvas').getContext('2d');
+function ink(font, fallbackFont, text) {
+  mctx.font = font;
+  /* an engine that rejects the numeric weight keeps the previous font: measure at the nearest named weight */
+  if (fallbackFont && !mctx.font.startsWith(font.split(' ')[0] + ' ')) mctx.font = fallbackFont;
+  const m = mctx.measureText(text);
+  const fa = m.fontBoundingBoxAscent, fd = m.fontBoundingBoxDescent;
+  return {
+    l: m.actualBoundingBoxLeft, r: m.actualBoundingBoxRight,
+    a: m.actualBoundingBoxAscent, d: m.actualBoundingBoxDescent,
+    fa: fa != null ? fa : 100, fd: fd != null ? fd : 26
+  };
+}
+/* place an element (line-height 1) so its ink box starts at (inkLeft, inkTop) */
+function placeInk(el, m, fs, inkLeft, inkTop, sx = 1) {
+  const k = fs / 100;
+  const half = (fs - (m.fa + m.fd) * k) / 2;
+  el.style.fontSize = px(fs);
+  el.style.left = px(inkLeft + m.l * k * sx);
+  el.style.top = px(inkTop - (half + (m.fa - m.a) * k));
+}
+
+/* ================= layout ================= */
+let L = null, lastW = -1, lastH = -1;
+
+function pos(el, x, y) { el.style.left = px(x); el.style.top = px(y); }
+const rect = (el) => el.getBoundingClientRect();
+
+function layoutNav(W, H, s, phone) {
+  eng.style.visibility = '';
+  const sw = rect(signup).width, sh = rect(signup).height;
+  const lw = rect(logo), pw = rect(pill), ew = rect(eng);
+  if (!phone) {
+    const cy = H * 67 / 1012;
+    pos(logo, W * 93 / 1418, cy - lw.height / 2);
+    pos(pill, (W - pw.width) / 2, cy - pw.height / 2);
+    const sr = W * 92 / 1418;
+    pos(signup, W - sr - sw, cy - sh / 2);
+    const er = Math.max(W * 216 / 1418, sr + sw + 16 * s);
+    const ex = W - er - ew.width;
+    pos(eng, ex, cy - ew.height / 2);
+    if (ex < (W + pw.width) / 2 + 6 * s) eng.style.visibility = 'hidden';
+  } else {
+    const top = 18 * s, cy = top + sh / 2;
+    pos(signup, W - 20 * s - sw, top);
+    pos(logo, 20 * s, cy - lw.height / 2);
+    pos(eng, W - (20 * s + sw + 14 * s) - ew.width, cy - ew.height / 2);
+    pos(pill, (W - pw.width) / 2, top + sh + 12 * s);
+  }
+  let b = 0;
+  for (const el of [logo, pill, eng, signup]) {
+    const r = rect(el);
+    b = Math.max(b, r.bottom - rect(nav).top);
+  }
+  return b;
+}
+
+function setCards(cs, ph) {
+  for (const c of cards) {
+    c.style.setProperty('--cs', cs.toFixed(4));
+    c.style.setProperty('--ph', ph.toFixed(3));
+    c.classList.toggle('compact', cs < .8);
+  }
+  if (cs >= .8) {
+    /* the text floors can make the row wider than the card: fall back to the stacked layout */
+    for (const c of cards) {
+      const row = c.querySelector('.row');
+      if (row.scrollWidth > row.clientWidth + 1) { cards.forEach((x) => x.classList.add('compact')); break; }
+    }
+  }
+}
+const cardH = () => Math.max(...cards.map((c) => rect(c).height));
+
+function layout(force) {
+  const W = window.innerWidth, H = stage.clientHeight;
+  if (!force && W === lastW && H === lastH) return;
+  lastW = W; lastH = H;
+
+  const phone = H > 1.15 * W;
+  const s = phone ? Math.min(W / 390, H / 700, 1.9) : clamp(Math.min(W / 1440, H / 900), .62, 1.35);
+  root.style.setProperty('--s', s.toFixed(4));
+  root.style.setProperty('--travel', (3.4 * H).toFixed(1) + 'px');
+  root.classList.toggle('phone', phone);
+  root.classList.toggle('short', !phone && H < 620);
+
+  /* plate cover */
+  const sc = Math.max(W / 2048, H / 1360), pw = 2048 * sc, ph = 1360 * sc;
+  const ox = (W - pw) / 2, oy = (H - ph) / 2;
+  box(heroImg, ox, oy, pw, ph);
+  box(towerImg, ox, oy, pw, ph);
+  box(heroVid, ox, oy + 208 * sc, pw, 1152 * sc);
+  box(sky, ox, oy - .6 * ph, pw, 1.6 * ph);
+  box(sea, ox, oy + ph - .5, pw, .3 * ph);
+  room.style.width = px(pw);
+  room.style.height = px(ph);
+  const g = { x: ox + 1025 * sc, y: oy + 561.5 * sc, w: 1004 * sc, h: 773 * sc };
+
+  /* nav */
+  const navBottom = layoutNav(W, H, s, phone);
+
+  /* build block + paragraph */
+  const buildTop = phone ? navBottom + 20 * s : H * 169 / 1012;
+  pos(build, phone ? 20 * s : W * 93 / 1418, buildTop);
+  const ps = para.style;
+  if (phone) {
+    ps.left = ps.right = px(20 * s); ps.top = 'auto'; ps.bottom = px(.045 * H); ps.width = 'auto';
+  } else {
+    ps.left = 'auto'; ps.right = px(W * 68 / 1418); ps.top = px(H * 182 / 1012); ps.bottom = 'auto';
+    ps.width = H < 620 ? px(.4 * W) : 'auto';
+  }
+
+  /* headline + script, sized from their ink */
+  const mw = ink('330 100px Outfit', '300 100px Outfit', 'SKYLINE');
+  const ms = ink('400 100px "Pinyon Script"', null, 'Invest in');
+  let wordW, cap, wLeft, capTop;
+  if (!phone) {
+    wordW = W * 1303 / 1440;
+    cap = Math.min(150 * H / 900 * 1.22, wordW * 150 / 1303);
+    wordW = Math.min(wordW, cap * 1303 / 150 * 1.25);
+    wLeft = W * 70 / 1440;
+    capTop = H * 446 / 900;
+  } else {
+    wordW = W - 40 * s;
+    cap = wordW * 150 / 1303;
+    wLeft = 20 * s;
+  }
+  const sInkW = phone ? Math.min(W * .5, 260 * s) : Math.min(W * 406 / 1440, wordW * 406 / 1303);
+  const sfs = 100 * sInkW / (ms.l + ms.r);
+  const sInkH = (ms.a + ms.d) * sfs / 100;
+  let sTop;
+  if (phone) {
+    sTop = buildTop + build.offsetHeight + 20 * s;
+    capTop = sTop + sInkH * 1.04;
+  } else {
+    sTop = capTop - sInkH * .836;
+  }
+  placeInk(script, ms, sfs, phone ? 20 * s : W * 73 / 1440, sTop);
+  const wfs = 100 * cap / mw.a;
+  const sx = wordW / ((mw.l + mw.r) * wfs / 100);
+  placeInk(word, mw, wfs, wLeft, capTop, sx);
+  word.style.transform = 'scaleX(' + sx.toFixed(5) + ')';
+  /* both rise from +0.62·H, or from just below the screen when they sit high (portrait, ultra-wide) */
+  const wordRise = Math.max(.62 * H, H - capTop + 8);
+  const scrRise = Math.max(.62 * H, H - sTop + 8);
+
+  /* cards + room end state */
+  let slots, sEnd = 1, gyEnd = g.y;
+  if (phone) {
+    const gap = 10 * s;
+    let cs = Math.min(266 * s * .9, (W - 32 * s - gap) / 2) / 266;
+    setCards(cs, 1);
+    let ch = cardH();
+    /* tall tablets: keep the grid to half the screen so the room still reads above it */
+    for (let i = 0; i < 4 && 2 * ch + gap > .5 * H && cs > .5; i++) {
+      cs = Math.max(.5, cs * (.5 * H - gap) / (2 * ch));
+      setCards(cs, 1);
+      ch = cardH();
+    }
+    const cw = 266 * cs;
+    const x0 = (W - 2 * cw - gap) / 2, yB = H - 16 * s - ch, yT = yB - gap - ch;
+    slots = [[0, x0, yT, -1, 0], [1, x0 + cw + gap, yT, 1, 0], [2, x0, yB, -1, CARD_LAG], [3, x0 + cw + gap, yB, 1, CARD_LAG]];
+    /* the bottom step (plate y 1224) ends just above the grid; the window top (plate y 175) stays under the nav */
+    const room0 = yT - 8 * s;
+    sEnd = Math.min(1, .92 * W / g.w, Math.max(.3, (room0 - navBottom - 10 * s) / ((STEP_BOTTOM - 175) * sc)));
+    gyEnd = Math.max(room0 - (STEP_BOTTOM - 561.5) * sc * sEnd, navBottom + 10 * s + g.h * sEnd / 2);
+  } else {
+    const top = navBottom + 14 * s, bottom = H - 12 * s, gap = 12 * s;
+    let cs = s, ph = 1;
+    setCards(cs, ph);
+    let ch = cardH();
+    const fits = () => 2 * ch + gap <= bottom - top;
+    while (!fits() && cs > .5) { cs = Math.max(.5, cs - .03); setCards(cs, ph); ch = cardH(); }
+    while (!fits() && ph > .45) { ph = Math.max(.45, ph - .05); setCards(cs, ph); ch = cardH(); }
+    if (fits()) {
+      const cw = 266 * cs;
+      const yT = (m) => Math.min(Math.max(top, m), bottom - 2 * ch - gap);
+      const yB = (m) => Math.max(Math.min(bottom - ch, m), top + ch + gap);
+      slots = [
+        [0, W * 79 / 1418, yT(H * 195 / 998), -1, 0],
+        [1, W * (1351 - 12) / 1418 - cw, yT(H * 195 / 998), 1, 0],
+        [2, W * 212 / 1418, yB(H * 581 / 998), -1, CARD_LAG],
+        [3, W * (1221 - 12) / 1418 - cw, yB(H * 581 / 998), 1, CARD_LAG]
+      ];
+    } else {
+      /* landscape phones: one row along the bottom (Lumen, Cedar, Maple, Rosewood) */
+      const cw = Math.min(266 * s, (W - 24 * s - 3 * 8 * s) / 4);
+      setCards(cw / 266, .5);
+      ch = cardH();
+      const st = cw + 8 * s, x0 = (W - (4 * cw + 24 * s)) / 2, y = bottom - ch;
+      slots = [[0, x0, y, -1, 0], [2, x0 + st, y, -1, CARD_LAG], [1, x0 + 2 * st, y, 1, CARD_LAG], [3, x0 + 3 * st, y, 1, 0]];
+    }
+  }
+  slots = slots.map(([i, x, y, dir, delay]) => {
+    const cw = rect(cards[i]).width;
+    return { el: cards[i], x, y, delay, dx: dir < 0 ? -(x + cw + 40) : W - x + 40 };
+  });
+
+  /* the view's anchor: bottom-centre of the glass at its end position */
+  const P = { x: g.x, y: gyEnd + g.h * sEnd / 2 };
+  L = {
+    W, H, s, sc, ox, oy, g, sEnd, gyEnd, P, slots, wordRise, scrRise,
+    aHero: { x: (P.x - ox) / sc, y: (P.y - oy) / sc },
+    aEnd: { x: 1025, y: 948 },
+    storyTop: story.getBoundingClientRect().top + window.scrollY,
+    range: Math.max(1, story.offsetHeight - H)
+  };
+}
+
+/* ================= render ================= */
+function render(I, T) {
+  const { W, H, s, sc, ox, oy, g, sEnd, gyEnd, P, aHero, aEnd } = L;
+
+  /* --- timeline 1: intro --- */
+  const ep = E.pan(seg(I, 0, 2.6));
+  const kI = lerp(1.13, 1, ep);
+  const panY = .355 * H * (1 - ep);
+  let off;
+  if (I < 1.15) off = .45;
+  else if (I < 2.2) off = lerp(.45, -.063, E.rise1(seg(I, 1.15, 2.2)));
+  else off = lerp(-.063, 0, E.rise2(seg(I, 2.2, 3.5)));
+  const navO = E.nav(seg(I, 1.45, 2.0));
+  const wordUp = L.wordRise * (1 - E.word(seg(I, 2.6, 4.5)));
+  const scrUp = L.scrRise * (1 - E.word(seg(I, 2.75, 4.65)));
+  const eb = E.build(seg(I, 5.2, 6.0));
+
+  /* --- timeline 2: scroll (reel seconds) --- */
+  const xs = E.exit(seg(T, 6.82, 7.25));
+  const xh = E.exit(seg(T, 7.0, 7.42));
+  const xb = E.exit(seg(T, 6.85, 7.35));
+  const kPush = 1 + .3 * E.push(seg(T, 7.5, 8.35));
+  const pulling = T > 9.0;
+  const ls = pulling ? lnS(T) : LN0;
+  const q = pulling ? clamp(1 - ls / LN0) : 0;
+
+  /* room: scale about the glass centre */
+  const S = sEnd * Math.exp(ls);
+  const gy = lerp(g.y, gyEnd, q);
+  put(room, 'visibility', pulling ? 'visible' : 'hidden');
+  if (pulling) put(room, 'transform', 'translate(' + px(g.x - 1025 * sc * S) + ',' + px(gy - 561.5 * sc * S) + ') scale(' + S.toFixed(5) + ')');
+
+  /* view: plate point a stays on the glass's bottom-centre P; scale pushes in to 1.3, then relaxes
+     to the room's own end scale as the pull-back completes */
+  const ax = lerp(aHero.x, aEnd.x, q), ay = lerp(aHero.y, aEnd.y, q);
+  let m = sc * Math.exp(lerp(Math.log(kPush), Math.log(sEnd), q));   /* screen px per plate px */
+  if (pulling) {
+    /* never let the visible glass see past the plate's edges */
+    const hw = 502 * sc * S, hh = 386.5 * sc * S;
+    const l = Math.max(0, g.x - hw), r = Math.min(W, g.x + hw), t = Math.max(0, gy - hh), b = Math.min(H, gy + hh);
+    if (l < P.x) m = Math.max(m, (P.x - l) / ax);
+    if (r > P.x) m = Math.max(m, (r - P.x) / (2048 - ax));
+    if (b > P.y) m = Math.max(m, (b - P.y) / (1360 - ay));
+    if (t < P.y) m = Math.max(m, (P.y - t) / (ay + 816));
+  }
+  const v = m / sc;
+  const tsx = P.x - v * (ox + ax * sc), tsy = P.y - v * (oy + ay * sc);
+  const k = v * kI, tx = v * (W / 2) * (1 - kI) + tsx, ty = v * panY + tsy;
+  const cam = 'translate(' + px(tx) + ',' + px(ty) + ') scale(' + k.toFixed(5) + ')';
+  put(view, 'transform', cam);
+  put(tower, 'transform', cam);
+  const rise = 'translateY(' + px((off * H - panY) / kI) + ')';
+  put(heroImg, 'transform', rise);
+  put(heroVid, 'transform', rise);
+  put(sea, 'transform', rise + ' scaleY(-1)');
+
+  /* headline + script */
+  put(head, 'transform', 'translateY(' + px(panY + wordUp + 25 * s * xh) + ')');
+  put(head, 'opacity', (1 - xh).toFixed(4));
+  put(head, 'visibility', xh >= 1 ? 'hidden' : 'visible');
+  put(script, 'transform', 'translateY(' + px(panY + scrUp + 25 * s * xs) + ')');
+  put(script, 'opacity', (1 - xs).toFixed(4));
+  put(script, 'visibility', xs >= 1 ? 'hidden' : 'visible');
+
+  /* build block, paragraph, scrim */
+  const bo = eb * (1 - xb), by = 18 * s * (1 - eb) + 25 * s * xb;
+  const bt = 'translateY(' + px(by) + ')', bos = bo.toFixed(4), bv = bo > 0 ? 'visible' : 'hidden';
+  put(build, 'transform', bt); put(build, 'opacity', bos); put(build, 'visibility', bv);
+  put(para, 'transform', bt); put(para, 'opacity', bos); put(para, 'visibility', bv);
+  put(shade, 'opacity', bos);
+
+  /* nav */
+  put(nav, 'opacity', navO >= 1 ? '1' : navO.toFixed(4));
+  put(nav, 'visibility', navO > 0 ? 'visible' : 'hidden');
+
+  /* cards */
+  for (const c of L.slots) {
+    const t0 = CARD_IN + c.delay;
+    const e = E.card(seg(T, t0, t0 + CARD_DUR));
+    put(c.el, 'visibility', e > 0 ? 'visible' : 'hidden');
+    put(c.el, 'transform', 'translate(' + px(c.x + c.dx * (1 - e)) + ',' + px(c.y) + ')');
+    put(c.el, 'opacity', seg(T, t0, t0 + .45 * CARD_DUR).toFixed(4));
+  }
+}
+
+/* ================= clocks ================= */
+const rm = window.matchMedia('(prefers-reduced-motion: reduce)');
+let I0 = null, pCur = null, lastT = performance.now();
+
+function frame(now) {
+  const dt = Math.min(.1, Math.max(0, (now - lastT) / 1000));
+  lastT = now;
+  const pT = clamp((window.scrollY - L.storyTop) / L.range);
+  if (pCur === null) pCur = pT;
+  pCur += (pT - pCur) * (1 - Math.exp(-dt / .187));
+  if (Math.abs(pT - pCur) < 1e-4) pCur = pT;
+  const T = 6.8 + pCur * 6.6;
+  const I = I0 === null ? 0 : (now - I0) / 1000;
+  render(I, T);
+  requestAnimationFrame(frame);
+}
+
+/* hero loop video: fades in once playing, never runs with reduced motion */
+heroVid.muted = true;
+heroVid.addEventListener('playing', () => { if (!rm.matches) heroVid.classList.add('on'); });
+function syncVideo() {
+  if (rm.matches) { heroVid.pause(); heroVid.classList.remove('on'); }
+  else if (I0 !== null) { const p = heroVid.play(); if (p) p.catch(() => {}); }
+}
+if (rm.addEventListener) rm.addEventListener('change', syncVideo); else rm.addListener(syncVideo);
+
+function start() {
+  if (I0 !== null) return;
+  layout(true);
+  I0 = performance.now();
+  if (rm.matches) I0 -= 10000;          /* reduced motion: open on the settled hero */
+  syncVideo();
+}
+
+/* intro clock starts once the hero plate is decoded and the fonts are in (3.5 s failsafe) */
+const fontsIn = Promise.all([
+  '330 100px Outfit', '400 100px "Pinyon Script"',
+  '300 16px Poppins', '400 16px Poppins', '500 16px Poppins', '600 16px Poppins'
+].map((f) => document.fonts.load(f))).catch(() => {});
+const heroIn = (heroImg.decode ? heroImg.decode() : new Promise((r) => { heroImg.onload = r; })).catch(() => {});
+Promise.all([fontsIn, heroIn]).then(start);
+setTimeout(start, 3500);
+
+/* ================= room plate: chroma key the glass ================= */
+const roomImg = new Image();
+roomImg.crossOrigin = 'anonymous';
+roomImg.decoding = 'async';
+roomImg.onload = () => {
+  const ctx = cv.getContext('2d', { willReadFrequently: true });
+  ctx.drawImage(roomImg, 0, 0, 2048, 1360);
+  const ss = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+  const STRIP = 170;
+  let y = 0;
+  const step = () => {
+    let img;
+    try { img = ctx.getImageData(0, y, 2048, STRIP); }
+    catch (err) {
+      /* canvas tainted (no CORS): cut the three panes out instead */
+      for (const [x0, x1] of [[523, 834], [854, 1200], [1220, 1528]]) ctx.clearRect(x0, 175, x1 - x0, 774);
+      return;
+    }
+    const d = img.data;
+    for (let i = 0; i < d.length; i += 4) {
+      const r = d[i] / 255, gg = d[i + 1] / 255, b = d[i + 2] / 255;
+      const mx = r > b ? r : b, kk = gg - mx;
+      if (kk > .05) {
+        d[i + 3] = Math.round((1 - ss(.10, .38, kk)) * d[i + 3]);
+        d[i + 1] = Math.round(Math.min(gg, mx * .96) * 255);
+      }
+    }
+    ctx.putImageData(img, 0, y);
+    y += STRIP;
+    if (y < 1360) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+};
+roomImg.src = ROOM_URL;
+
+/* ================= boot ================= */
+layout(true);
+let rq = 0;
+window.addEventListener('resize', () => {
+  cancelAnimationFrame(rq);
+  rq = requestAnimationFrame(() => layout(false));
+});
+if (document.fonts) {
+  document.fonts.addEventListener && document.fonts.addEventListener('loadingdone', () => layout(true));
+  document.fonts.ready.then(() => layout(true));
+}
+requestAnimationFrame((now) => { lastT = now; frame(now); });
+})();
+</script>
+</body>
+</html>
