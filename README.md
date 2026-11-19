@@ -131,6 +131,15 @@ src/
   fonts/                  Inter Tight, Inter y Geist Mono (logo), recortadas a latín; og/ en TTF para las imágenes de redes
 ```
 
+## Demo Harborlux
+
+Hero cinemático de una marca ficticia de bienes raíces (puertas que se abren, toma aérea, parallax en cuatro capas y lluvia en bucle).
+
+- Archivo único y autónomo: `public/demos/harborlux/index.html` (HTML, CSS y JS en línea, sin dependencias).
+- Se ve en `/harborlux` (rewrite en `next.config.ts`) o en `/demos/harborlux/index.html`. También funciona abierto por sí solo o subido a cualquier hosting estático.
+- Imágenes, videos y la fuente Inter se cargan desde sus CDN (`images.higgs.ai`, `d8j0ntlcm91z4.cloudfront.net`, `fonts.gstatic.com`), así que esa ruta lleva su propia CSP en `next.config.ts`.
+- Con *reducir movimiento* activado muestra el cuadro final sin intro ni videos.
+
 ## Seguridad y privacidad
 
 - Headers en `next.config.ts`: CSP, X-Frame-Options, Referrer-Policy, Permissions-Policy y HSTS.
