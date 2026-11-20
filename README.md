@@ -131,14 +131,14 @@ src/
   fonts/                  Inter Tight, Inter y Geist Mono (logo), recortadas a latín; og/ en TTF para las imágenes de redes
 ```
 
-## Demo Harborlux
+## Plantilla inmobiliaria (demo Harborlux)
 
-Hero cinemático de una marca ficticia de bienes raíces (puertas que se abren, toma aérea, parallax en cuatro capas y lluvia en bucle).
+Sitio maestro y reutilizable para agencias inmobiliarias, con el hero cinemático de Harborlux: buscador avanzado, catálogo con filtros instantáneos, ficha con galería, planos, mapa y recorrido 360°, agendador de visitas por WhatsApp o correo, comparador, calculadora hipotecaria, servicios, valuación gratuita y contacto.
 
-- Archivo único y autónomo: `public/demos/harborlux/index.html` (HTML, CSS y JS en línea, sin dependencias).
-- Se ve en `/harborlux` (rewrite en `next.config.ts`) o en `/demos/harborlux/index.html`. También funciona abierto por sí solo o subido a cualquier hosting estático.
-- Imágenes, videos y la fuente Inter se cargan desde sus CDN (`images.higgs.ai`, `d8j0ntlcm91z4.cloudfront.net`, `fonts.gstatic.com`), así que esa ruta lleva su propia CSP en `next.config.ts`.
-- Con *reducir movimiento* activado muestra el cuadro final sin intro ni videos.
+- Carpeta autónoma: `public/demos/harborlux/` (HTML, CSS y JS sin dependencias ni compilación). Se puede copiar tal cual a cualquier hosting estático o abrir `index.html` directo.
+- Contenido en `js/data.js` y colores en `css/tokens.css`: para un nuevo cliente solo se editan esos dos archivos. Guía completa en `public/demos/harborlux/README.md`.
+- Se ve en `/harborlux` (redirige a `/demos/harborlux/index.html`). Esa ruta lleva su propia CSP en `next.config.ts` (CDN del hero, Google Fonts, OpenStreetMap y visores 360°).
+- Fotos pendientes: prompts y nombres de archivo en `public/demos/harborlux/PROMPTS-FOTOS.md`.
 
 ## Seguridad y privacidad
 

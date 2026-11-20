@@ -1,0 +1,72 @@
+/* =====================================================================
+   TOKENS DE MARCA
+   ---------------------------------------------------------------------
+   Cambiar la identidad de un cliente = editar este bloque (≈ 2 minutos).
+   Todo el sitio (hero, tarjetas, botones, calculadora, modales) lee
+   estas variables. No hay colores escritos a mano en otros archivos.
+   ===================================================================== */
+
+:root {
+  /* ---------- Colores de marca ---------- */
+  --brand-bg: #0D0A22;            /* fondo de página (también se ve antes de que cargue el hero) */
+  --brand-bg-alt: #120E2C;        /* fondo de secciones alternas */
+  --brand-surface: #1A1440;       /* superficies sólidas: modales, formularios, tablas */
+  --brand-surface-2: #221B4F;     /* superficie elevada (campos, hover) */
+  --brand-ink: #180F3C;           /* texto sobre botones claros */
+  --brand-accent: #F2B8C0;        /* CTA principal */
+  --brand-accent-hover: #F7C9D0;
+  --brand-accent-2: #A898FF;      /* acento secundario (enlaces, foco, gráficas) */
+  --brand-glow-1: #5B3FD1;        /* resplandor de fondo 1 */
+  --brand-glow-2: #C2508A;        /* resplandor de fondo 2 */
+
+  /* Estados de propiedad */
+  --status-venta: #F2B8C0;
+  --status-renta: #9FD4FF;
+  --status-preventa: #FFD08A;
+  --status-exclusiva: #FFFFFF;
+  --positive: #86E3BC;            /* plusvalía, disponibilidad */
+  --danger: #FF8E9E;              /* errores de formulario */
+
+  /* ---------- Texto ---------- */
+  --text: #FFFFFF;
+  --text-muted: rgba(255, 255, 255, .74);
+  --text-subtle: rgba(255, 255, 255, .58);
+  --line: rgba(255, 255, 255, .12);     /* bordes y divisores */
+  --line-strong: rgba(255, 255, 255, .22);
+
+  /* ---------- Vidrio (glassmorphism) ----------
+     "vivo"     = con backdrop-filter (nav, buscador, calculadora, bandeja, modales)
+     "estático" = translúcido sin blur (tarjetas); mucho más ligero para la GPU */
+  --glass-rgb: 255, 255, 255;
+  --glass-alpha: .14;
+  --glass-alpha-strong: .2;
+  --glass-static-alpha: .055;
+  --glass-border-alpha: .14;
+  --glass-highlight-alpha: .22;   /* línea de luz superior */
+  --glass-blur: 16px;
+  --glass-saturate: 140%;
+
+  /* ---------- Tipografía ---------- */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: var(--font-sans);
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---------- Forma y profundidad ---------- */
+  --radius-xs: 8px;
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 10px 30px rgba(6, 3, 24, .35);
+  --shadow-lift: 0 24px 64px rgba(6, 3, 24, .55);
+
+  /* ---------- Layout ---------- */
+  --container: 1240px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --section-y: clamp(72px, 10vw, 128px);
+  --nav-offset: 92px;             /* margen para anclas bajo la barra fija */
+}

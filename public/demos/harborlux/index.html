@@ -1,804 +1,254 @@
 <!doctype html>
-<html lang="en">
+<html lang="es-MX">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Harborlux — Claim Your Summit</title>
-<meta name="description" content="Harborlux: harbour-view penthouses above a city that never sleeps. Claim your summit.">
+<!-- SEO: actualiza título y descripción para cada cliente (el JS también los toma de data.js) -->
+<title>Harborlux — Penthouses, residencias y terrenos con plusvalía</title>
+<meta name="description" content="Harborlux: penthouses, residencias y terrenos con plusvalía comprobada en las zonas más cotizadas de México. Valuación gratuita, asesoría hipotecaria y legal, y comercialización exclusiva.">
 <meta name="theme-color" content="#0D0A22">
 <meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Harborlux — Alcanza tu cumbre">
+<meta property="og:description" content="Penthouses, residencias y terrenos con plusvalía comprobada en México.">
+<meta property="og:image" content="img/propiedades/hlx-101-vista-terraza-1600.webp">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230D0A22'/%3E%3Cpath d='M11 9v14M21 9v14M11 16h10' stroke='%23F2B8C0' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://images.higgs.ai">
 <link rel="preconnect" href="https://d8j0ntlcm91z4.cloudfront.net">
 <link rel="preload" href="https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2" as="font" type="font/woff2" crossorigin>
-<style>
-@font-face {
-  font-family: "Inter";
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url(https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2) format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-:root {
-  --bg: #0D0A22;
-  --ink: #180F3C;
-  --btn: #F2B8C0;
-  --btn-hover: #F7C9D0;
-  /* u: the smaller of vw/1440 and vh/900 (1px at 1440×900), floored so tablet-width nav text stays legible */
-  --u: max(min(100vw / 1440, 100vh / 900), .7px);
-}
-@supports (height: 100svh) {
-  :root { --u: max(min(100vw / 1440, 100svh / 900), .7px); }
-}
-
-*, *::before, *::after { box-sizing: border-box; }
-[hidden] { display: none !important; }
-
-html {
-  background: var(--bg);
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-body {
-  margin: 0;
-  overflow-x: hidden;
-  background: var(--bg);
-  color: #fff;
-  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* ---------- Hero and stage ---------- */
-.hero {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  width: 100%;
-  height: 100vh;
-  height: 100svh;
-  min-height: 520px;
-  background: var(--bg);
-  container-type: size;
-}
-
-/* 16:9 box that always covers the hero, centred both ways */
-.stage,
-.opening {
-  --sw: max(100cqw, 100cqh * 16 / 9);
-  --sh: calc(var(--sw) * 9 / 16);
-}
-.stage {
-  position: absolute;
-  width: var(--sw);
-  height: var(--sh);
-  left: calc(50cqw - var(--sw) / 2);
-  top: calc(50cqh - var(--sh) / 2);
-  margin: 0;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.layer { position: absolute; inset: 0; }
-.layer > img,
-.layer > video {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.layer-back { transform-origin: 50% 40%; }
-.layer-mid { transform-origin: 50% 45%; }
-.layer-front { transform-origin: 50% 100%; }
-
-.rain {
-  opacity: 0;
-  transition: opacity .7s linear;
-}
-.rain.on { opacity: 1; }
-
-.shade {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 45%;
-  background: linear-gradient(to bottom, rgba(13, 8, 40, .45), rgba(13, 8, 40, 0));
-}
-
-/* Glass tint: between the posts, from the top rail down to the floor */
-.glass {
-  position: absolute;
-  left: 5.2%;
-  right: 4.1%;
-  top: 57.9%;
-  height: 25.4%;
-  background: linear-gradient(to bottom, rgba(190, 200, 255, .10), rgba(150, 160, 230, .05) 60%, rgba(120, 130, 210, .08));
-  -webkit-backdrop-filter: blur(1.2px) saturate(1.05);
-  backdrop-filter: blur(1.2px) saturate(1.05);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .18);
-}
-
-/* ---------- Headline ---------- */
-.headline {
-  --F: calc(min(var(--sw) * .625, 92cqw) / 3.43);
-  --base: 43%;
-  --asc: .864;
-  position: absolute;
-  top: 0;
-  height: 100%;
-  width: 100cqw;
-  left: calc(50% - 50cqw);
-}
-.word {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: calc(var(--base) - var(--F) * var(--asc));
-  margin: 0;
-  font-size: var(--F);
-  font-weight: 700;
-  letter-spacing: -.045em;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  color: #fff;
-}
-.word span { display: inline-block; }
-.kicker {
-  position: absolute;
-  top: calc(var(--base) - var(--F) * .747);
-  left: calc(var(--F) * -.1);
-  right: calc(var(--F) * .1);
-  margin: 0;
-  font-size: calc(var(--F) * .118);
-  font-weight: 300;
-  letter-spacing: -.01em;
-  line-height: 1;
-  text-align: center;
-  white-space: nowrap;
-  color: #fff;
-}
-.measure {
-  position: absolute;
-  top: 0;
-  left: -10000px;
-  right: auto;
-  width: max-content;
-  font-size: 100px;
-  visibility: hidden;
-  pointer-events: none;
-}
-.measure i { display: inline-block; width: 0; height: 0; }
-
-@media (max-aspect-ratio: 5/6) {
-  .headline { --base: 36.2%; }
-}
-
-/* ---------- Opening (aerial + tilt) and doors ---------- */
-.opening {
-  position: absolute;
-  inset: 0;
-  z-index: 6;
-  pointer-events: none;
-}
-.opening > img,
-.opening > video {
-  position: absolute;
-  display: block;
-  width: var(--sw);
-  height: var(--sh);
-  left: calc(50% - var(--sw) / 2);
-  top: calc(50% - var(--sh) / 2);
-  object-fit: cover;
-}
-.tilt { opacity: 0; }
-
-.doors {
-  position: absolute;
-  inset: 0;
-  z-index: 7;
-  pointer-events: none;
-}
-.door {
-  position: absolute;
-  top: 0;
-  width: 50%;
-  height: 100%;
-  background-color: var(--bg);
-  background-repeat: no-repeat;
-  background-size: 200% 100%;
-}
-.door-l { left: 0; background-position: 0 50%; }
-.door-r { right: 0; background-position: 100% 50%; }
-
-/* ---------- Nav ---------- */
-.nav {
-  position: absolute;
-  z-index: 10;
-  top: calc(52 * var(--u));
-  left: 0;
-  right: 0;
-  height: calc(48 * var(--u));
-  padding: 0 calc(125 * var(--u));
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: calc(15 * var(--u));
-  line-height: 1;
-}
-.nav a { color: inherit; text-decoration: none; }
-.brand {
-  font-size: calc(17 * var(--u));
-  font-weight: 600;
-  letter-spacing: .28em;
-  color: #fff;
-  white-space: nowrap;
-}
-.pills {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  height: 100%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: calc(6 * var(--u));
-  padding: calc(5 * var(--u));
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .14);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
-}
-.pills a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: calc(38 * var(--u));
-  padding: 0 calc(22 * var(--u));
-  border-radius: 999px;
-  color: rgba(255, 255, 255, .88);
-  font-weight: 400;
-  white-space: nowrap;
-  transition: background-color .25s;
-}
-.pills a:hover { background-color: rgba(255, 255, 255, .14); }
-.pills a[aria-current="page"] {
-  background-color: #fff;
-  color: var(--ink);
-  font-weight: 600;
-}
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: calc(30 * var(--u));
-}
-.lang {
-  display: inline-flex;
-  align-items: center;
-  gap: calc(9 * var(--u));
-  padding: 0;
-  border: 0;
-  background: none;
-  color: rgba(255, 255, 255, .9);
-  font: inherit;
-  line-height: 1;
-  cursor: pointer;
-}
-.lang svg {
-  display: block;
-  width: calc(20 * var(--u));
-  height: calc(20 * var(--u));
-  flex: none;
-}
-.enquire {
-  display: inline-flex;
-  align-items: center;
-  height: calc(44 * var(--u));
-  padding: 0 calc(27 * var(--u));
-  border-radius: 999px;
-  background-color: var(--btn);
-  color: var(--ink) !important;
-  font-weight: 600;
-  white-space: nowrap;
-  transition: transform .25s, background-color .25s;
-}
-.enquire:hover {
-  transform: translateY(-1px);
-  background-color: var(--btn-hover);
-}
-.nav a:focus-visible,
-.lang:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 3px;
-}
-
-/* ---------- Intro start states (until the clock takes over) ---------- */
-.hero.intro .nav > *,
-.hero.intro .kicker,
-.hero.intro .word span,
-.hero.intro .shade { opacity: 0; }
-.hero.intro .layer-front { transform: translateY(66%); }
-.hero.intro .door,
-.hero.intro .layer,
-.hero.intro .headline { will-change: transform; }
-
-/* ---------- Small screens ---------- */
-@media (max-width: 819.98px) {
-  :root { --u: 1px; }
-  .nav {
-    top: 16px;
-    height: auto;
-    padding: 0 18px;
-    flex-wrap: wrap;
-    row-gap: 12px;
-  }
-  .brand { font-size: 14px; letter-spacing: .22em; }
-  .lang { font-size: 13px; }
-  .lang svg { width: 16px; height: 16px; }
-  .enquire { height: 36px; padding: 0 16px; font-size: 13px; }
-  .pills {
-    position: static;
-    order: 3;
-    width: 100%;
-    height: 40px;
-    padding: 4px;
-    transform: none;
-  }
-  .pills a {
-    flex: 1 1 auto;
-    height: 32px;
-    padding: 0 10px;
-    font-size: 12px;
-  }
-}
-@media (max-width: 360px) {
-  .pills a { font-size: 11px; padding: 0 6px; }
-}
-@media (max-height: 500px) and (orientation: landscape) {
-  :root { --u: 1px; }
-  .nav {
-    top: 12px;
-    height: 34px;
-    padding: 0 24px;
-    flex-wrap: nowrap;
-    font-size: 12px;
-  }
-  .brand { font-size: 13px; }
-  .nav-right { gap: 14px; }
-  .lang { font-size: 12px; gap: 6px; }
-  .lang svg { width: 15px; height: 15px; }
-  .enquire { height: 32px; padding: 0 14px; font-size: 12px; }
-  .pills {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    order: 0;
-    width: auto;
-    height: 34px;
-    padding: 3px;
-    transform: translateX(-50%);
-  }
-  .pills a {
-    flex: none;
-    height: 28px;
-    padding: 0 11px;
-    font-size: 12px;
-  }
-}
-@media (max-height: 500px) and (orientation: landscape) and (max-width: 700px) {
-  .pills a { padding: 0 8px; }
-}
-
-/* ---------- Reduced motion: the final frame, at once ---------- */
-@media (prefers-reduced-motion: reduce) {
-  .doors, .opening, .rain { display: none !important; }
-  .hero.intro .nav > *,
-  .hero.intro .kicker,
-  .hero.intro .word span,
-  .hero.intro .shade { opacity: 1; }
-  .hero.intro .layer-front { transform: none; }
-  .enquire:hover { transform: none; }
-}
-</style>
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/hero.css">
+<link rel="stylesheet" href="css/components.css">
 <noscript>
 <style>
-.doors, .opening, .rain { display: none !important; }
-.hero.intro .nav > *, .hero.intro .kicker, .hero.intro .word span, .hero.intro .shade { opacity: 1; }
-.hero.intro .layer-front { transform: none; }
-.layer-back { background: url("https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261117_063251_24fbd7cc-00df-49ec-8fbf-d8a0349b1e98.png&w=2000&q=85") center / cover no-repeat; }
-.layer-mid { background: url("https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261117_063252_b9f2fecf-9be0-485f-842f-3aa6bbc251f2.png&w=2000&q=85") center / cover no-repeat; }
-.layer-front::after { content: ""; position: absolute; inset: 0; background: url("https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261117_063151_7804d758-a2eb-4499-9b56-8f493edbb206.png&w=2000&q=85") center / cover no-repeat; }
+  .doors, .opening, .rain, .search, .tray { display: none !important; }
+  body.is-intro .nav > *, body.is-intro .hero .kicker, body.is-intro .hero .word span, body.is-intro .hero .shade { opacity: 1; }
+  body.is-intro .hero .layer-front { transform: none; }
+  .noscript { display: block; padding: 24px; text-align: center; }
 </style>
 </noscript>
 </head>
-<body>
-<div class="hero intro" id="hero">
-  <header class="nav">
-    <a class="brand" href="/" aria-label="Harborlux home">HARBORLUX</a>
-    <nav class="pills" aria-label="Primary">
-      <a href="#top" aria-current="page">Home</a>
-      <a href="#firm">The Firm</a>
-      <a href="#homes">Skyline Homes</a>
-      <a href="#talk">Talk To Us</a>
-    </nav>
-    <div class="nav-right">
-      <button class="lang" type="button" aria-label="Language: English">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a12.2 12.2 0 0 1 0 18a12.2 12.2 0 0 1 0-18z"/></svg>
-        <span>Eng</span>
-      </button>
-      <a class="enquire" href="#enquire">Enquire</a>
-    </div>
-  </header>
+<body class="is-intro">
+<a class="skip-link" href="#propiedades">Saltar al catálogo</a>
 
-  <main class="stage" id="top">
-    <div class="layer layer-back">
-      <img alt="" decoding="async" draggable="false">
-      <video class="rain rain-a" muted playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"></video>
-      <video class="rain rain-b" muted playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"></video>
-      <div class="shade"></div>
-    </div>
-    <div class="headline">
-      <p class="kicker" aria-hidden="true">Claim Your</p>
-      <h1 class="word" aria-label="Claim Your Summit"><span>S</span><span>u</span><span>m</span><span>m</span><span>i</span><span>t</span></h1>
-    </div>
-    <div class="layer layer-mid">
-      <img alt="" decoding="async" draggable="false">
-    </div>
-    <div class="layer layer-front">
-      <div class="glass"></div>
-      <img alt="" decoding="async" draggable="false">
-    </div>
-  </main>
-
-  <div class="opening" aria-hidden="true">
-    <img class="aerial" alt="" decoding="async" draggable="false">
-    <video class="tilt" muted playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback tabindex="-1"></video>
+<!-- ============ NAVEGACIÓN FLOTANTE ============ -->
+<header class="nav" id="nav">
+  <a class="brand" href="#inicio" data-brand>HARBORLUX</a>
+  <nav class="pills" id="nav-links" aria-label="Principal"></nav>
+  <div class="nav-right">
+    <button class="lang" type="button" data-currency-toggle>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a12.2 12.2 0 0 1 0 18a12.2 12.2 0 0 1 0-18z"/></svg>
+      <span data-currency-label>MXN</span>
+    </button>
+    <a class="enquire" href="#contacto" data-nav-cta><span class="long">Agendar visita</span><span class="short">Agendar</span></a>
+    <button class="nav-menu" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Abrir menú">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
   </div>
+</header>
 
-  <div class="doors" aria-hidden="true">
-    <div class="door door-l"></div>
-    <div class="door door-r"></div>
-  </div>
-</div>
+<main id="contenido">
 
-<script>
-(() => {
-  'use strict';
+  <!-- ============ HERO CINEMÁTICO ============ -->
+  <section class="hero" id="inicio" aria-labelledby="hero-title">
+    <div class="stage">
+      <div class="layer layer-back">
+        <img alt="" decoding="async" draggable="false">
+        <video class="rain rain-a" muted playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"></video>
+        <video class="rain rain-b" muted playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true" tabindex="-1"></video>
+        <div class="shade"></div>
+      </div>
+      <div class="headline">
+        <p class="kicker" aria-hidden="true"></p>
+        <h1 class="word" id="hero-title"></h1>
+      </div>
+      <div class="layer layer-mid"><img alt="" decoding="async" draggable="false"></div>
+      <div class="layer layer-front">
+        <div class="glass-rail"></div>
+        <img alt="" decoding="async" draggable="false">
+      </div>
+    </div>
 
-  /* ---------- Media ---------- */
-  const CDN = 'https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2F';
-  const IMG = {
-    doors: 'hf_20261117_063048_97fd9a70-adbe-46bd-bfce-ec1004f6c7d8',
-    aerial: 'hf_20261117_063055_ee1debcd-d200-484f-b94f-fad6dcffd4eb',
-    back: 'hf_20261117_063251_24fbd7cc-00df-49ec-8fbf-d8a0349b1e98',
-    mid: 'hf_20261117_063252_b9f2fecf-9be0-485f-842f-3aa6bbc251f2',
-    front: 'hf_20261117_063151_7804d758-a2eb-4499-9b56-8f493edbb206'
-  };
-  const VIDEO = {
-    tilt: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261117_063355_a600befc-45d6-4a32-9db6-9d6565a89609.mp4',
-    rain: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261117_063703_04e54df7-2236-4dff-b95b-a9a34c1f78ec.mp4'
-  };
-  const imgURL = (id, w) =>
-    'https://images.higgs.ai/?default=1&output=webp&url=' + CDN + id + '.png&w=' + w + '&q=85';
+    <!-- Buscador avanzado flotante -->
+    <form class="search" id="hero-search" role="search" aria-label="Buscar propiedades">
+      <fieldset class="search__ops">
+        <legend>Operación</legend>
+        <label class="search__op"><input type="radio" name="op" value="venta" checked><span>Compra</span></label>
+        <label class="search__op"><input type="radio" name="op" value="renta"><span>Renta</span></label>
+        <label class="search__op"><input type="radio" name="op" value="preventa"><span>Preventa</span></label>
+      </fieldset>
+      <div class="search__fields">
+        <label class="search__field"><span class="search__label">Tipo</span><select class="search__select" name="tipo"></select></label>
+        <label class="search__field"><span class="search__label">Ubicación</span><select class="search__select" name="zona"></select></label>
+        <label class="search__field"><span class="search__label">Presupuesto</span><select class="search__select" name="presupuesto"></select></label>
+        <button class="btn btn--primary search__submit" type="submit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <span>Buscar</span>
+        </button>
+      </div>
+    </form>
 
-  /* ---------- Elements ---------- */
-  const $ = (sel, root) => (root || document).querySelector(sel);
-  const hero = $('#hero');
-  const nav = $('.nav', hero);
-  const navParts = Array.from(nav.children);
-  const stage = $('.stage', hero);
-  const back = $('.layer-back', stage);
-  const mid = $('.layer-mid', stage);
-  const front = $('.layer-front', stage);
-  const shade = $('.shade', back);
-  const rainA = $('.rain-a', back);
-  const rainB = $('.rain-b', back);
-  const headline = $('.headline', stage);
-  const kicker = $('.kicker', headline);
-  const word = $('.word', headline);
-  const letters = Array.from(word.children);
-  const opening = $('.opening', hero);
-  const aerial = $('.aerial', opening);
-  const tilt = $('.tilt', opening);
-  const doors = $('.doors', hero);
-  const doorL = $('.door-l', doors);
-  const doorR = $('.door-r', doors);
+    <div class="opening" aria-hidden="true">
+      <img class="aerial" alt="" decoding="async" draggable="false">
+      <video class="tilt" muted playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback tabindex="-1"></video>
+    </div>
+    <div class="doors" aria-hidden="true">
+      <div class="door door-l"></div>
+      <div class="door door-r"></div>
+    </div>
+  </section>
 
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  <noscript><p class="noscript">Activa JavaScript para ver el catálogo, la calculadora y el agendador de visitas.</p></noscript>
 
-  /* ---------- Stage geometry and image sizing ---------- */
-  function geom() {
-    const W = hero.clientWidth;
-    const H = hero.clientHeight;
-    const sw = Math.max(W, H * 16 / 9);
-    const sh = sw * 9 / 16;
-    return { W, H, sw, sh, top: (H - sh) / 2 };
-  }
-  // 1x: the needed width rounded up to the next hundred. HiDPI: 2000 covers a 1600-wide stage.
-  function pickW(cssWidth) {
-    const dpr = window.devicePixelRatio || 1;
-    const need = dpr > 1.05 ? Math.max(2000, cssWidth * 1.25) : cssWidth;
-    return Math.min(2700, Math.max(100, Math.ceil(need / 100) * 100));
-  }
+  <!-- ============ INDICADORES DE CONFIANZA ============ -->
+  <section class="trust" aria-label="Indicadores de confianza">
+    <div class="container">
+      <ul class="trust__grid" id="metrics" role="list"></ul>
+    </div>
+  </section>
 
-  const layerImgs = [[$('img', back), IMG.back], [$('img', mid), IMG.mid], [$('img', front), IMG.front]];
-  let layerW = pickW(geom().sw);
-  for (const [el, id] of layerImgs) el.src = imgURL(id, layerW);
+  <!-- ============ CATÁLOGO ============ -->
+  <section class="section section--glow" id="propiedades" aria-labelledby="catalogo-titulo">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Catálogo</span>
+        <h2 class="h2" id="catalogo-titulo">Propiedades con plusvalía comprobada</h2>
+        <p class="lead">Inventario verificado por nuestro equipo legal. Filtra al instante, guarda hasta tres propiedades y compáralas lado a lado.</p>
+      </div>
 
-  /* ---------- Headline sizing ---------- */
-  const meas = document.createElement('div');
-  meas.className = 'word measure';
-  meas.setAttribute('aria-hidden', 'true');
-  meas.innerHTML = letters.map((l) => '<span>' + l.textContent + '</span>').join('') + '<i></i>';
-  hero.appendChild(meas);
+      <form class="toolbar glass-static" id="catalog-filters" aria-label="Filtrar propiedades">
+        <div class="toolbar__row">
+          <fieldset class="chips toolbar__ops" style="border:0;margin:0;padding:0">
+            <legend class="visually-hidden">Operación</legend>
+            <label class="chip"><input type="radio" name="op" value="todas" checked><span>Todas</span></label>
+            <label class="chip"><input type="radio" name="op" value="venta"><span>Compra</span></label>
+            <label class="chip"><input type="radio" name="op" value="renta"><span>Renta</span></label>
+            <label class="chip"><input type="radio" name="op" value="preventa"><span>Preventa</span></label>
+          </fieldset>
+          <div class="toolbar__meta">
+            <p class="toolbar__count" id="catalog-count" aria-live="polite"></p>
+            <button class="btn-text" type="button" data-clear-filters hidden>Limpiar filtros</button>
+            <div class="currency-toggle" role="group" aria-label="Moneda">
+              <button type="button" data-currency="MXN" aria-pressed="true">MXN</button>
+              <button type="button" data-currency="USD" aria-pressed="false">USD</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar__filters">
+          <label class="field"><span class="field__label">Tipo de propiedad</span><select class="select" name="tipo"></select></label>
+          <label class="field"><span class="field__label">Ubicación</span><select class="select" name="zona"></select></label>
+          <label class="field"><span class="field__label">Presupuesto</span><select class="select" name="presupuesto"></select></label>
+          <label class="field"><span class="field__label">Recámaras</span>
+            <select class="select" name="recamaras">
+              <option value="0">Cualquiera</option>
+              <option value="1">1 o más</option>
+              <option value="2">2 o más</option>
+              <option value="3">3 o más</option>
+              <option value="4">4 o más</option>
+            </select>
+          </label>
+          <label class="field sort"><span class="field__label">Ordenar por</span>
+            <select class="select" name="orden">
+              <option value="recientes">Más recientes</option>
+              <option value="precio-asc">Precio: menor a mayor</option>
+              <option value="precio-desc">Precio: mayor a menor</option>
+              <option value="superficie">Mayor superficie</option>
+              <option value="plusvalia">Mayor plusvalía</option>
+            </select>
+          </label>
+        </div>
+      </form>
 
-  let perEm = 3.43;   // word width per em
-  let asc = 0.864;    // baseline offset from the top of the line box, per em
-  function measure() {
-    const w = meas.getBoundingClientRect().width;
-    if (w > 0) {
-      perEm = w / 100;
-      asc = meas.lastChild.offsetTop / 100;
-    }
-  }
-  function layout() {
-    const g = geom();
-    const base = (g.H > 1.2 * g.W ? 0.362 : 0.43) * g.sh;   // baseline, in stage px
-    const navBottom = nav.offsetTop + nav.offsetHeight;      // layout box, unaffected by the intro transform
-    const size = Math.max(12, Math.min(
-      0.625 * g.sw / perEm,
-      0.92 * g.W / perEm,
-      (g.top + base - (navBottom + 0.035 * g.H)) / 0.88
-    ));
-    headline.style.setProperty('--F', size.toFixed(2) + 'px');
-    headline.style.setProperty('--base', base.toFixed(2) + 'px');
-    headline.style.setProperty('--asc', asc.toFixed(4));
-  }
-  measure();
-  layout();
-  const fontReady = document.fonts && document.fonts.load
-    ? document.fonts.load('700 100px "Inter"').catch(() => {})
-    : Promise.resolve();
-  fontReady.then(() => { measure(); layout(); });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); layout(); });
+      <ul class="grid" id="catalog-grid" role="list" aria-label="Resultados"></ul>
 
-  // Sharper images if the stage grows (window maximised, rotation)
-  let upgradeTimer = 0;
-  function upgradeImages() {
-    const w = pickW(geom().sw);
-    if (w <= layerW) return;
-    layerW = w;
-    for (const [el, id] of layerImgs) {
-      const next = new Image();
-      next.src = imgURL(id, w);
-      next.decode().then(() => { el.src = next.src; }, () => {});
-    }
-  }
-  let resizeFrame = 0;
-  const onResize = () => {
-    if (!resizeFrame) resizeFrame = requestAnimationFrame(() => { resizeFrame = 0; layout(); });
-    clearTimeout(upgradeTimer);
-    upgradeTimer = setTimeout(upgradeImages, 400);
-  };
-  if ('ResizeObserver' in window) new ResizeObserver(onResize).observe(hero);
-  else window.addEventListener('resize', onResize);
+      <div class="empty glass-static" id="catalog-empty" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5M8.5 11h5"/></svg>
+        <h3 class="h3">No hay propiedades con esos filtros</h3>
+        <p class="muted">Amplía el presupuesto o la zona. También podemos avisarte en cuanto entre algo así a nuestro inventario.</p>
+        <div class="empty__actions">
+          <button class="btn btn--ghost btn--sm" type="button" data-clear-filters>Limpiar filtros</button>
+          <a class="btn btn--wa btn--sm" href="#" data-alert-wa target="_blank" rel="noopener">Avísame por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  /* ---------- Reduced motion: final frame, no videos ---------- */
-  if (reduce) {
-    hero.classList.remove('intro');
-    opening.hidden = true;
-    doors.hidden = true;
-    rainA.remove();
-    rainB.remove();
-    tilt.remove();
-    return;
-  }
+  <!-- ============ SERVICIOS ============ -->
+  <section class="section section--alt" id="servicios" aria-labelledby="servicios-titulo">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Servicios</span>
+        <h2 class="h2" id="servicios-titulo">Te acompañamos de la búsqueda a la escritura</h2>
+        <p class="lead">Un solo equipo para valuar, financiar, vender, rentar y administrar tu patrimonio inmobiliario.</p>
+      </div>
+      <div class="services" id="services"></div>
+    </div>
+  </section>
 
-  /* ---------- Opening media ---------- */
-  const doorURL = imgURL(IMG.doors, pickW(geom().W));
-  const doorImg = new Image();
-  doorImg.fetchPriority = 'high';
-  doorImg.src = doorURL;
-  doorL.style.backgroundImage = doorR.style.backgroundImage = 'url("' + doorURL + '")';
+  <!-- ============ CALCULADORA HIPOTECARIA ============ -->
+  <section class="section section--glow" id="calculadora" aria-labelledby="calc-titulo">
+    <div class="container mortgage">
+      <div class="mortgage__intro">
+        <span class="eyebrow">Calculadora hipotecaria</span>
+        <h2 class="h2" id="calc-titulo">Conoce tu mensualidad antes de visitar</h2>
+        <p class="lead">Ajusta el valor, el enganche, el plazo y la tasa. Calculamos en tiempo real la mensualidad y el ingreso que los bancos suelen pedir.</p>
+        <ul class="checks" role="list" id="calc-checks"></ul>
+      </div>
+      <form class="calc glass" id="mortgage" aria-label="Calculadora hipotecaria"></form>
+    </div>
+  </section>
 
-  aerial.fetchPriority = 'high';
-  aerial.src = imgURL(IMG.aerial, layerW);
-  tilt.muted = true;
-  tilt.src = VIDEO.tilt;
-  for (const v of [rainA, rainB]) v.muted = true;
+  <!-- ============ VALUACIÓN / VENDE CON NOSOTROS ============ -->
+  <section class="section valuation" id="vende" aria-labelledby="vende-titulo">
+    <div class="valuation__bg" data-bg="img/fondo-tormenta-1600.webp"></div>
+    <div class="container valuation__grid">
+      <div class="section-head" style="margin:0">
+        <span class="eyebrow">Vende o renta con nosotros</span>
+        <h2 class="h2" id="vende-titulo">Valuación comercial gratuita en 48 horas</h2>
+        <p class="lead">Analizamos comparables reales de tu zona y te entregamos una opinión de valor con estrategia de comercialización. Sin costo y sin exclusividad obligatoria.</p>
+      </div>
+      <form class="form-card surface" id="valuation-form" novalidate></form>
+    </div>
+  </section>
 
-  /* ---------- Master timeline (7.4 s, one clock) ---------- */
-  const D = 7400;
-  const anims = [];
-  const off = (s) => Math.min(1, Math.max(0, (s * 1000) / D));
-  // pts: [[seconds, {prop: value}, easing to the next point], ...]
-  function track(el, pts) {
-    const kf = [];
-    const first = pts[0];
-    const last = pts[pts.length - 1];
-    if (first[0] > 0) kf.push(Object.assign({ offset: 0 }, first[1]));
-    for (const [t, v, e] of pts) kf.push(Object.assign({ offset: off(t), easing: e || 'linear' }, v));
-    if (last[0] * 1000 < D) kf.push(Object.assign({ offset: 1 }, last[1]));
-    const a = el.animate(kf, { duration: D, fill: 'both' });
-    a.pause();
-    a.currentTime = 0;
-    anims.push(a);
-  }
-  const tY = (v) => ({ transform: 'translateY(' + v + ')' });
-  const tX = (v) => ({ transform: 'translateX(' + v + ')' });
-  const op = (v) => ({ opacity: v });
-  const rise = 'cubic-bezier(.2,.65,.3,1)';
+  <!-- ============ CONTACTO ============ -->
+  <section class="section section--alt" id="contacto" aria-labelledby="contacto-titulo">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Contacto</span>
+        <h2 class="h2" id="contacto-titulo">Habla directo con un asesor certificado</h2>
+        <p class="lead">Respuesta en menos de 2 horas hábiles por WhatsApp, llamada o videollamada.</p>
+      </div>
+      <div class="contact">
+        <div class="advisors" id="advisors"></div>
+        <aside class="office surface" id="office" aria-label="Oficina"></aside>
+      </div>
+    </div>
+  </section>
+</main>
 
-  track(doorL, [[0.02, tX('0'), 'cubic-bezier(.1,.2,.8,1)'], [1.13, tX('-101%')]]);
-  track(doorR, [[0.02, tX('0'), 'cubic-bezier(.4,.6,.9,1)'], [1.24, tX('101%')]]);
-  track(tilt, [[1.19, op(0), 'ease-in-out'], [1.47, op(1)]]);
-  track(opening, [[2.45, op(1), 'cubic-bezier(.45,0,.55,1)'], [2.95, op(0)]]);
-  // Nav: the slide is on the bar; the fade is on its three groups (same look, and the
-  // pill bar's backdrop blur keeps sampling the sky while it fades in)
-  track(nav, [[2.45, tY('-6px'), 'ease-out'], [2.75, tY('0')]]);
-  for (const part of navParts) track(part, [[2.45, op(0), 'ease-out'], [2.75, op(1)]]);
-  track(kicker, [
-    [2.45, { opacity: 0, transform: 'translateY(.5em)' }, rise],
-    [3.10, { opacity: 1, transform: 'translateY(0)' }]
-  ]);
-  letters.forEach((el, i) => {
-    const t = 2.45 + i * 0.054;
-    track(el, [
-      [t, { opacity: 0, transform: 'translateY(.14em)' }, rise],
-      [t + 0.70, { opacity: 1, transform: 'translateY(0)' }]
-    ]);
-  });
-  track(shade, [[2.90, op(0), 'ease-in-out'], [3.70, op(1)]]);
-  track(back, [[2.90, tY('0'), 'cubic-bezier(.45,0,.35,1)'], [4.30, tY('-1.5%')]]);
-  track(mid, [
-    [2.90, tY('0'), 'cubic-bezier(.45,0,.3,1)'],
-    [4.30, tY('-4%')],
-    [4.60, tY('-4%'), 'cubic-bezier(.45,0,.55,1)'],
-    [6.90, tY('0')]
-  ]);
-  track(headline, [[3.00, tY('6%'), 'cubic-bezier(.3,0,.4,1)'], [4.80, tY('0')]]);
-  track(front, [
-    [3.35, tY('66%'), 'cubic-bezier(.2,.5,.2,1)'],
-    [6.00, tY('-2.5%'), 'cubic-bezier(.45,0,.55,1)'],
-    [7.30, tY('0')]
-  ]);
+<footer class="footer" id="footer"></footer>
 
-  /* ---------- Tilt video: the whole clip inside 1.25 → 2.85 s ---------- */
-  const W0 = 1.25;
-  const W1 = 2.85;
-  let tiltStarted = false;
-  let tiltDone = false;
-  let tiltScrub = false;   // autoplay refused (e.g. low-power mode): seek frame by frame instead
-  const clipLength = () => (isFinite(tilt.duration) && tilt.duration > 0 ? tilt.duration : 5.0417);
-  function driveTilt(s) {
-    if (tiltDone || s < W0) return;
-    const dur = clipLength();
-    if (s >= W1) {
-      tiltDone = true;
-      tilt.pause();
-      try { tilt.currentTime = Math.max(0, dur - 0.02); } catch (e) { /* not seekable yet */ }
-      return;
-    }
-    const base = dur / (W1 - W0);
-    const target = ((s - W0) / (W1 - W0)) * dur;
-    if (!tiltStarted) {
-      tiltStarted = true;
-      tilt.playbackRate = base;
-      const p = tilt.play();
-      if (p && p.catch) p.catch(() => { if (!tiltDone) tiltScrub = true; });
-      return;
-    }
-    if (tiltScrub) {
-      if (!tilt.seeking) { try { tilt.currentTime = target; } catch (e) { /* ignore */ } }
-      return;
-    }
-    // Nudge the rate toward the master clock, clamped to 0.85–1.2 × the base rate
-    const k = Math.min(1.2, Math.max(0.85, 1 + (target - tilt.currentTime) * 1.5));
-    const rate = base * k;
-    if (Math.abs(tilt.playbackRate - rate) > base * 0.01) tilt.playbackRate = rate;
-  }
+<!-- ============ CAPAS FLOTANTES ============ -->
+<div class="tray" id="compare-tray" hidden></div>
+<a class="wa-fab" id="wa-fab" href="#" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.87 9.87 0 0 0 4.74 1.21h.01c5.46 0 9.9-4.45 9.9-9.91C21.95 6.45 17.5 2 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.23 8.23 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.44.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.44-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.06 0 1.22.89 2.39 1.01 2.56.12.16 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.29Z"/></svg>
+</a>
+<dialog class="modal" id="property-modal" aria-labelledby="pd-title"></dialog>
+<dialog class="modal" id="compare-modal" aria-labelledby="cmp-title"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  /* ---------- Rain loop: two copies, 0.7 s crossfades, first 3.6 s only ---------- */
-  const LOOP = 3.6;
-  const XFADE = 0.75;
-  let rainOn = false;
-  let active = null;
-  const play = (v) => { const p = v.play(); if (p && p.catch) p.catch(() => {}); };
-  function swap() {
-    const prev = active;
-    const next = prev === rainA ? rainB : rainA;
-    active = next;
-    next.currentTime = 0;
-    play(next);
-    next.classList.add('on');
-    prev.classList.remove('on');
-    setTimeout(() => {
-      if (prev === active) return;
-      prev.pause();
-      prev.currentTime = 0;   // parked on its first frame, ready for the next swap
-    }, 800);
-  }
-  function check(v, time) {
-    if (v === active && time >= LOOP - XFADE) swap();
-  }
-  for (const v of [rainA, rainB]) {
-    v.addEventListener('timeupdate', () => check(v, v.currentTime));
-    v.addEventListener('ended', () => { if (v === active) swap(); });
-    if ('requestVideoFrameCallback' in v) {
-      const onFrame = (now, meta) => { check(v, meta.mediaTime); v.requestVideoFrameCallback(onFrame); };
-      v.requestVideoFrameCallback(onFrame);
-    }
-  }
-  function startRain() {
-    rainOn = true;
-    active = rainA;
-    rainA.currentTime = 0;
-    rainA.classList.add('on');
-    play(rainA);
-  }
-
-  /* ---------- Clock ---------- */
-  let started = false;
-  let t0 = -1;
-  function frame(now) {
-    if (t0 < 0) t0 = now;
-    const t = Math.min(D, Math.max(0, now - t0));
-    for (const a of anims) a.currentTime = t;
-    const s = t / 1000;
-    if (!rainOn && s >= 2.4) startRain();
-    driveTilt(s);
-    if (t >= D) finish();
-    else requestAnimationFrame(frame);
-  }
-  function finish() {
-    for (const a of anims) a.cancel();
-    anims.length = 0;
-    hero.classList.remove('intro');
-    opening.hidden = true;
-    doors.hidden = true;
-    doorL.style.backgroundImage = doorR.style.backgroundImage = '';
-    tilt.pause();
-    tilt.removeAttribute('src');
-    tilt.load();
-  }
-  function start() {
-    if (started) return;
-    started = true;
-    rainA.src = VIDEO.rain;
-    rainB.src = VIDEO.rain;
-    requestAnimationFrame(frame);
-  }
-
-  /* ---------- Start once everything is ready (+120 ms), or at 5 s regardless ---------- */
-  function ready(el) {
-    return new Promise((resolve) => {
-      if (el.tagName === 'VIDEO') {
-        if (el.readyState >= 4) return resolve();
-        el.addEventListener('canplaythrough', resolve, { once: true });
-        el.addEventListener('error', resolve, { once: true });
-        return;
-      }
-      const wait = () => {
-        if (el.complete) return resolve();
-        el.addEventListener('load', resolve, { once: true });
-        el.addEventListener('error', resolve, { once: true });
-      };
-      if (el.decode) el.decode().then(resolve, wait);
-      else wait();
-    });
-  }
-  Promise.all([ready(doorImg), ready(aerial)]
-    .concat(layerImgs.map(([el]) => ready(el)), ready(tilt), fontReady))
-    .then(() => setTimeout(start, 120));
-  setTimeout(start, 5000);
-})();
-</script>
+<!-- ============ SCRIPTS (orden importa; sin dependencias) ============ -->
+<script src="js/data.js" defer></script>
+<script src="js/core.js" defer></script>
+<script src="js/hero.js" defer></script>
+<script src="js/floorplan.js" defer></script>
+<script src="js/catalog.js" defer></script>
+<script src="js/property.js" defer></script>
+<script src="js/compare.js" defer></script>
+<script src="js/mortgage.js" defer></script>
+<script src="js/sections.js" defer></script>
+<script src="js/main.js" defer></script>
 </body>
 </html>

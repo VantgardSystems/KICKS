@@ -25,8 +25,9 @@ const securityHeaders = [
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
 ];
 
-// Demo Harborlux (public/demos/harborlux): página estática que carga imágenes, videos y la fuente
-// desde sus CDN, así que lleva su propia CSP. Next aplica la última regla que coincide.
+// Plantilla inmobiliaria Harborlux (public/demos/harborlux): sitio estático que carga el hero
+// desde sus CDN, el mapa de OpenStreetMap y visores 360° en iframe, así que lleva su propia CSP.
+// Next aplica la última regla que coincide.
 const harborluxCsp = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
@@ -34,6 +35,7 @@ const harborluxCsp = [
   "img-src 'self' data: https://images.higgs.ai",
   "media-src 'self' https://d8j0ntlcm91z4.cloudfront.net",
   "font-src 'self' https://fonts.gstatic.com",
+  "frame-src https://www.openstreetmap.org https://my.matterport.com https://kuula.co",
   "connect-src 'self'",
   "frame-ancestors 'none'",
   "base-uri 'self'",
@@ -50,12 +52,12 @@ const nextConfig: NextConfig = {
     const demoHeaders = [{ key: "Content-Security-Policy", value: harborluxCsp }];
     return [
       { source: "/(.*)", headers: securityHeaders },
-      { source: "/harborlux", headers: demoHeaders },
       { source: "/demos/harborlux/:path*", headers: demoHeaders },
     ];
   },
-  async rewrites() {
-    return [{ source: "/harborlux", destination: "/demos/harborlux/index.html" }];
+  // La plantilla usa rutas relativas (css/, js/, img/): se redirige a su carpeta en lugar de reescribir
+  async redirects() {
+    return [{ source: "/harborlux", destination: "/demos/harborlux/index.html", permanent: false }];
   },
 };
 
