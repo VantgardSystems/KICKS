@@ -1,6 +1,6 @@
 # Fotos pendientes: prompts y nombres de archivo
 
-El Penthouse Summit (HLX-101) ya tiene fotos: salen de los medios del hero. Las demás propiedades muestran un marcador hasta que subas sus fotos.
+El Penthouse Summit (HLX-101) ya tiene fotos: salen de los medios del hero. La fachada y la estancia de HLX-102 ya están generadas (Nano Banana 2 vía Figma). Las demás fotos muestran un marcador hasta que las subas.
 
 ## Cómo hacerlas
 
@@ -17,8 +17,8 @@ Agrega este bloque de estilo al final de cada prompt para que la serie se vea co
 
 | Archivo | Prompt |
 | --- | --- |
-| `hlx-102-fachada.webp` | Contemporary two-story luxury residence in San Pedro Garza García, Mexico, board-formed concrete and warm wood slats, large glass windows glowing at blue hour, Sierra Madre mountains silhouetted behind, manicured front garden and stone driveway. |
-| `hlx-102-estancia.webp` | Double-height living room of a modern Mexican luxury house, travertine floor, low linen sofas, floor-to-ceiling glass opening to a garden and pool at dusk, warm indirect lighting. |
+| `hlx-102-fachada.webp` ✅ | Contemporary two-story luxury residence in San Pedro Garza García, Mexico, board-formed concrete and warm wood slats, large glass windows glowing at blue hour, Sierra Madre mountains silhouetted behind, manicured front garden and stone driveway. |
+| `hlx-102-estancia.webp` ✅ | Double-height living room of a modern Mexican luxury house, travertine floor, low linen sofas, floor-to-ceiling glass opening to a garden and pool at dusk, warm indirect lighting. |
 | `hlx-102-alberca.webp` | Rectangular infinity pool in a private garden of a modern concrete house, covered terrace with wood ceiling, mountain view at sunset, soft pool lights reflecting on the water. |
 
 ## HLX-103 · Departamento Arquímedes 1204 (Polanco, CDMX) · renta amueblado

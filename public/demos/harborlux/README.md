@@ -14,6 +14,7 @@ HTML5 + CSS + JavaScript sin dependencias ni compilación. Esta copia está conf
 
 ```
 index.html          Esqueleto semántico (no lleva contenido: todo sale de data.js)
+aviso-de-privacidad.html, terminos.html   Páginas legales (texto armado desde data.js → legal)
 css/tokens.css      COLORES, vidrio, tipografía, radios  ← lo único que cambias de CSS
 css/base.css        Reset, botones, formularios, vidrio, tipografía
 css/hero.css        Hero cinemático, barra flotante y buscador
@@ -28,7 +29,8 @@ js/compare.js       Guardar y comparar
 js/mortgage.js      Calculadora hipotecaria
 js/sections.js      Métricas, servicios, valuación, asesores, footer y SEO
 js/main.js          Arranque
-img/                Fotos (img/propiedades/) y fondos
+js/legal.js         Aviso de privacidad y términos
+img/                Fotos (img/propiedades/), fondos e imagen para redes (og.jpg)
 PROMPTS-FOTOS.md    Prompts y nombres de archivo de las fotos pendientes
 ```
 
@@ -37,7 +39,7 @@ PROMPTS-FOTOS.md    Prompts y nombres de archivo de las fotos pendientes
 1. **Colores** (`css/tokens.css`): `--brand-bg`, `--brand-accent`, `--brand-accent-2` y los resplandores `--brand-glow-1/2` cambian toda la identidad. El vidrio se ajusta con `--glass-alpha` y `--glass-blur`.
 2. **Marca y contacto** (`js/data.js` → `marca`, `contacto`, `asesores`): nombre, wordmark, WhatsApp (solo dígitos con lada: `5215512345678`), correos, dirección, horario y redes.
 3. **Inventario** (`js/data.js` → `propiedades`): una entrada por propiedad. Los filtros, zonas, comparador y datos estructurados se generan solos.
-4. **SEO**: actualiza `<title>`, `meta description` y `og:image` en `index.html`, y `marca.url` en `data.js`.
+4. **SEO y legal**: actualiza `<title>`, `meta description` y `og:image` en `index.html` (con la URL absoluta del dominio), `marca.url` en `data.js`, y los datos de `legal` (razón social, RFC, correo de privacidad). Cuando el abogado del cliente valide los textos, pon `legal.borrador: false`.
 
 Busca `[EDITAR]` en `data.js` para los datos que no deben quedarse de ejemplo.
 
@@ -116,4 +118,10 @@ Funciona en cualquier hosting estático (Netlify, Vercel, Cloudflare Pages, S3).
 - `font-src`: `fonts.gstatic.com`
 - `frame-src`: `www.openstreetmap.org` y el dominio de tu visor 360° (Matterport, Kuula…)
 
-Revisa con un abogado el aviso de privacidad y los términos del cliente antes de publicar.
+## Páginas legales
+
+`aviso-de-privacidad.html` y `terminos.html` usan los datos de `marca`, `contacto` y `legal`. Son una base pensada para México (derechos ARCO, finalidades primarias y secundarias, transferencias, almacenamiento local en lugar de cookies de rastreo) y declaran que imágenes y planos son ilustrativos y que la calculadora es una simulación. Revísalas con el abogado del cliente antes de publicar.
+
+## Imagen para redes
+
+`img/og.jpg` (1200 × 630) es el cuadro final del hero. Para regenerarla con otra marca, abre el sitio con *reducir movimiento* activo en una ventana de 1200 × 630 y haz una captura, o reemplázala por la imagen que prefieras.

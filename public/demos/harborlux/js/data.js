@@ -49,8 +49,22 @@ window.SITE = {
       { nombre: 'LinkedIn', url: '#' },
       { nombre: 'YouTube', url: '#' }
     ],
-    avisoPrivacidad: '#aviso-de-privacidad',
-    terminos: '#terminos'
+    avisoPrivacidad: 'aviso-de-privacidad.html',
+    terminos: 'terminos.html'
+  },
+
+  /* ---------------------------------------------------------------
+     DATOS LEGALES (aviso de privacidad y términos)
+     [EDITAR] razón social, RFC y correo de privacidad del cliente.
+     borrador: true muestra un aviso de "pendiente de revisión legal".
+     --------------------------------------------------------------- */
+  legal: {
+    razonSocial: 'Harborlux Bienes Raíces, S.A. de C.V.',
+    rfc: 'XAXX010101000',
+    correoPrivacidad: 'privacidad@harborlux.example',
+    jurisdiccion: 'Ciudad de México',
+    actualizado: '2026-11-20',
+    borrador: true
   },
 
   /* ---------------------------------------------------------------
@@ -434,8 +448,8 @@ window.SITE = {
       descripcion: 'Residencia contemporánea en privada con caseta y vista a la Sierra Madre. Planta baja abierta a jardín y alberca, estudio con acceso independiente y cocina con isla y despensa. En planta alta, cuatro recámaras con baño completo y family room.',
       caracteristicas: ['Privada con 18 residencias y caseta 24/7', '12 paneles solares interconectados', 'Cisterna de 20,000 L con hidroneumático', 'Cochera techada para 4 autos', 'Recámara principal con terraza propia'],
       fotos: [
-        { src: 'img/propiedades/hlx-102-fachada.webp', alt: 'Fachada contemporánea de concreto y madera al atardecer', pendiente: true },
-        { src: 'img/propiedades/hlx-102-estancia.webp', alt: 'Estancia a doble altura abierta al jardín', pendiente: true },
+        { src: 'img/propiedades/hlx-102-fachada-1264.webp', srcset: 'img/propiedades/hlx-102-fachada-640.webp 640w, img/propiedades/hlx-102-fachada-1264.webp 1264w', alt: 'Fachada contemporánea de concreto y madera iluminada al anochecer, con la Sierra Madre al fondo' },
+        { src: 'img/propiedades/hlx-102-estancia-1264.webp', srcset: 'img/propiedades/hlx-102-estancia-640.webp 640w, img/propiedades/hlx-102-estancia-1264.webp 1264w', alt: 'Estancia a doble altura con piso de travertino, abierta al jardín y la alberca' },
         { src: 'img/propiedades/hlx-102-alberca.webp', alt: 'Alberca y jardín con vista a la montaña', pendiente: true }
       ],
       planos: 'casa-2n',
