@@ -26,8 +26,8 @@
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#C2B0DC">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%91%9F%3C/text%3E%3C/svg%3E">
-<!-- Cuando tengas la foto del primer zapato del hero, descomenta esta línea (carga más rápido):
-<link rel="preload" as="image" href="assets/kicks/lilac-shoe.webp"> -->
+<!-- Precarga la foto del primer tenis del hero (cámbiala si cambias el primer slide) -->
+<link rel="preload" as="image" href="assets/kicks/lilac-shoe.webp" fetchpriority="high">
 
 <style>
 /* ✏️ BLOQUE 2 · COLORES Y TIPOGRAFÍA ─────────────────────────────────
@@ -83,10 +83,14 @@ const STORE_CONFIG = {
     boton: "Apartar ahora",
     autoplay: true,
     slides: [
-      { tema: "lilac",     palabra: "Lilac",     fondo: "#C2B0DC", productoId: "", marca: "{{MARCA_1}}", modelo: "{{MODELO_1}}", apodo: "{{APODO_1}}", precio: "{{PRECIO_1}}", zapato: "", voltear: false, piezas: [] },
-      { tema: "mint",      palabra: "Mint",      fondo: "#A9D8C0", productoId: "", marca: "{{MARCA_2}}", modelo: "{{MODELO_2}}", apodo: "{{APODO_2}}", precio: "{{PRECIO_2}}", zapato: "", voltear: false, piezas: [] },
-      { tema: "lemon",     palabra: "Lemon",     fondo: "#F3DA8A", productoId: "", marca: "{{MARCA_3}}", modelo: "{{MODELO_3}}", apodo: "{{APODO_3}}", precio: "{{PRECIO_3}}", zapato: "", voltear: false, piezas: [] },
-      { tema: "bubblegum", palabra: "Bubblegum", fondo: "#F2AFC0", productoId: "", marca: "{{MARCA_4}}", modelo: "{{MODELO_4}}", apodo: "{{APODO_4}}", precio: "{{PRECIO_4}}", zapato: "", voltear: false, piezas: [] }
+      { tema: "lilac",     palabra: "Lilac",     fondo: "#C2B0DC", productoId: "", marca: "{{MARCA_1}}", modelo: "{{MODELO_1}}", apodo: "{{APODO_1}}", precio: "{{PRECIO_1}}", zapato: "assets/kicks/lilac-shoe.webp", voltear: false,
+        piezas: ["assets/kicks/lilac-piece-1.webp", "assets/kicks/lilac-piece-2.webp", "assets/kicks/lilac-piece-3.webp"] },
+      { tema: "mint",      palabra: "Mint",      fondo: "#A9D8C0", productoId: "", marca: "{{MARCA_2}}", modelo: "{{MODELO_2}}", apodo: "{{APODO_2}}", precio: "{{PRECIO_2}}", zapato: "assets/kicks/mint-shoe.webp", voltear: false,
+        piezas: ["assets/kicks/mint-piece-1.webp", "assets/kicks/mint-piece-2.webp", "assets/kicks/mint-piece-3.webp"] },
+      { tema: "lemon",     palabra: "Lemon",     fondo: "#F3DA8A", productoId: "", marca: "{{MARCA_3}}", modelo: "{{MODELO_3}}", apodo: "{{APODO_3}}", precio: "{{PRECIO_3}}", zapato: "assets/kicks/lemon-shoe.webp", voltear: false,
+        piezas: ["assets/kicks/lemon-piece-1.webp", "assets/kicks/lemon-piece-2.webp", "assets/kicks/lemon-piece-3.webp"] },
+      { tema: "bubblegum", palabra: "Bubblegum", fondo: "#F2AFC0", productoId: "", marca: "{{MARCA_4}}", modelo: "{{MODELO_4}}", apodo: "{{APODO_4}}", precio: "{{PRECIO_4}}", zapato: "assets/kicks/bubblegum-shoe.webp", voltear: false,
+        piezas: ["assets/kicks/bubblegum-piece-1.webp", "assets/kicks/bubblegum-piece-2.webp", "assets/kicks/bubblegum-piece-3.webp"] }
     ]
   },
 
@@ -863,11 +867,11 @@ const Hero = {
     const R = (a, b) => (a + Math.random() * (b - a)).toFixed(2);
     const pieza = ([item, x, y, w, r, m]) => {
       const src = s.piezas?.[item - 1];
-      const body = src ? `<img class="pz__img" src="${esc(src)}" alt="" decoding="async" draggable="false" data-fb="z:${esc(s.tema)}:${item}">` : this.arte(s.tema, item);
+      const body = src ? `<img class="pz__img" src="${esc(src)}" alt="" decoding="async" draggable="false"${i ? ' loading="lazy"' : ''} data-fb="z:${esc(s.tema)}:${item}">` : this.arte(s.tema, item);
       return `<div class="pz${m ? ' pz--m' : ''}" style="--x:${x};--y:${y};--w:${w}"><div class="pz__bob" style="--r:${r}deg;--d:${R(3.2, 5)}s;--dl:-${R(0, 4)}s">${body}</div></div>`;
     };
     const shoe = s.zapato
-      ? `<img class="shoe__img${s.voltear ? ' is-flip' : ''}" src="${esc(s.zapato)}" alt="${esc(this.alt(s))}" decoding="async" draggable="false" data-fb="s:${i}">`
+      ? `<img class="shoe__img${s.voltear ? ' is-flip' : ''}" src="${esc(s.zapato)}" alt="${esc(this.alt(s))}" decoding="async" draggable="false"${i ? ' loading="lazy"' : ' fetchpriority="high"'} data-fb="s:${i}">`
       : this.shoeSVG(s);
     const L = this.info(s);
     const modelo = [lleno(L.modelo) ? L.modelo : '', lleno(L.apodo) ? `“${L.apodo}”` : ''].filter(Boolean).join(' ');
@@ -1043,6 +1047,9 @@ const Hero = {
         });
       }
       this.el.classList.remove('is-pre');
+      // Fotos de los demás slides: se precargan cuando la página ya está quieta
+      const precargar = () => this.slideEls.slice(1).forEach((sl) => $$('img[loading="lazy"]', sl).forEach((im) => { const pre = new Image(); pre.decoding = 'async'; pre.src = im.currentSrc || im.src; }));
+      (window.requestIdleCallback || ((f) => setTimeout(f, 1200)))(precargar, { timeout: 2500 });
     };
     Promise.race([ready, new Promise((r) => setTimeout(r, 1500))]).then(start);
     setTimeout(() => { start(); this.intro.forEach((a) => { try { a.finish(); } catch (_) {} }); this.el.classList.remove('is-pre'); }, 3000);
@@ -1280,7 +1287,7 @@ if (location.hash.startsWith('#p-')) { const c = $(location.hash); if (c) { c.cl
   GUÍA DE CLONACIÓN · NUEVA BOUTIQUE EN MENOS DE 5 MINUTOS
   (las líneas son las de esta plantilla; los bloques van en orden y arriba)
 ════════════════════════════════════════════════════════════════════════
-  PASO 1 · SEO (BLOQUE 1, líneas 20–27)
+  PASO 1 · SEO (BLOQUE 1, líneas 20–30)
      Cambia <title>, description y og:title/og:description con el nombre y la
      ciudad. Pon en og:image la URL completa de una foto de 1200×630 y en
      theme-color el color del primer slide.
@@ -1293,7 +1300,7 @@ if (location.hash.startsWith('#p-')) { const c = $(location.hash); if (c) { c.cl
      tienda, slogan, whatsapp (52 + 10 dígitos), horario, instagram, tiktok,
      ciudad, autenticidad, envios, entregaLocal, pagos y anuncios.
 
-  PASO 4 · HERO Y PRODUCTOS (BLOQUE 3, hero en líneas 74–96 y productos en 117–159)
+  PASO 4 · HERO Y PRODUCTOS (BLOQUE 3, hero en líneas 74–100 y productos en 121–163)
      Hero: por slide usa productoId (toma marca, modelo y precio del catálogo)
      o llena marca/modelo/apodo/precio; pon zapato con la foto sin fondo
      (assets/kicks/lilac-shoe.webp) y voltear: true si apunta a la izquierda.
@@ -1301,7 +1308,7 @@ if (location.hash.startsWith('#p-')) { const c = $(location.hash); if (c) { c.cl
      precioAnterior, tallas, etiqueta, imagen } por par. Cada id debe ser único.
      Revisa que filtros.marcas incluya las marcas que vendes.
 
-  PASO 5 · MENSAJES, FAQ Y PUBLICAR (BLOQUE 3, líneas 99–115)
+  PASO 5 · MENSAJES, FAQ Y PUBLICAR (BLOQUE 3, líneas 103–119)
      Ajusta los textos de mensajes y faq. Abre el archivo en el celular, elige
      una talla, toca «Apartar» y confirma que llega el mensaje a tu WhatsApp.
      Publica arrastrando la carpeta a app.netlify.com/drop (o Vercel).

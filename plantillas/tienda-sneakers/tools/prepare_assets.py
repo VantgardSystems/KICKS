@@ -88,6 +88,29 @@ def drop_floor_shadow(img: Image.Image, threshold: int) -> Image.Image:
     return Image.fromarray(arr, "RGBA")
 
 
+def solid_shoe(img: Image.Image, original: Image.Image, radius: int = 14) -> Image.Image:
+    """Rellena los huecos que el quitafondos abre en la piel blanca (paneles "transparentes").
+
+    Cierra el contorno con una operación morfológica, detecta las zonas encerradas que quedaron
+    vacías y las vuelve opacas con el color de la foto original. El contorno exterior no cambia.
+    """
+    try:
+        from scipy import ndimage as ndi  # viene con rembg
+    except ImportError:
+        return img
+    arr = np.array(img)
+    mask = arr[..., 3] > 128
+    cross = ndi.generate_binary_structure(2, 1)
+    closed = ndi.binary_closing(np.pad(mask, radius + 2), structure=cross, iterations=radius)[radius + 2:-radius - 2, radius + 2:-radius - 2]
+    holes = ndi.binary_fill_holes(closed) & ~closed
+    bridge = closed & ~mask & ndi.binary_dilation(holes, structure=cross, iterations=radius + 2)
+    small = ndi.binary_fill_holes(mask) & ~mask  # huecos chicos ya encerrados en la máscara original
+    fill = holes | bridge | small
+    arr[..., :3][fill] = np.asarray(original.convert("RGB"))[fill]
+    arr[..., 3][fill] = 255
+    return Image.fromarray(arr, "RGBA")
+
+
 def split_pieces(img: Image.Image) -> list[Image.Image]:
     """Corta en 3 por los dos huecos verticales más anchos; si no existen, en tercios iguales."""
     a = np.asarray(img)[..., 3]
@@ -155,7 +178,8 @@ def main() -> None:
         stem = src.stem.lower()
         if stem.endswith("-shoe"):
             print(f"{src.name}")
-            img = drop_floor_shadow(remove_background(Image.open(src)), args.sombra)
+            original = Image.open(src).convert("RGBA")
+            img = solid_shoe(drop_floor_shadow(remove_background(original), args.sombra), original)
             img = scale_down(crop_pad(img, 0.01, "width"), max_w=1600)
             out = args.out / f"{stem}.webp"
             save_webp(img, out, 88)
