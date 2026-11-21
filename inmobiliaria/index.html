@@ -74,6 +74,7 @@ window.CONFIG = {
     dudas: 'Hola, tengo una duda antes de agendar con {nombre}.'
   },
 
+  notaDemo: '',            // texto opcional al pie, p. ej. 'Sitio de demostración' (vacío = no aparece)
   escenaVentana: true,     // false = hero sin la escena de la ventana (más corto)
   incluirOrigen: true,     // agrega utm_source/utm_campaign del anuncio al mensaje
 
@@ -602,6 +603,8 @@ function linkWA(a, msg, lugar) {
 /* ================= textos desde CONFIG ================= */
 $$('[data-c]').forEach((el) => { const v = C.textos[el.dataset.c]; if (v != null) el.textContent = fill(v); });
 $$('[data-cfg]').forEach((el) => { const v = C[el.dataset.cfg]; if (v != null) el.textContent = v; });
+$$('.foot li[data-cfg]').forEach((li) => { if (!li.textContent.trim()) li.hidden = true; });   /* datos vacíos no se muestran */
+if (C.notaDemo) { const sp = document.createElement('span'); sp.textContent = C.notaDemo; $('.legal').appendChild(sp); }
 $$('#badges span').forEach((el, i) => { if (C.textos.badges[i]) el.textContent = C.textos.badges[i]; });
 $$('[data-wa]').forEach((a) => linkWA(a, fill(C.mensajes[a.dataset.wa]), a.dataset.wa));
 if (C.telefonoVisible && digits) { $('#tel').href = 'tel:+' + digits; $('#waFoot').textContent = 'WhatsApp: ' + C.telefonoVisible; } else $('#telLi').remove();
@@ -662,7 +665,7 @@ $$('[data-prop]').forEach((a) => {
 });
 $$('.prop-ph img').forEach((img) => {
   const ok = () => img.classList.add('ok');
-  if (img.complete && img.naturalWidth) ok(); else { img.addEventListener('load', ok); img.addEventListener('error', ok); }
+  if (img.complete && img.naturalWidth) ok(); else img.addEventListener('load', ok);   /* si falla, queda el degradado */
 });
 
 /* ================= precalificador ================= */

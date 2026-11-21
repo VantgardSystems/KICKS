@@ -1,0 +1,8 @@
+Fuentes incluidas en esta carpeta, todas con licencia SIL Open Font License 1.1
+(texto completo: https://openfontlicense.org/open-font-license-official-text/):
+
+- Poppins (300, 400, 500, 600): Copyright 2020 The Poppins Project Authors (https://github.com/itfoundry/Poppins)
+- Outfit (variable): Copyright 2021 The Outfit Project Authors (https://github.com/Outfitio/Outfit-Fonts)
+- Pinyon Script (400): Copyright (c) 2011 Nicole Fally, with Reserved Font Name "Pinyon Script"
+
+Archivos tomados de Google Fonts, subconjunto latino.
