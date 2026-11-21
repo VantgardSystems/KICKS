@@ -450,7 +450,7 @@ window.SITE = {
       fotos: [
         { src: 'img/propiedades/hlx-102-fachada-1264.webp', srcset: 'img/propiedades/hlx-102-fachada-640.webp 640w, img/propiedades/hlx-102-fachada-1264.webp 1264w', alt: 'Fachada contemporánea de concreto y madera iluminada al anochecer, con la Sierra Madre al fondo' },
         { src: 'img/propiedades/hlx-102-estancia-1264.webp', srcset: 'img/propiedades/hlx-102-estancia-640.webp 640w, img/propiedades/hlx-102-estancia-1264.webp 1264w', alt: 'Estancia a doble altura con piso de travertino, abierta al jardín y la alberca' },
-        { src: 'img/propiedades/hlx-102-alberca.webp', alt: 'Alberca y jardín con vista a la montaña', pendiente: true }
+        { src: 'img/propiedades/hlx-102-alberca-1264.webp', srcset: 'img/propiedades/hlx-102-alberca-640.webp 640w, img/propiedades/hlx-102-alberca-1264.webp 1264w', alt: 'Alberca y jardín con vista a la montaña' }
       ],
       planos: 'casa-2n',
       asesor: 'diego'
@@ -477,8 +477,8 @@ window.SITE = {
       descripcion: 'Departamento amueblado a dos calles de Masaryk, con terraza hacia el Parque Lincoln. Cocina equipada, estancia con chimenea de gas y dos recámaras con baño y vestidor. Listo para habitar.',
       caracteristicas: ['Amueblado y equipado', 'Contrato mínimo de 12 meses', 'Póliza jurídica y un mes de depósito', 'Mascotas pequeñas bienvenidas', 'Mantenimiento incluido'],
       fotos: [
-        { src: 'img/propiedades/hlx-103-estancia.webp', alt: 'Estancia amueblada con ventanal y vista a la ciudad de noche', pendiente: true },
-        { src: 'img/propiedades/hlx-103-cocina.webp', alt: 'Cocina abierta con isla de mármol', pendiente: true },
+        { src: 'img/propiedades/hlx-103-estancia-1264.webp', srcset: 'img/propiedades/hlx-103-estancia-640.webp 640w, img/propiedades/hlx-103-estancia-1264.webp 1264w', alt: 'Estancia amueblada con ventanal y vista a la ciudad de noche' },
+        { src: 'img/propiedades/hlx-103-cocina-1264.webp', srcset: 'img/propiedades/hlx-103-cocina-640.webp 640w, img/propiedades/hlx-103-cocina-1264.webp 1264w', alt: 'Cocina abierta con isla de mármol' },
         { src: 'img/propiedades/hlx-103-recamara.webp', alt: 'Recámara principal con vista a Polanco', pendiente: true }
       ],
       planos: 'depto-2r',
@@ -507,8 +507,8 @@ window.SITE = {
       descripcion: 'Torre de 18 niveles frente a la marina con rooftop, alberca infinita y casa club. Departamentos de dos recámaras con terraza de 32 m² y vista al mar. Precio de preventa con plusvalía estimada al momento de la entrega.',
       caracteristicas: ['Entrega estimada: diciembre 2028', 'Esquema 30 / 60 / 10', 'Licencia de construcción vigente', 'Programa de rentas vacacionales', 'Acabados en mármol y madera de parota'],
       fotos: [
-        { src: 'img/propiedades/hlx-104-torre.webp', alt: 'Render de la torre frente a la marina al atardecer', pendiente: true },
-        { src: 'img/propiedades/hlx-104-rooftop.webp', alt: 'Rooftop con alberca infinita y vista al mar', pendiente: true },
+        { src: 'img/propiedades/hlx-104-torre-1264.webp', srcset: 'img/propiedades/hlx-104-torre-640.webp 640w, img/propiedades/hlx-104-torre-1264.webp 1264w', alt: 'Render de la torre frente a la marina al atardecer' },
+        { src: 'img/propiedades/hlx-104-rooftop-1264.webp', srcset: 'img/propiedades/hlx-104-rooftop-640.webp 640w, img/propiedades/hlx-104-rooftop-1264.webp 1264w', alt: 'Rooftop con alberca infinita y vista al mar' },
         { src: 'img/propiedades/hlx-104-interior.webp', alt: 'Estancia con terraza abierta al océano', pendiente: true }
       ],
       planos: 'depto-2r',
@@ -535,7 +535,7 @@ window.SITE = {
       descripcion: 'Lote plano de 25 × 50 m en la zona residencial más consolidada de Tulum, a 2.5 km de la playa. Urbanizado con servicios subterráneos, escrituras individuales y factibilidad para residencia o villas boutique.',
       caracteristicas: ['Escritura individual libre de gravamen', 'Luz, agua y drenaje subterráneos', 'Factibilidad para 2 villas', 'A 2.5 km de la playa', 'Precio en dólares'],
       fotos: [
-        { src: 'img/propiedades/hlx-105-aereo.webp', alt: 'Vista aérea con dron del lote rodeado de selva', pendiente: true },
+        { src: 'img/propiedades/hlx-105-aereo-1264.webp', srcset: 'img/propiedades/hlx-105-aereo-640.webp 640w, img/propiedades/hlx-105-aereo-1264.webp 1264w', alt: 'Vista aérea con dron del lote rodeado de selva' },
         { src: 'img/propiedades/hlx-105-acceso.webp', alt: 'Vialidad de acceso con iluminación y vegetación', pendiente: true },
         { src: 'img/propiedades/hlx-105-cenote.webp', alt: 'Cenote cercano a la sección residencial', pendiente: true }
       ],
@@ -562,8 +562,8 @@ window.SITE = {
       descripcion: 'Casa de una planta organizada alrededor de un patio con alberca, con muros de chukum, piso de pasta y techos altos con vigas de madera. Ventilación cruzada en todas las áreas y paneles solares para reducir el consumo de aire acondicionado.',
       caracteristicas: ['Arquitectura contemporánea yucateca', 'Chukum y pisos de pasta artesanal', '8 paneles solares', 'Minisplits inverter en todas las recámaras', 'Privada con vigilancia'],
       fotos: [
-        { src: 'img/propiedades/hlx-106-patio.webp', alt: 'Patio central con alberca y muros de chukum', pendiente: true },
-        { src: 'img/propiedades/hlx-106-estancia.webp', alt: 'Estancia con techos altos y vigas de madera', pendiente: true },
+        { src: 'img/propiedades/hlx-106-patio-1264.webp', srcset: 'img/propiedades/hlx-106-patio-640.webp 640w, img/propiedades/hlx-106-patio-1264.webp 1264w', alt: 'Patio central con alberca y muros de chukum' },
+        { src: 'img/propiedades/hlx-106-estancia-1264.webp', srcset: 'img/propiedades/hlx-106-estancia-640.webp 640w, img/propiedades/hlx-106-estancia-1264.webp 1264w', alt: 'Estancia con techos altos y vigas de madera' },
         { src: 'img/propiedades/hlx-106-recamara.webp', alt: 'Recámara principal abierta al jardín', pendiente: true }
       ],
       planos: 'casa-patio',
@@ -590,7 +590,7 @@ window.SITE = {
       descripcion: 'Local en esquina sobre el corredor comercial más exclusivo del país, con 14 m de frente de cristal y altura libre de 5.2 m. Ideal para boutique, showroom o restaurante de autor.',
       caracteristicas: ['14 m de frente sobre Masaryk', 'Altura libre de 5.2 m', 'Uso de suelo comercial vigente', 'Contrato de 3 a 5 años', 'Subestación eléctrica propia'],
       fotos: [
-        { src: 'img/propiedades/hlx-107-fachada.webp', alt: 'Fachada de cristal del local en esquina iluminada de noche', pendiente: true },
+        { src: 'img/propiedades/hlx-107-fachada-1264.webp', srcset: 'img/propiedades/hlx-107-fachada-640.webp 640w, img/propiedades/hlx-107-fachada-1264.webp 1264w', alt: 'Fachada de cristal del local en esquina iluminada de noche' },
         { src: 'img/propiedades/hlx-107-interior.webp', alt: 'Interior vacío con doble altura y concreto pulido', pendiente: true }
       ],
       planos: 'local',
@@ -616,7 +616,7 @@ window.SITE = {
       descripcion: 'Departamento en piso 21 con vista abierta al poniente, a pasos de corporativos y del centro comercial. Tres recámaras, estudio y balcón. Edificio con alberca techada, gimnasio y business center.',
       caracteristicas: ['Piso 21 con vista al poniente', 'Estudio independiente', 'Dos cajones y bodega', 'Alberca techada y climatizada', 'Escrituras listas para traslado'],
       fotos: [
-        { src: 'img/propiedades/hlx-108-vista.webp', alt: 'Vista del skyline de Santa Fe al atardecer desde el balcón', pendiente: true },
+        { src: 'img/propiedades/hlx-108-vista-1264.webp', srcset: 'img/propiedades/hlx-108-vista-640.webp 640w, img/propiedades/hlx-108-vista-1264.webp 1264w', alt: 'Vista del skyline de Santa Fe al atardecer desde el balcón' },
         { src: 'img/propiedades/hlx-108-estancia.webp', alt: 'Sala-comedor con piso de madera y ventanal', pendiente: true },
         { src: 'img/propiedades/hlx-108-cocina.webp', alt: 'Cocina integral en tonos grafito', pendiente: true }
       ],
