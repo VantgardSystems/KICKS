@@ -22,8 +22,11 @@
 <meta name="description" content="Jordan, Nike, Adidas y New Balance 100% originales. Elige tu talla MX y aparta por WhatsApp. Envíos asegurados a todo México.">
 <meta property="og:title" content="Kicks · Sneakers 100% originales">
 <meta property="og:description" content="Elige tu talla MX y aparta tu par por WhatsApp en 1 clic.">
-<meta property="og:image" content="https://tu-dominio.com/og.jpg">
+<meta property="og:image" content="https://tu-dominio.com/assets/og.jpg"> <!-- cambia tu-dominio.com; la imagen ya viene en assets/og.jpg -->
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#C2B0DC">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%91%9F%3C/text%3E%3C/svg%3E">
 <!-- Precarga la foto del primer tenis del hero (cámbiala si cambias el primer slide) -->
@@ -59,6 +62,9 @@ const STORE_CONFIG = {
   /* 2. Contacto · WhatsApp: 52 + 10 dígitos, sin "+", espacios ni guiones */
   whatsapp: "525500000000",
   horario: "Lun a Sáb · 11:00 a 20:00 h",
+  correo: "hola@tutienda.com",           // "" para ocultar
+  direccion: "Calle Ejemplo 123, Col. Roma Norte, CDMX",   // "" si solo vendes en línea
+  mapa: "https://maps.google.com/?q=Roma+Norte+CDMX",      // link de Google Maps de tu tienda
   instagram: "https://instagram.com/",   // "" para ocultar
   tiktok: "https://www.tiktok.com/",     // "" para ocultar
 
@@ -94,10 +100,11 @@ const STORE_CONFIG = {
     ]
   },
 
-  /* 5. Filtros del catálogo (marcas: [] = detectarlas solas de los productos) */
+  /* 5. Catálogo · marcas: [] = detectarlas solas · porPagina: pares antes del botón "Ver más" */
   filtros: {
     marcas: ["Nike", "Jordan", "Adidas", "New Balance"],
-    tallas: [25, 25.5, 26, 26.5, 27, 27.5, 28, 29]
+    tallas: [25, 25.5, 26, 26.5, 27, 27.5, 28, 29],
+    porPagina: 8
   },
 
   /* 6. Mensajes de WhatsApp · comodines: {tienda} {modelo} {talla} {precio} {ciudad} {producto} {palabra} */
@@ -105,6 +112,7 @@ const STORE_CONFIG = {
     compra:  "Hola {tienda}, me interesa el modelo {modelo} en talla {talla} MX ({precio}). ¿Lo tienen disponible para envío/entrega?",
     drop:    "Hola {tienda}, me interesa {producto} del drop {palabra}. ¿Qué tallas tienen disponibles?",
     encargo: "Hola {tienda}, busco el modelo {modelo} en talla {talla} MX. Estoy en {ciudad}. ¿Me lo pueden conseguir?",
+    visita:  "Hola {tienda}, quiero agendar una visita para probarme unos pares.",
     general: "Hola {tienda}, vi su catálogo y tengo una duda."
   },
 
@@ -118,7 +126,25 @@ const STORE_CONFIG = {
     { pregunta: "¿Qué formas de pago aceptan?", respuesta: "Aceptamos {pagos}. Con tarjetas de crédito participantes puedes pagar a meses sin intereses." }
   ],
 
-  /* 8. Productos
+  /* 8. Sobre la tienda · cifras: [número, texto] (ejemplos: cámbialas por las reales) · foto: "" = sin foto */
+  nosotros: {
+    titulo: "Sneakers de verdad, trato de barrio.",
+    texto: "Somos una boutique de {ciudad} dedicada a pares originales y difíciles de conseguir. Revisamos cada par a mano y te asesoramos con la talla antes de que compres, para que tu par llegue perfecto.",
+    cifras: [["+2,500", "pares entregados"], ["4.9", "calificación promedio"], ["2019", "en la escena sneaker"]],
+    visitas: "Probadores con cita previa",
+    foto: ""
+  },
+
+  /* 9. Reseñas · EJEMPLOS: sustitúyelas por reseñas reales de tus clientes ([] oculta la sección) */
+  resenasResumen: "4.9 de 5 en Google · +300 reseñas",
+  resenasLink: "",                       // link a tus reseñas de Google o Instagram ("" = sin botón)
+  resenas: [
+    { nombre: "Daniela R.", ciudad: "Guadalajara", par: "Nike Dunk Low Panda", estrellas: 5, texto: "Me ayudaron con la talla por WhatsApp y llegaron en dos días, con caja perfecta. Ya es mi tienda de confianza." },
+    { nombre: "Luis M.", ciudad: "CDMX", par: "Air Jordan 4 Military Black", estrellas: 5, texto: "Fui a la tienda con cita, me los probé y salí con ellos. Cero filas y todo 100% original." },
+    { nombre: "Andrea P.", ciudad: "Monterrey", par: "Adidas Samba OG", estrellas: 5, texto: "Les pedí un par que no encontraba en ningún lado y me lo consiguieron en una semana. Muy buena atención." }
+  ],
+
+  /* 10. Productos
      precioAnterior: 0 si no hay descuento · tallas: números MX disponibles ([] = agotado)
      etiqueta: "Nuevo Drop" | "Últimos pares" | "100% Original" | "Más vendido" | ""
      imagen: URL de la foto (fondo blanco o sin fondo). "" = ilustración con los colores de "ilustracion".
@@ -160,7 +186,29 @@ const STORE_CONFIG = {
     { id: "gazelle-blue", marca: "Adidas", nombre: "Adidas Gazelle Indoor", colorway: "Blue Fusion",
       precio: 2799, precioAnterior: 0, tallas: [25, 25.5, 26.5, 27], etiqueta: "Nuevo Drop", imagen: "",
       ilustracion: { silueta: "baja", base: "#2453B3", panel: "#1F47A0", suela: "#CFA570", piso: "#B08550", detalle: "#F5F5F0", cordon: "#F5F5F0" } }
-  ]
+  ],
+
+  /* 11. Textos legales (se abren desde el pie de página) · comodines: {tienda} {responsable} {correo} {ciudad} {envios}
+     Texto de referencia: revísalo con tu asesor legal antes de publicar. */
+  legal: {
+    responsable: "Kicks",                 // nombre comercial o razón social
+    actualizado: "noviembre de 2026",
+    privacidad: [
+      ["Responsable", "{responsable}, con domicilio en {ciudad}, es responsable del tratamiento de tus datos personales."],
+      ["Qué datos usamos", "Solo los que tú nos compartes por WhatsApp para atender tu pedido: nombre, teléfono, ciudad, dirección de entrega y talla. Esta página no guarda datos ni usa formularios propios."],
+      ["Para qué los usamos", "Confirmar disponibilidad, apartar y enviar tu par, dar seguimiento a cambios y, si tú lo pides, avisarte de nuevos drops."],
+      ["Con quién los compartimos", "Únicamente con la paquetería que entrega tu pedido. No vendemos ni rentamos tus datos."],
+      ["Tus derechos (ARCO)", "Puedes pedir acceso, rectificación, cancelación u oposición de tus datos escribiendo a {correo} o por WhatsApp."]
+    ],
+    terminos: [
+      ["Apartados", "Un par se aparta con anticipo y se respeta durante 48 h. Si no se liquida en ese plazo, el par se libera."],
+      ["Precios y disponibilidad", "Precios en MXN, sujetos a cambio y a la disponibilidad de talla al momento de confirmar por WhatsApp."],
+      ["Envíos", "{envios} Te compartimos el número de guía para que rastrees tu pedido."],
+      ["Cambios de talla", "Tienes 7 días naturales después de la entrega para cambiar de talla, con el par sin uso, con caja y etiquetas. El envío del cambio lo paga el cliente."],
+      ["Autenticidad", "Garantizamos que cada par es original. Si se demuestra lo contrario, te reembolsamos el 100% del pago."],
+      ["Pares por encargo", "Los pares sobre pedido requieren anticipo, que no es reembolsable una vez confirmada la compra con el proveedor."]
+    ]
+  }
 };
 </script>
 
@@ -386,6 +434,61 @@ h1,h2,h3,p{margin:0}
 .empty__title{font-weight:800;font-style:italic;font-size:28px;letter-spacing:-.03em;text-transform:uppercase}
 .empty p{color:var(--tenue);max-width:44ch}
 .empty__actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.cat__bar{flex-wrap:wrap}
+.cat__tools{display:flex;align-items:center;gap:16px;margin-left:auto}
+.sort select{height:38px;padding:0 34px 0 14px;border-radius:999px;border:1px solid var(--linea);background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center/14px;font-weight:500;font-size:13px;-webkit-appearance:none;appearance:none;cursor:pointer}
+.more{display:flex;justify-content:center;margin-top:40px}
+
+/* ── Reseñas ── */
+.rev__head{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:28px}
+.rev__sum{display:flex;align-items:center;gap:8px;margin-top:14px;font-weight:500;font-size:14px;color:var(--tenue)}
+.rev__sum .ico{width:18px;height:18px;color:#E5A50A}
+.rev__track{display:grid;grid-auto-flow:column;grid-auto-columns:min(84%,340px);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;margin-right:calc(var(--g)*-1);padding:2px var(--g) 6px 0}
+.rev__track::-webkit-scrollbar{display:none}
+@media(min-width:900px){.rev__track{grid-auto-flow:row;grid-template-columns:repeat(3,1fr);overflow:visible;margin-right:0;padding-right:0}}
+.rev{scroll-snap-align:start;display:flex;flex-direction:column;gap:16px;padding:24px;border-radius:var(--radio);background:var(--fondo-2)}
+.rev__stars{display:flex;gap:2px;color:#E5A50A}
+.rev__stars .ico{width:17px;height:17px}
+.rev__text{font-size:15px;line-height:1.6}
+.rev__who{margin-top:auto;display:flex;align-items:center;gap:12px}
+.rev__avatar{flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-weight:600;font-size:15px;color:#0E0E10;background:var(--pastel-1)}
+.rev:nth-child(4n+2) .rev__avatar{background:var(--pastel-2)}
+.rev:nth-child(4n+3) .rev__avatar{background:var(--pastel-3)}
+.rev:nth-child(4n+4) .rev__avatar{background:var(--pastel-4)}
+.rev__name{font-weight:600;font-size:14px}
+.rev__meta{font-size:12px;line-height:1.4;color:var(--tenue)}
+
+/* ── Sobre la tienda / Visítanos ── */
+.about__grid{display:grid;gap:36px}
+@media(min-width:960px){.about__grid{grid-template-columns:1.1fr 1fr;gap:72px;align-items:center}}
+.about__text{margin-top:18px;max-width:52ch;font-size:17px;color:var(--tenue)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:34px}
+.stat{padding-top:14px;border-top:2px solid var(--color-texto)}
+.stat strong{display:block;font-weight:800;font-style:italic;font-size:clamp(26px,6.5vw,46px);line-height:1;letter-spacing:-.035em}
+.stat span{display:block;margin-top:6px;font-size:12px;line-height:1.35;color:var(--tenue)}
+.visit{display:grid;gap:18px;padding:24px;border-radius:calc(var(--radio) + 6px);background:var(--fondo-2)}
+.visit__photo{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:var(--radio)}
+.visit__title{font-weight:700;font-size:20px;letter-spacing:-.01em}
+.visit__row{display:flex;align-items:flex-start;gap:14px}
+.visit__ico{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:#0E0E10;background:var(--pastel-1)}
+.visit__row:nth-of-type(2) .visit__ico{background:var(--pastel-2)}
+.visit__row:nth-of-type(3) .visit__ico{background:var(--pastel-3)}
+.visit__row:nth-of-type(4) .visit__ico{background:var(--pastel-4)}
+.visit__ico .ico{width:19px;height:19px}
+.visit__label{font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--tenue)}
+.visit__value{font-weight:500;font-size:15px;line-height:1.4}
+.visit__ctas{display:grid;gap:10px;margin-top:4px}
+@media(min-width:520px){.visit__ctas{grid-template-columns:1fr 1fr}}
+.visit__ctas .btn{padding:0 16px;font-size:13px}
+.faq{border-top:1px solid var(--linea)}
+
+/* ── Textos legales ── */
+.legal h3{margin:20px 0 6px;font-weight:600;font-size:15px}
+.legal h3:first-child{margin-top:4px}
+.legal p{font-size:14px;line-height:1.6;color:var(--tenue)}
+.legal__date{margin-top:22px!important;font-size:12px!important}
+.foot__links{display:flex;flex-wrap:wrap;gap:6px 18px}
+.foot__links button{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 
 /* ── Encargos ── */
 .enc{background:var(--color-acento);color:var(--color-acento-texto)}
@@ -489,6 +592,9 @@ h1,h2,h3,p{margin:0}
 <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
 <symbol id="i-card" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h4"/></g></symbol>
 <symbol id="i-ruler" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15.5L15.5 3 21 8.5 8.5 21z"/><path d="M7 12l2 2M10 9l2 2M13 6l2 2"/></g></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5L12 13l8.5-6.5"/></g></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.8l2.8 5.9 6.4.8-4.7 4.4 1.2 6.4L12 17.2l-5.7 3.1 1.2-6.4-4.7-4.4 6.4-.8z"/></symbol>
 <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
 <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="i-ig" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></g></symbol>
@@ -588,7 +694,7 @@ h1,h2,h3,p{margin:0}
   <div class="wrap top__in">
     <a class="top__logo" href="#drop" data-c="tienda"></a>
     <nav class="top__nav" aria-label="Secciones">
-      <a href="#catalogo">Catálogo</a><a href="#encargo">Encargos</a><button type="button" data-open-guia>Guía de tallas</button><a href="#faq">Preguntas</a>
+      <a href="#catalogo">Catálogo</a><a href="#encargo">Encargos</a><a href="#nosotros">Tienda</a><button type="button" data-open-guia>Guía de tallas</button><a href="#faq">Preguntas</a>
     </nav>
     <a class="top__wa" data-wa-link href="#"><svg class="ico"><use href="#i-wa"/></svg><span>WhatsApp</span></a>
   </div>
@@ -633,9 +739,13 @@ h1,h2,h3,p{margin:0}
     <div class="wrap" style="padding-bottom:88px">
       <div class="cat__bar" id="cat-bar">
         <p class="cat__count" id="cat-count" aria-live="polite"></p>
-        <button class="linkbtn" type="button" data-open-guia><svg class="ico"><use href="#i-ruler"/></svg>Guía de tallas</button>
+        <div class="cat__tools">
+          <label class="sort"><span class="sr-only">Ordenar pares</span><select id="orden"><option value="">Destacados</option><option value="asc">Menor precio</option><option value="desc">Mayor precio</option></select></label>
+          <button class="linkbtn" type="button" data-open-guia><svg class="ico"><use href="#i-ruler"/></svg>Guía de tallas</button>
+        </div>
       </div>
       <div class="grid" id="grid"></div>
+      <div class="more" id="more" hidden><button class="btn btn--ghost" type="button" id="more-btn"></button></div>
       <div class="empty" id="empty" hidden>
         <p class="empty__title">Sin pares por ahora</p>
         <p id="empty-text"></p>
@@ -647,7 +757,22 @@ h1,h2,h3,p{margin:0}
     </div>
   </section>
 
-  <!-- 4 · PARES POR ENCARGO -->
+  <!-- 4 · RESEÑAS -->
+  <section class="sec cv" id="resenas" style="padding-top:0">
+    <div class="wrap">
+      <div class="rev__head">
+        <div>
+          <p class="eyebrow">Reseñas</p>
+          <h2 class="h2" style="margin-top:12px">Lo que dicen de nosotros</h2>
+          <p class="rev__sum" id="rev-sum"></p>
+        </div>
+        <a class="btn btn--ghost" id="rev-link" href="#" target="_blank" rel="noopener">Ver todas las reseñas</a>
+      </div>
+      <div class="rev__track" id="rev-list"></div>
+    </div>
+  </section>
+
+  <!-- 5 · PARES POR ENCARGO -->
   <section class="sec enc cv" id="encargo">
     <div class="wrap enc__grid">
       <div>
@@ -669,8 +794,21 @@ h1,h2,h3,p{margin:0}
     </div>
   </section>
 
-  <!-- 5 · PREGUNTAS FRECUENTES -->
-  <section class="sec cv" id="faq">
+  <!-- 6 · SOBRE LA TIENDA / VISÍTANOS -->
+  <section class="sec cv" id="nosotros">
+    <div class="wrap about__grid">
+      <div>
+        <p class="eyebrow" id="ab-eyebrow"></p>
+        <h2 class="h2" style="margin-top:12px" id="ab-title"></h2>
+        <p class="about__text" id="ab-text"></p>
+        <div class="stats" id="ab-stats"></div>
+      </div>
+      <aside class="visit" id="ab-visit" aria-label="Visítanos"></aside>
+    </div>
+  </section>
+
+  <!-- 7 · PREGUNTAS FRECUENTES -->
+  <section class="sec cv faq" id="faq">
     <div class="wrap faq__grid">
       <div class="faq__head">
         <p class="eyebrow">Dudas</p>
@@ -687,12 +825,12 @@ h1,h2,h3,p{margin:0}
     <p class="foot__mark" data-c="tienda"></p>
     <p class="foot__slogan" data-c="slogan"></p>
     <div class="foot__grid">
-      <div><h3>Tienda</h3><ul><li><a href="#catalogo">Catálogo</a></li><li><a href="#encargo">Pares por encargo</a></li><li><button type="button" data-open-guia>Guía de tallas</button></li><li><a href="#faq">Preguntas</a></li></ul></div>
-      <div><h3>Contacto</h3><ul><li><a data-wa-link href="#" id="foot-wa"></a></li><li data-c="horario"></li><li id="foot-city"></li></ul></div>
+      <div><h3>Tienda</h3><ul><li><a href="#catalogo">Catálogo</a></li><li><a href="#encargo">Pares por encargo</a></li><li><a href="#nosotros">Visítanos</a></li><li><button type="button" data-open-guia>Guía de tallas</button></li><li><a href="#faq">Preguntas</a></li></ul></div>
+      <div><h3>Contacto</h3><ul id="foot-contact"><li><a data-wa-link href="#" id="foot-wa"></a></li><li data-c="horario"></li><li id="foot-city"></li></ul></div>
       <div><h3>Síguenos</h3><ul id="foot-social"></ul></div>
       <div><h3>Pagos</h3><ul id="foot-pagos"></ul></div>
     </div>
-    <div class="foot__legal"><span id="foot-copy"></span><span>Precios en MXN sujetos a disponibilidad. Las marcas mencionadas pertenecen a sus dueños; no estamos afiliados a ellas.</span></div>
+    <div class="foot__legal"><span id="foot-copy"></span><span class="foot__links"><button type="button" data-legal="privacidad">Aviso de privacidad</button><button type="button" data-legal="terminos">Términos de compra</button></span><span>Precios en MXN sujetos a disponibilidad. Las marcas mencionadas pertenecen a sus dueños; no estamos afiliados a ellas.</span></div>
   </div>
 </footer>
 
@@ -712,6 +850,14 @@ h1,h2,h3,p{margin:0}
         <li>Cada modelo calza distinto. Si dudas, pregúntanos por WhatsApp antes de apartar.</li>
       </ul>
     </div>
+  </div>
+</dialog>
+
+<!-- 8 · TEXTOS LEGALES -->
+<dialog class="modal" id="legal" aria-labelledby="legal-title">
+  <div class="modal__in">
+    <div class="modal__head"><h2 id="legal-title"></h2><button class="iconbtn" type="button" data-close aria-label="Cerrar"><svg><use href="#i-x"/></svg></button></div>
+    <div class="modal__body legal" id="legal-body"></div>
   </div>
 </dialog>
 
@@ -735,7 +881,7 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const productos = C.productos || [];
 const byId = Object.fromEntries(productos.map((p) => [p.id, p]));
 const nombreCompleto = (p) => (p.colorway ? `${p.nombre} "${p.colorway}"` : p.nombre);
-const ctx = { tienda: C.tienda, ciudad: C.ciudad, pagos: (C.pagos || []).join(', ') };
+const ctx = { tienda: C.tienda, ciudad: C.ciudad, pagos: (C.pagos || []).join(', '), envios: C.envios || '', correo: C.correo || 'nuestro correo', responsable: C.legal?.responsable || C.tienda };
 const fill = (tpl, data = {}) => String(tpl ?? '').replace(/\{(\w+)\}/g, (m, k) => (k in data ? data[k] : (ctx[k] ?? m)));
 
 /* ── Medición (eventos para Meta Pixel, TikTok Pixel, GA4 o GTM si están instalados) ── */
@@ -993,7 +1139,7 @@ const Hero = {
       WA.open(fill(C.mensajes.drop, { producto, palabra: s.palabra }), 'wa_drop', { drop: s.palabra });
     });
     document.addEventListener('keydown', (e) => {
-      if (!this.visible || e.altKey || e.ctrlKey || e.metaKey || $('#guia').open) return;
+      if (!this.visible || e.altKey || e.ctrlKey || e.metaKey || $('dialog[open]')) return;
       if (/^(INPUT|SELECT|TEXTAREA)$/.test(e.target.tagName)) return;
       if (e.key === 'ArrowRight') this.next(true);
       if (e.key === 'ArrowLeft') this.prev(true);
@@ -1065,12 +1211,14 @@ const tagClase = (t) => {
   return '';
 };
 const Catalogo = {
-  marca: 'todas', talla: '',
+  marca: 'todas', talla: '', orden: '',
 
   init() {
     this.grid = $('#grid');
     this.marcas = C.filtros?.marcas?.length ? C.filtros.marcas : [...new Set(productos.map((p) => p.marca))];
     this.tallas = (C.filtros?.tallas || []).map(tKey);
+    this.porPagina = Math.max(1, Number(C.filtros?.porPagina) || 12);
+    this.limite = this.porPagina;
     const q = new URLSearchParams(location.search);
     const qm = q.get('marca'), qt = q.get('talla');
     if (qm && this.marcas.some((m) => slug(m) === slug(qm))) this.marca = slug(qm);
@@ -1106,7 +1254,13 @@ const Catalogo = {
   },
 
   bind() {
-    $('#f-marcas').addEventListener('click', (e) => { const b = e.target.closest('[data-marca]'); if (b) { this.marca = b.dataset.marca; this.apply(); } });
+    $('#f-marcas').addEventListener('click', (e) => { const b = e.target.closest('[data-marca]'); if (b) { this.marca = b.dataset.marca; this.limite = this.porPagina; this.apply(); } });
+    $('#orden').addEventListener('change', (e) => { this.orden = e.target.value; this.ordenar(); this.apply({ scroll: false }); });
+    $('#more-btn').addEventListener('click', () => {
+      const antes = $$('.card:not([hidden])', this.grid).length;
+      this.limite += this.porPagina; this.apply({ animar: false, scroll: false });
+      $$('.card:not([hidden])', this.grid)[antes]?.querySelector('input, button')?.focus({ preventScroll: true });
+    });
     $('#f-tallas').addEventListener('click', (e) => { const b = e.target.closest('[data-talla]'); if (b) { this.setTalla(b.dataset.talla); } });
     this.grid.addEventListener('change', (e) => { if (e.target.type === 'radio') this.updateBuy(e.target.closest('.card')); });
     this.grid.addEventListener('click', (e) => {
@@ -1129,7 +1283,17 @@ const Catalogo = {
   },
 
   marcaLabel() { return this.marcas.find((m) => slug(m) === this.marca) || ''; },
-  setTalla(t) { this.talla = this.tallas.includes(tKey(t)) ? tKey(t) : ''; store.set(this.talla); this.apply(); },
+  setTalla(t) { this.talla = this.tallas.includes(tKey(t)) ? tKey(t) : ''; this.limite = this.porPagina; store.set(this.talla); this.apply(); },
+  ordenar() {
+    const idx = Object.fromEntries(productos.map((p, i) => [p.id, i]));
+    const val = (c) => (this.orden ? byId[c.dataset.id].precio * (this.orden === 'asc' ? 1 : -1) : idx[c.dataset.id]);
+    $$('.card', this.grid).sort((a, b) => val(a) - val(b)).forEach((c) => this.grid.appendChild(c));
+  },
+  mostrar(id) {
+    const card = $(`#p-${CSS.escape(id)}`); if (!card) return null;
+    if (card.hidden) { this.marca = 'todas'; this.talla = ''; this.limite = Infinity; this.apply({ animar: false, scroll: false }); }
+    return card;
+  },
   updateBuy(card) {
     const r = $('input:checked', card), b = $('[data-buy]', card); if (!b) return;
     b.classList.toggle('is-ready', !!r);
@@ -1140,11 +1304,15 @@ const Catalogo = {
     let n = 0;
     $$('.card', this.grid).forEach((card) => {
       const ok = (this.marca === 'todas' || card.dataset.marca === this.marca) && (!this.talla || card.dataset.tallas.includes(` ${this.talla} `));
-      card.hidden = !ok;
+      card.hidden = !ok || n >= this.limite;
       if (!ok) return;
-      card.style.setProperty('--i', Math.min(n, 8)); n++;
+      if (n < this.limite) card.style.setProperty('--i', Math.min(n, 8));
+      n++;
       if (this.talla) { const r = $(`input[value="${this.talla}"]`, card); if (r) { r.checked = true; this.updateBuy(card); } }
     });
+    const resto = Math.max(0, n - this.limite);
+    $('#more').hidden = resto === 0;
+    if (resto) $('#more-btn').textContent = `Ver más pares (${resto})`;
     $$('#f-marcas .chip').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.marca === this.marca)));
     $$('#f-tallas .chip').forEach((b) => {
       const t = b.dataset.talla;
@@ -1229,6 +1397,24 @@ const Guia = {
   }
 };
 
+/* ══════════ TEXTOS LEGALES (aviso de privacidad y términos) ══════════ */
+const Legal = {
+  TITULOS: { privacidad: 'Aviso de privacidad', terminos: 'Términos de compra' },
+  init() {
+    const dlg = $('#legal');
+    document.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-legal]'); if (!b) return;
+      const tipo = b.dataset.legal, secciones = C.legal?.[tipo] || [];
+      $('#legal-title').textContent = this.TITULOS[tipo] || '';
+      $('#legal-body').innerHTML = secciones.map(([t, p]) => `<h3>${esc(fill(t))}</h3><p>${esc(fill(p))}</p>`).join('')
+        + (C.legal?.actualizado ? `<p class="legal__date">Última actualización: ${esc(C.legal.actualizado)}.</p>` : '');
+      dlg.showModal();
+    });
+    dlg.addEventListener('click', (e) => { if (e.target === dlg || e.target.closest('[data-close]')) dlg.close(); });
+    if (!C.legal) $$('.foot__links').forEach((el) => el.remove());
+  }
+};
+
 /* ══════════ SECCIONES DE CONTENIDO ══════════ */
 function renderContenido() {
   // Textos sueltos con data-c="campo"
@@ -1250,6 +1436,37 @@ function renderContenido() {
   ].map(([ico, t, d]) => `<div class="trust__item"><span class="trust__ico"><svg class="ico"><use href="#${ico}"/></svg></span><div><h3>${t}</h3><p>${d}</p></div></div>`).join('');
   // FAQ (acordeón nativo, sin JS extra)
   $('#faq-list').innerHTML = (C.faq || []).map((f, i) => `<details class="faq__item" name="faq"${i ? '' : ' open'}><summary>${esc(fill(f.pregunta))}<span class="faq__plus" aria-hidden="true"></span></summary><p>${esc(fill(f.respuesta))}</p></details>`).join('');
+  // Reseñas
+  const resenas = C.resenas || [];
+  if (resenas.length) {
+    const star = '<svg class="ico" aria-hidden="true"><use href="#i-star"/></svg>';
+    $('#rev-list').innerHTML = resenas.map((r) => {
+      const n = Math.max(1, Math.min(5, Math.round(r.estrellas || 5)));
+      const ini = String(r.nombre || '?').trim().charAt(0).toUpperCase();
+      return `<figure class="rev" style="margin:0"><div class="rev__stars" role="img" aria-label="${n} de 5 estrellas">${star.repeat(n)}</div>
+        <blockquote class="rev__text" style="margin:0">${esc(r.texto)}</blockquote>
+        <figcaption class="rev__who"><span class="rev__avatar" aria-hidden="true">${esc(ini)}</span><span><span class="rev__name">${esc(r.nombre)}</span><br><span class="rev__meta">${esc([r.ciudad, r.par && `Compró ${r.par}`].filter(Boolean).join(' · '))}</span></span></figcaption></figure>`;
+    }).join('');
+    if (C.resenasResumen) $('#rev-sum').innerHTML = `<svg class="ico" aria-hidden="true"><use href="#i-star"/></svg>${esc(C.resenasResumen)}`; else $('#rev-sum').remove();
+    if (C.resenasLink) $('#rev-link').href = C.resenasLink; else $('#rev-link').remove();
+  } else $('#resenas').remove();
+  // Sobre la tienda / Visítanos
+  const N = C.nosotros || {};
+  $('#ab-eyebrow').textContent = `Sobre ${C.tienda}`;
+  $('#ab-title').textContent = N.titulo || C.slogan;
+  $('#ab-text').textContent = fill(N.texto || '');
+  $('#ab-stats').innerHTML = (N.cifras || []).slice(0, 3).map(([v, t]) => `<div class="stat"><strong>${esc(v)}</strong><span>${esc(t)}</span></div>`).join('');
+  const fila = (ico, label, value) => `<div class="visit__row"><span class="visit__ico"><svg class="ico"><use href="#${ico}"/></svg></span><div><p class="visit__label">${label}</p><p class="visit__value">${value}</p></div></div>`;
+  $('#ab-visit').innerHTML = [
+    N.foto ? `<img class="visit__photo" src="${esc(N.foto)}" alt="Tienda ${esc(C.tienda)}" loading="lazy" decoding="async">` : '',
+    `<p class="visit__title">${C.direccion ? 'Visítanos' : 'Compra en línea'}</p>`,
+    C.direccion ? fila('i-pin', 'Dirección', esc(C.direccion)) : fila('i-pin', 'Tienda en línea', `Atendemos ${esc(C.ciudad)} y todo México`),
+    fila('i-clock', 'Horario', esc(C.horario) + (N.visitas ? `<br><span class="visit__label" style="letter-spacing:0;text-transform:none">${esc(N.visitas)}</span>` : '')),
+    fila('i-truck', 'Envíos', esc(C.entregaLocal || C.envios)),
+    C.correo ? fila('i-mail', 'Correo', `<a href="mailto:${esc(C.correo)}">${esc(C.correo)}</a>`) : '',
+    `<div class="visit__ctas">${C.mapa ? `<a class="btn btn--ghost" href="${esc(C.mapa)}" target="_blank" rel="noopener"><svg class="ico"><use href="#i-pin"/></svg>Cómo llegar</a>` : ''}<a class="btn btn--primario" id="ab-wa" href="${WA.url(fill(C.mensajes.visita || C.mensajes.general))}" target="_blank" rel="noopener"><svg class="ico"><use href="#i-wa"/></svg>${C.direccion ? 'Agendar visita' : 'Escríbenos'}</a></div>`
+  ].join('');
+  $('#ab-wa').addEventListener('click', () => track('wa_visita'));
   // Links de WhatsApp generales
   const general = WA.url(fill(C.mensajes.general));
   $$('[data-wa-link]').forEach((a) => { a.href = general; a.target = '_blank'; a.rel = 'noopener'; a.addEventListener('click', () => track('wa_general')); });
@@ -1257,6 +1474,8 @@ function renderContenido() {
   const d = String(C.whatsapp).replace(/\D/g, '').slice(-10);
   $('#foot-wa').textContent = `+52 ${d.slice(0, 2)} ${d.slice(2, 6)} ${d.slice(6)}`;
   $('#foot-city').textContent = `${C.ciudad} · Envíos a todo México`;
+  if (C.direccion) $('#foot-contact').insertAdjacentHTML('beforeend', `<li>${C.mapa ? `<a href="${esc(C.mapa)}" target="_blank" rel="noopener">${esc(C.direccion)}</a>` : esc(C.direccion)}</li>`);
+  if (C.correo) $('#foot-contact').insertAdjacentHTML('beforeend', `<li><a href="mailto:${esc(C.correo)}">${esc(C.correo)}</a></li>`);
   $('#foot-social').innerHTML = [['instagram', 'Instagram', 'i-ig'], ['tiktok', 'TikTok', 'i-tt']].filter(([k]) => C[k]).map(([k, l]) => `<li><a href="${esc(C[k])}" target="_blank" rel="noopener">${l}</a></li>`).join('') || '<li>Pronto</li>';
   $('#foot-pagos').innerHTML = (C.pagos || []).map((p) => `<li>${esc(p)}</li>`).join('');
   $('#foot-copy').textContent = `© ${new Date().getFullYear()} ${C.tienda}`;
@@ -1277,8 +1496,9 @@ Catalogo.init();
 Hero.init();
 Encargo.init();
 Guia.init();
+Legal.init();
 // Link directo a un producto: tutienda.com/#p-dunk-panda
-if (location.hash.startsWith('#p-')) { const c = $(location.hash); if (c) { c.classList.add('is-flash'); setTimeout(() => c.scrollIntoView({ block: 'center' }), 50); } }
+if (location.hash.startsWith('#p-')) { const c = Catalogo.mostrar(decodeURIComponent(location.hash.slice(3))); if (c) { c.classList.add('is-flash'); setTimeout(() => c.scrollIntoView({ block: 'center' }), 50); } }
 })();
 </script>
 
@@ -1287,31 +1507,35 @@ if (location.hash.startsWith('#p-')) { const c = $(location.hash); if (c) { c.cl
   GUÍA DE CLONACIÓN · NUEVA BOUTIQUE EN MENOS DE 5 MINUTOS
   (las líneas son las de esta plantilla; los bloques van en orden y arriba)
 ════════════════════════════════════════════════════════════════════════
-  PASO 1 · SEO (BLOQUE 1, líneas 20–30)
+  PASO 1 · SEO (BLOQUE 1, líneas 20–33)
      Cambia <title>, description y og:title/og:description con el nombre y la
-     ciudad. Pon en og:image la URL completa de una foto de 1200×630 y en
-     theme-color el color del primer slide.
+     ciudad. En og:image cambia tu-dominio.com por el dominio real (la imagen
+     ya viene en assets/og.jpg) y en theme-color pon el color del primer slide.
 
-  PASO 2 · MARCA VISUAL (BLOQUE 2, líneas 33–49)
+  PASO 2 · MARCA VISUAL (BLOQUE 2, líneas 36–52)
      Edita --color-acento (filtros activos, Nuevo Drop, sección de encargos),
      --color-alerta y, si quieres tienda oscura, pega el preset del comentario.
 
-  PASO 3 · DATOS DE LA TIENDA (BLOQUE 3, líneas 54–72)
-     tienda, slogan, whatsapp (52 + 10 dígitos), horario, instagram, tiktok,
-     ciudad, autenticidad, envios, entregaLocal, pagos y anuncios.
+  PASO 3 · DATOS DE LA TIENDA (BLOQUE 3, líneas 57–78)
+     tienda, slogan, whatsapp (52 + 10 dígitos), horario, correo, direccion,
+     mapa (link de Google Maps), instagram, tiktok, ciudad, autenticidad,
+     envios, entregaLocal, pagos y anuncios.
 
-  PASO 4 · HERO Y PRODUCTOS (BLOQUE 3, hero en líneas 74–100 y productos en 121–163)
+  PASO 4 · HERO Y PRODUCTOS (BLOQUE 3, hero en líneas 80–108 y productos en 147–189)
      Hero: por slide usa productoId (toma marca, modelo y precio del catálogo)
      o llena marca/modelo/apodo/precio; pon zapato con la foto sin fondo
      (assets/kicks/lilac-shoe.webp) y voltear: true si apunta a la izquierda.
      Productos: copia una línea { id, marca, nombre, colorway, precio,
      precioAnterior, tallas, etiqueta, imagen } por par. Cada id debe ser único.
-     Revisa que filtros.marcas incluya las marcas que vendes.
+     Revisa que filtros.marcas incluya las marcas que vendes y ajusta
+     filtros.porPagina (pares que se ven antes del botón «Ver más»).
 
-  PASO 5 · MENSAJES, FAQ Y PUBLICAR (BLOQUE 3, líneas 103–119)
-     Ajusta los textos de mensajes y faq. Abre el archivo en el celular, elige
-     una talla, toca «Apartar» y confirma que llega el mensaje a tu WhatsApp.
-     Publica arrastrando la carpeta a app.netlify.com/drop (o Vercel).
+  PASO 5 · TEXTOS, RESEÑAS, LEGAL Y PUBLICAR (BLOQUE 3, líneas 110–145 y legal en 191–212)
+     Ajusta mensajes, faq, nosotros (historia y cifras reales) y resenas: las
+     de la plantilla son ejemplos, pon solo reseñas reales o deja resenas: [].
+     En legal pon el nombre comercial o razón social. Abre el archivo en el
+     celular, elige una talla, toca «Apartar» y confirma que llega el mensaje
+     a tu WhatsApp. Publica arrastrando la carpeta a app.netlify.com/drop.
      Para anuncios: tutienda.com/?marca=jordan&talla=27 abre el catálogo ya
      filtrado y tutienda.com/#p-dunk-panda lleva directo a un par.
 ════════════════════════════════════════════════════════════════════════

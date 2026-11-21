@@ -1,12 +1,17 @@
 # Plantilla maestra · tienda de sneakers
 
-Tienda de una página en **un solo `index.html`**: sin librerías y con la fuente incrustada. Se carga en una sola petición (≈75 KB con gzip) y cada venta se cierra por WhatsApp.
+Plantilla para vender a boutiques de sneakers: tienda de una página en **un solo `index.html`**, sin librerías y con la fuente incrustada. La página se carga en una sola petición (≈80 KB con gzip) más las fotos, y cada venta se cierra por WhatsApp.
 
-- **Hero de drops:** slider de 4 colorways con barrido medido, paralaje, autoplay, swipe y teclado.
-- **Catálogo:** filtros por marca y por talla MX, con el link compartible `?marca=jordan&talla=27`.
+- **Hero de drops:** slider de 4 colorways con fotos, barrido medido, paralaje, autoplay, swipe y teclado.
+- **Catálogo:** filtros por marca y por talla MX, orden por precio, botón «Ver más» y link compartible `?marca=jordan&talla=27`.
 - **Compra en 1 clic:** eliges la talla en la tarjeta y se abre WhatsApp con el mensaje listo.
 - **Pares por encargo:** formulario que manda la solicitud a WhatsApp.
-- **Confianza:** barra de garantías, guía de tallas MX/US/CM y preguntas frecuentes.
+- **Confianza:** barra de garantías, reseñas de clientes, guía de tallas MX/US/CM y preguntas frecuentes.
+- **Sobre la tienda:** historia, cifras, dirección con «Cómo llegar», horario y botón para agendar visita.
+- **Legal:** aviso de privacidad y términos de compra editables (texto de referencia; revisarlo con un asesor).
+- **Vista previa al compartir:** `assets/og.jpg` de 1200×630 para WhatsApp, Instagram y Facebook.
+
+Todo el contenido sale de `STORE_CONFIG`. Las reseñas, cifras y la dirección de la demo son **ejemplos**: hay que cambiarlas por las reales de cada cliente antes de publicar.
 
 ## Verla
 
