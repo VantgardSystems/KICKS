@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a6ac4"/><stop offset=".62" stop-color="#ad8ccf"/><stop offset="1" stop-color="#e394a3"/></linearGradient>
+    <radialGradient id="c" cx="32" cy="14.5" r="10" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff1d0"/><stop offset=".35" stop-color="#ffd9a0" stop-opacity=".75"/><stop offset="1" stop-color="#ffd9a0" stop-opacity="0"/></radialGradient>
+    <clipPath id="r"><rect width="64" height="64" rx="14"/></clipPath>
+  </defs>
+  <g clip-path="url(#r)">
+    <rect width="64" height="64" fill="url(#g)"/>
+    <circle cx="32" cy="14.5" r="10" fill="url(#c)"/>
+    <path d="M8 64V49h6v-5h5v20zM43 64V46h6v-6h5v24zM55 64V51h9v13z" fill="#2a2f66"/>
+    <path d="M29.6 16h4.8l1.3 48h-7.4z" fill="#151f3f"/>
+    <rect x="29.4" y="13.2" width="5.2" height="3.2" rx="1.2" fill="#ffe6b0"/>
+    <path d="M31.2 22v38M32.8 22v38" stroke="#ffd58a" stroke-opacity=".55" stroke-width=".6" stroke-dasharray="1 1.6"/>
+  </g>
+</svg>

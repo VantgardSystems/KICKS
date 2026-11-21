@@ -9,7 +9,13 @@
 <meta property="og:title" content="Verane Inmobiliaria | Casas, terrenos y rentas en Querétaro">
 <meta property="og:description" content="Precalifícate en 15 segundos y recibe opciones verificadas por WhatsApp.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="fotos/casa-venta-1000.webp">
+<meta property="og:image" content="media/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#151f3f">
 
 <script>
@@ -21,12 +27,14 @@ window.CONFIG = {
   nombre: 'Verane Inmobiliaria',        // nombre completo (mensajes, pie de página)
   marca: 'VERANE',                       // texto del logo
   ciudad: 'Querétaro',                   // palabra gigante del hero y textos
-  whatsapp: '524421234567',              // 52 + 10 dígitos, sin espacios ni "+"
-  telefonoVisible: '442 123 4567',       // como se muestra en pantalla
-  correo: 'hola@verane.mx',
-  direccion: 'Av. Constituyentes 120, Centro, Querétaro',
+  whatsapp: '',                          // 52 + 10 dígitos, sin espacios ni "+" (ej. '524421234567'). Vacío = modo demo
+  telefonoVisible: '',                   // como se muestra en pantalla (ej. '442 123 4567')
+  correo: '',                            // ej. 'hola@tuinmobiliaria.mx'
+  direccion: 'Querétaro, Qro.',          // calle y número de tu oficina
   horario: 'Lunes a sábado de 9:00 a 19:00',
-  avisoPrivacidad: '#',                  // URL de tu aviso de privacidad
+  horarioSchema: 'Mo-Sa 09:00-19:00',    // el mismo horario en formato de Google (Mo Tu We Th Fr Sa Su)
+  avisoPrivacidad: '',                   // vacío = usa el aviso incluido (revísalo con tu abogado); o pon la URL del tuyo
+  avisoActualizado: 'noviembre de 2026',
 
   textos: {
     heroScript: 'Tu hogar en',
@@ -36,7 +44,8 @@ window.CONFIG = {
     heroBoton: 'Precalifícate en 15 segundos',
     badges: ['Asesoría personalizada', 'Trámites hipotecarios', 'Propiedades verificadas'],
     escenaFrase: 'Un asesor te acompaña de la primera visita a la entrega de llaves.',
-    respuesta: 'Te respondemos el mismo día en horario de oficina.'
+    respuesta: 'Te respondemos el mismo día en horario de oficina.',
+    notaPrecios: 'Precios en pesos mexicanos, sujetos a cambio y a disponibilidad sin previo aviso. No incluyen gastos notariales, impuestos, avalúo ni comisiones bancarias, salvo que se indique. Fotografías ilustrativas.'
   },
 
   // Paso 2 del precalificador: pon las zonas reales de tu ciudad
@@ -75,11 +84,9 @@ window.CONFIG = {
 };
 </script>
 
-<link rel="preconnect" href="https://images.higgs.ai" crossorigin>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="image" crossorigin="anonymous" fetchpriority="high" href="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261119_114206_b326116b-1b08-4b0a-95c7-e0b20c6986ee.png&amp;w=2048&amp;q=85">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/poppins/v24/pxiEyp8kv8JHgFVrJJfecg.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtq.woff2">
+<link rel="preload" as="image" href="media/ciudad.webp" fetchpriority="high">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fuentes/poppins-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="fuentes/outfit-variable.woff2">
 
 <style>
 /* =====================================================================
@@ -103,12 +110,12 @@ window.CONFIG = {
 }
 
 /* ---------- fuentes (latín) ---------- */
-@font-face{font-family:Poppins;font-weight:300;font-display:swap;src:url(https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLDz8Z1xlFQ.woff2) format('woff2')}
-@font-face{font-family:Poppins;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/poppins/v24/pxiEyp8kv8JHgFVrJJfecg.woff2) format('woff2')}
-@font-face{font-family:Poppins;font-weight:500;font-display:swap;src:url(https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLGT9Z1xlFQ.woff2) format('woff2')}
-@font-face{font-family:Poppins;font-weight:600;font-display:swap;src:url(https://fonts.gstatic.com/s/poppins/v24/pxiByp8kv8JHgFVrLEj6Z1xlFQ.woff2) format('woff2')}
-@font-face{font-family:'Pinyon Script';font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/pinyonscript/v24/6xKpdSJbL9-e9LuoeQiDRQR8WOXaOg.woff2) format('woff2')}
-@font-face{font-family:Outfit;font-weight:100 900;font-display:swap;src:url(https://fonts.gstatic.com/s/outfit/v15/QGYvz_MVcBeNP4NJtEtq.woff2) format('woff2')}
+@font-face{font-family:Poppins;font-weight:300;font-display:swap;src:url(fuentes/poppins-300.woff2) format('woff2')}
+@font-face{font-family:Poppins;font-weight:400;font-display:swap;src:url(fuentes/poppins-400.woff2) format('woff2')}
+@font-face{font-family:Poppins;font-weight:500;font-display:swap;src:url(fuentes/poppins-500.woff2) format('woff2')}
+@font-face{font-family:Poppins;font-weight:600;font-display:swap;src:url(fuentes/poppins-600.woff2) format('woff2')}
+@font-face{font-family:'Pinyon Script';font-weight:400;font-display:swap;src:url(fuentes/pinyon-script-400.woff2) format('woff2')}
+@font-face{font-family:Outfit;font-weight:100 900;font-display:swap;src:url(fuentes/outfit-variable.woff2) format('woff2')}
 
 /* ---------- base ---------- */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -179,15 +186,18 @@ ul{list-style:none}
 #room .ext{position:absolute;top:0;height:100%;width:4000px;background:linear-gradient(#101b39,#121c3d 22%,#101a3a 63%,#0d1838 70.6%,#0a122e 73.5%,#080f28 85.3%,#0f1738 86.8%,#1f2247 89.7%,#2e2c56 92.6%,#3a3460 95.6%,#4a3d6a)}
 #room .ext.l{right:100%}
 #room .ext.r{left:100%}
-#roomCv{position:absolute;left:0;top:0;width:100%;height:100%;-webkit-mask-image:linear-gradient(to bottom,#000 86%,transparent 100%);mask-image:linear-gradient(to bottom,#000 86%,transparent 100%)}
+#roomImg{position:absolute;left:0;top:0;width:100%;height:100%}
+/* velo detrás de los textos del hero en escritorio (contraste AA sobre el cielo); deja libre la torre */
+.veil{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(14,20,52,.44) 0%,rgba(14,20,52,.3) 38%,rgba(14,20,52,0) 60%);-webkit-mask-image:linear-gradient(to right,#000 33%,rgba(0,0,0,.5) 46%,rgba(0,0,0,.5) 54%,#000 67%);mask-image:linear-gradient(to right,#000 33%,rgba(0,0,0,.5) 46%,rgba(0,0,0,.5) 54%,#000 67%)}
+.phone .veil{display:none}
 
 /* textos del hero: dos columnas a los lados de la torre en escritorio, bloque inferior en celular */
 #heroText{position:absolute;left:6.56vw;right:4.8vw;top:calc(var(--navH) + env(safe-area-inset-top) + 5vh);display:grid;grid-template-columns:38fr 19.6fr 31fr;grid-template-areas:"titulo . sub" "cta . badges";align-items:start;row-gap:calc(26px * var(--s))}
 #heroText h1{grid-area:titulo;font-weight:400;font-size:max(28px,calc(46px * var(--s)));line-height:1.1;letter-spacing:-.012em;text-wrap:balance}
-#heroText .sub{grid-area:sub;font-weight:300;font-size:max(15px,calc(16px * var(--s)));line-height:1.55;color:rgba(255,255,255,.92)}
+#heroText .sub{grid-area:sub;font-weight:400;font-size:max(15px,calc(16px * var(--s)));line-height:1.55;color:#fff}
 #heroText .ctas{grid-area:cta;display:flex;flex-wrap:wrap;gap:12px}
 #heroText .badges{grid-area:badges;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-.badge{display:inline-flex;align-items:center;gap:8px;padding:7px 14px 7px 10px;border-radius:999px;font-size:14px;line-height:1.2;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.26);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:7px 14px 7px 10px;border-radius:999px;font-size:14px;line-height:1.2;background:rgba(17,24,58,.42);border:1px solid rgba(255,255,255,.22);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .badge .ico{width:18px;height:18px;color:var(--acento);stroke-width:2.2}
 #heroText .ctas .btn{white-space:nowrap}
 .corta #heroText{grid-template-areas:"titulo . ." "cta . .";row-gap:14px;top:calc(var(--navH) + env(safe-area-inset-top))}
@@ -287,6 +297,17 @@ ul{list-style:none}
 .prop .btn-wa{margin-top:auto;min-height:50px;font-size:15px}
 .props-nota{margin-top:20px;color:var(--texto-2);font-size:15px}
 .props-nota a{text-decoration:underline;text-underline-offset:3px}
+.nota-precios{margin-top:10px;font-size:13px;color:var(--texto-3);max-width:80ch}
+/* aviso de privacidad */
+#avisoDlg{margin:auto;width:min(680px,calc(100vw - 32px));max-height:min(86vh,900px);padding:0;border-radius:var(--radio);color:#fff;background:linear-gradient(160deg,rgba(38,46,96,.96),rgba(21,31,63,.97));border:1px solid rgba(255,255,255,.17);box-shadow:0 30px 80px rgba(4,6,24,.6)}
+#avisoDlg::backdrop{background:rgba(8,11,32,.62);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.aviso-in{padding:clamp(22px,4vw,36px);overflow:auto;max-height:inherit}
+.aviso-in h2{font-weight:500;font-size:24px;line-height:1.2;margin-bottom:6px}
+.aviso-in h3{font-weight:500;font-size:16px;margin:20px 0 6px}
+.aviso-in p,.aviso-in li{color:var(--texto-2);font-size:15px}
+.aviso-in ul{list-style:disc;padding-left:20px}
+.aviso-cerrar{position:sticky;top:0;float:right;margin:-8px -8px 0 12px;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2)}
+.aviso-cerrar .ico{width:20px;height:20px}
 
 /* ---------- respaldo ---------- */
 .ben{display:grid;gap:0;border-top:1px solid var(--linea)}
@@ -367,15 +388,16 @@ footer{padding:48px 20px calc(96px + env(safe-area-inset-bottom));border-top:1px
     <div class="stage" id="stage">
       <div id="view" class="L">
         <div class="sky"></div>
-        <img id="heroImg" class="L" crossorigin="anonymous" fetchpriority="high" alt="" src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261119_114206_b326116b-1b08-4b0a-95c7-e0b20c6986ee.png&amp;w=2048&amp;q=85">
-        <img class="sea L" crossorigin="anonymous" alt="" src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261119_114206_b326116b-1b08-4b0a-95c7-e0b20c6986ee.png&amp;w=2048&amp;q=85">
-        <video id="heroVid" class="L" muted loop playsinline preload="none" crossorigin="anonymous" aria-hidden="true"></video>
+        <img id="heroImg" class="L" fetchpriority="high" alt="" src="media/ciudad.webp">
+        <img class="sea L" alt="" src="media/ciudad.webp">
+        <video id="heroVid" class="L" muted loop playsinline preload="none" aria-hidden="true"></video>
       </div>
+      <div class="veil" id="veil"></div>
       <div id="head" class="L" aria-hidden="true"><span id="word">QUERÉTARO</span></div>
-      <div id="tower" class="L"><img crossorigin="anonymous" alt="" src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261119_114206_b326116b-1b08-4b0a-95c7-e0b20c6986ee.png&amp;w=2048&amp;q=85"></div>
+      <div id="tower" class="L"><img alt="" src="media/ciudad.webp"></div>
       <span id="script" class="L" aria-hidden="true">Tu hogar en</span>
       <div class="shade" id="shade"></div>
-      <div id="room" class="L" aria-hidden="true"><span class="ext l"></span><span class="ext r"></span><canvas id="roomCv" width="2048" height="1360"></canvas></div>
+      <div id="room" class="L" aria-hidden="true"><span class="ext l"></span><span class="ext r"></span><img id="roomImg" alt="" decoding="async" width="2048" height="1360"></div>
 
       <div id="heroText">
         <h1 data-c="heroTitulo">Encuentra o vende tu propiedad sin perder tiempo</h1>
@@ -401,7 +423,7 @@ footer{padding:48px 20px calc(96px + env(safe-area-inset-bottom));border-top:1px
   <div class="page">
     <!-- ============ PRECALIFICADOR ============ -->
     <section class="sec" id="precalifica" aria-labelledby="q-titulo">
-      <div class="city" aria-hidden="true"><img loading="lazy" decoding="async" crossorigin="anonymous" alt="" src="https://images.higgs.ai/?default=1&amp;output=webp&amp;url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261119_114206_b326116b-1b08-4b0a-95c7-e0b20c6986ee.png&amp;w=2048&amp;q=85"></div>
+      <div class="city" aria-hidden="true"><img loading="lazy" decoding="async" alt="" src="media/ciudad.webp"></div>
       <div class="wrap q-grid">
         <div class="head">
           <h2 id="q-titulo">Precalifícate en 15 segundos</h2>
@@ -441,6 +463,7 @@ footer{padding:48px 20px calc(96px + env(safe-area-inset-bottom));border-top:1px
         </div>
         <div class="props" id="props"></div>
         <p class="props-nota">¿No ves lo que buscas? Muchas propiedades se venden antes de publicarse. <a href="#precalifica">Cuéntanos qué necesitas</a> y te avisamos.</p>
+        <p class="nota-precios" data-c="notaPrecios"></p>
       </div>
     </section>
 
@@ -518,24 +541,26 @@ footer{padding:48px 20px calc(96px + env(safe-area-inset-bottom));border-top:1px
     <div>
       <h3>Contacto</h3>
       <ul>
-        <li><a data-wa="general" href="#">WhatsApp: <span data-cfg="telefonoVisible">442 123 4567</span></a></li>
-        <li><a id="tel" href="#">Llamar: <span data-cfg="telefonoVisible">442 123 4567</span></a></li>
-        <li><a id="mail" href="#" data-cfg="correo">hola@verane.mx</a></li>
+        <li><a data-wa="general" href="#" id="waFoot">Escríbenos por WhatsApp</a></li>
+        <li id="telLi"><a id="tel" href="#">Llamar: <span data-cfg="telefonoVisible"></span></a></li>
+        <li id="mailLi"><a id="mail" href="#" data-cfg="correo"></a></li>
       </ul>
     </div>
     <div>
       <h3>Oficina</h3>
       <ul>
-        <li data-cfg="direccion">Av. Constituyentes 120, Centro, Querétaro</li>
+        <li data-cfg="direccion">Querétaro, Qro.</li>
         <li data-cfg="horario">Lunes a sábado de 9:00 a 19:00</li>
       </ul>
     </div>
   </div>
   <div class="legal">
     <span>© <span id="anio">2026</span> <span data-cfg="nombre">Verane Inmobiliaria</span></span>
-    <a id="aviso" href="#">Aviso de privacidad</a>
+    <a id="aviso" href="#aviso-de-privacidad">Aviso de privacidad</a>
   </div>
 </footer>
+
+<dialog id="avisoDlg" aria-labelledby="avisoT"><div class="aviso-in"><button class="aviso-cerrar" type="button" id="avisoX" aria-label="Cerrar aviso de privacidad"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div id="avisoTxt"></div></div></dialog>
 
 <a class="wa-float" id="waFloat" data-wa="general" href="#" aria-label="Escribir por WhatsApp"><svg aria-hidden="true"><use href="#i-wa"/></svg></a>
 
@@ -556,6 +581,7 @@ const qs = new URLSearchParams(location.search);
 const origen = [qs.get('utm_source'), qs.get('utm_campaign')].filter(Boolean).join(' / ');
 function wa(msg) {
   if (C.incluirOrigen && origen) msg += '\n(Origen: ' + origen + ')';
+  /* sin número (modo demo): WhatsApp abre el mensaje y deja elegir el contacto */
   return 'https://wa.me/' + digits + '?text=' + encodeURIComponent(msg);
 }
 /* dispara eventos si la página tiene Meta Pixel, GA4 o Google Tag Manager; si no, no hace nada */
@@ -578,9 +604,39 @@ $$('[data-c]').forEach((el) => { const v = C.textos[el.dataset.c]; if (v != null
 $$('[data-cfg]').forEach((el) => { const v = C[el.dataset.cfg]; if (v != null) el.textContent = v; });
 $$('#badges span').forEach((el, i) => { if (C.textos.badges[i]) el.textContent = C.textos.badges[i]; });
 $$('[data-wa]').forEach((a) => linkWA(a, fill(C.mensajes[a.dataset.wa]), a.dataset.wa));
-$('#tel').href = 'tel:+' + digits;
-$('#mail').href = 'mailto:' + C.correo;
-$('#aviso').href = C.avisoPrivacidad;
+if (C.telefonoVisible && digits) { $('#tel').href = 'tel:+' + digits; $('#waFoot').textContent = 'WhatsApp: ' + C.telefonoVisible; } else $('#telLi').remove();
+if (C.correo) $('#mail').href = 'mailto:' + C.correo; else $('#mailLi').remove();
+
+/* aviso de privacidad: el incluido se llena con CONFIG; si tienes el tuyo, pon su URL en avisoPrivacidad */
+const dlg = $('#avisoDlg');
+const contacto = C.correo ? 'al correo ' + esc(C.correo) : 'por WhatsApp' + (C.telefonoVisible ? ' al ' + esc(C.telefonoVisible) : '');
+$('#avisoTxt').innerHTML =
+  '<h2 id="avisoT">Aviso de privacidad</h2><p>Última actualización: ' + esc(C.avisoActualizado) + '</p>' +
+  '<h3>Quién es responsable de tus datos</h3><p>' + esc(C.nombre) + ', con domicilio en ' + esc(C.direccion) + ', es responsable del uso y protección de tus datos personales, conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.</p>' +
+  '<h3>Qué datos usamos</h3><p>Los que tú decides enviarnos por WhatsApp: tu nombre, tu número de teléfono y lo que buscas (si quieres comprar, rentar o vender, la zona y la forma de pago). Esta página no guarda tus respuestas: solo arma el mensaje que tú envías.</p>' +
+  '<h3>Para qué los usamos</h3><ul><li>Responder tu solicitud y enviarte opciones de propiedades.</li><li>Agendar visitas y darte seguimiento durante la compra, renta o venta.</li><li>Ayudarte con trámites de crédito, avalúo y escrituración cuando tú lo pidas.</li></ul><p>Con tu permiso, también para avisarte de propiedades nuevas que coincidan con lo que buscas. Puedes pedir que dejemos de hacerlo en cualquier momento.</p>' +
+  '<h3>Con quién los compartimos</h3><p>Solo con quien sea necesario para el trámite que tú solicites (por ejemplo, notarías, valuadores o instituciones de crédito) y en los casos que exija la ley. No vendemos tus datos.</p>' +
+  '<h3>Tus derechos</h3><p>Puedes pedir acceso a tus datos, corregirlos, cancelarlos u oponerte a su uso, así como revocar tu consentimiento, escribiéndonos ' + contacto + ' con tu nombre y lo que necesitas. Te respondemos en los plazos que marca la ley.</p>' +
+  '<h3>Cookies y medición</h3><p>Esta página puede usar cookies de herramientas como Meta o Google para medir el resultado de nuestros anuncios. Puedes borrarlas o bloquearlas desde la configuración de tu navegador.</p>' +
+  '<h3>Cambios a este aviso</h3><p>Cualquier cambio se publicará en esta misma página.</p>';
+const abrirAviso = () => { if (dlg.showModal && !dlg.open) dlg.showModal(); };
+if (C.avisoPrivacidad) { $('#aviso').href = C.avisoPrivacidad; }
+else {
+  $('#aviso').addEventListener('click', (e) => { e.preventDefault(); abrirAviso(); history.replaceState(null, '', '#aviso-de-privacidad'); });
+  if (location.hash === '#aviso-de-privacidad') abrirAviso();
+}
+$('#avisoX').addEventListener('click', () => dlg.close());
+dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+dlg.addEventListener('close', () => { if (location.hash === '#aviso-de-privacidad') history.replaceState(null, '', location.pathname + location.search); });
+
+/* datos estructurados para Google (inmobiliaria local), generados desde CONFIG */
+const ld = { '@context': 'https://schema.org', '@type': 'RealEstateAgent', name: C.nombre, url: location.origin + location.pathname,
+  image: new URL('media/og.jpg', location.href).href, areaServed: C.ciudad, priceRange: '$$',
+  address: { '@type': 'PostalAddress', streetAddress: C.direccion, addressLocality: C.ciudad, addressCountry: 'MX' } };
+if (digits) ld.telephone = '+' + digits;
+if (C.correo) ld.email = C.correo;
+if (C.horarioSchema) ld.openingHours = C.horarioSchema;
+const ldEl = document.createElement('script'); ldEl.type = 'application/ld+json'; ldEl.textContent = JSON.stringify(ld); document.head.appendChild(ldEl);
 $('#anio').textContent = new Date().getFullYear();
 
 /* ================= propiedades ================= */
@@ -707,13 +763,13 @@ show(0, false);
 /* =====================================================================
    HERO: ciudad + torre + escena de la ventana (un solo bucle rAF)
    ===================================================================== */
-const ROOM = 'https://images.higgs.ai/?default=1&output=webp&url=' + encodeURIComponent('https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261119_114205_7235737c-137f-49d3-b967-ff0d65b5c4d3.png') + '&w=2048&q=85';
-const VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261119_131845_acb065cd-9dea-4e18-8f20-1d2634228a92.mp4';
+const ROOM = 'media/cuarto.webp';
+const VIDEO = 'media/agua.mp4';
 
 const story = $('#story'), stage = $('#stage'), nav = $('#nav');
 const view = $('#view'), sky = $('.sky'), heroImg = $('#heroImg'), heroVid = $('#heroVid'), sea = $('.sea');
 const head = $('#head'), word = $('#word'), tower = $('#tower'), towerImg = $('#tower img');
-const script = $('#script'), shade = $('#shade'), room = $('#room'), cv = $('#roomCv');
+const script = $('#script'), shade = $('#shade'), room = $('#room'), roomImg = $('#roomImg'), veil = $('#veil');
 const heroText = $('#heroText'), cap = $('#cap'), waFloat = $('#waFloat');
 /* palabra decorativa: sin acentos agudos ni diéresis (la torre puede tapar la letra y dejar el acento suelto); la Ñ se conserva */
 word.textContent = C.textos.palabraHero || C.ciudad.normalize('NFD').replace(/[\u0300\u0301\u0308]/g, '').normalize('NFC').toLocaleUpperCase('es-MX');
@@ -900,6 +956,7 @@ function render(I, p) {
   put(heroText, 'opacity', (1 - xt).toFixed(4));
   put(heroText, 'visibility', xt >= 1 ? 'hidden' : 'visible');
   put(shade, 'opacity', (1 - xt).toFixed(4));
+  put(veil, 'opacity', (1 - xt).toFixed(4));
 
   const ec = SCENE ? E.cap(seg(p, .8, .95)) : 0;
   put(cap, 'visibility', ec > 0 ? 'visible' : 'hidden');
@@ -946,34 +1003,8 @@ const heroIn = (heroImg.decode ? heroImg.decode() : Promise.resolve()).catch(() 
 Promise.all([fontsIn, heroIn]).then(start);
 setTimeout(start, 1200);
 
-/* foto del cuarto: se carga después del hero y se recorta el verde del vidrio */
-function loadRoom() {
-  if (!SCENE) return;
-  const img = new Image();
-  img.crossOrigin = 'anonymous';
-  img.decoding = 'async';
-  img.onload = () => {
-    const ctx = cv.getContext('2d', { willReadFrequently: true });
-    ctx.drawImage(img, 0, 0, 2048, 1360);
-    const ss = (a, b, x) => { const t = clamp((x - a) / (b - a)); return t * t * (3 - 2 * t); };
-    let y = 0;
-    const step = () => {
-      let data;
-      try { data = ctx.getImageData(0, y, 2048, 170); }
-      catch (err) { for (const [x0, x1] of [[523, 834], [854, 1200], [1220, 1528]]) ctx.clearRect(x0, 175, x1 - x0, 774); return; }
-      const d = data.data;
-      for (let i = 0; i < d.length; i += 4) {
-        const r = d[i] / 255, gg = d[i + 1] / 255, b = d[i + 2] / 255, mx = r > b ? r : b, k = gg - mx;
-        if (k > .05) { d[i + 3] = Math.round((1 - ss(.10, .38, k)) * d[i + 3]); d[i + 1] = Math.round(Math.min(gg, mx * .96) * 255); }
-      }
-      ctx.putImageData(data, 0, y);
-      y += 170;
-      if (y < 1360) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  };
-  img.src = ROOM;
-}
+/* foto del cuarto (vidrio ya recortado en el archivo): se pide después de que cargó todo lo demás */
+function loadRoom() { if (SCENE && !roomImg.src) roomImg.src = ROOM; }
 if (document.readyState === 'complete') setTimeout(loadRoom, 300); else window.addEventListener('load', () => setTimeout(loadRoom, 300));
 
 layout(true);
