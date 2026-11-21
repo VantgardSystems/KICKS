@@ -48,11 +48,13 @@ Los anuncios pueden llevar `?utm_source=instagram&utm_campaign=nombre` en el enl
 
 ## Publicar
 
-**Vercel:** entra a vercel.com/new, arrastra la carpeta `inmobiliaria` completa y publica. O desde una terminal dentro de la carpeta: `npx vercel --prod`.
+No necesita compilar nada. Tres formas, de la más fácil a la más técnica:
 
-**Netlify:** entra a app.netlify.com/drop y arrastra la carpeta.
+**Netlify Drop (1 minuto, sin cuenta de GitHub):** entra a app.netlify.com/drop y arrastra la carpeta `inmobiliaria` completa.
 
-No necesita compilar nada.
+**Vercel desde GitHub:** en vercel.com → *Add New* → *Project* → importa el repositorio. En *Root Directory* elige `inmobiliaria`, en *Framework Preset* deja *Other* y publica. Si la carpeta todavía no está en la rama principal, cambia la rama en *Settings* → *Git* → *Production Branch*.
+
+**Vercel desde tu computadora:** abre una terminal dentro de la carpeta `inmobiliaria` y corre `npx vercel --prod`.
 
 ## Fotos nuevas
 
