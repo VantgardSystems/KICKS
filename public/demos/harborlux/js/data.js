@@ -98,9 +98,9 @@ window.SITE = {
      --------------------------------------------------------------- */
   hero: {
     modo: 'cinematico',
-    kicker: 'Alcanza tu',
-    palabra: 'Cumbre',
-    titulo: 'Alcanza tu cumbre: penthouses, residencias y terrenos para construir patrimonio',
+    kicker: 'Tu hogar en',
+    palabra: 'México',
+    titulo: 'Tu hogar en México: penthouses, residencias y terrenos con plusvalía',
     buscador: {
       etiqueta: 'Buscar propiedades',
       boton: 'Buscar'

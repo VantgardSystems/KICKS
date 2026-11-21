@@ -169,12 +169,59 @@
     hero.appendChild(meas);
     let perEm = 3.6;
     let asc = 0.864;
+    let kOff = -0.1;     // centro del kicker respecto al centro del titular, en em
+    let kDrop = 0.747;   // borde superior del kicker sobre la línea base, en em
     function measure() {
       const w = meas.getBoundingClientRect().width;
       if (w > 0) {
         perEm = w / 100;
         asc = meas.lastChild.offsetTop / 100;
+        placeKicker(w);
       }
+    }
+    /* El kicker descansa en la línea de mayúsculas, entre letras altas. Para no chocar con
+       acentos (é), puntos (i) o ascendentes (b, t), se dibuja el titular en un canvas, se busca
+       un hueco libre en esa franja lo más cerca posible del centro y, si no lo hay,
+       el kicker sube por encima del titular. */
+    function placeKicker(w) {
+      kOff = -0.1;
+      kDrop = 0.747;
+      try {
+        const S = 100;
+        const pad = 10;
+        const family = getComputedStyle(word).fontFamily;
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.ceil(w) + pad * 2;
+        canvas.height = 130;
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+        const base = 110;
+        ctx.font = '700 ' + S + 'px ' + family;
+        Array.from(meas.children).forEach((s) => { if (s.tagName === 'SPAN') ctx.fillText(s.textContent, s.offsetLeft + pad, base); });
+        const y0 = Math.round(base - 0.8 * S);
+        const y1 = Math.round(base - 0.6 * S);
+        const px = ctx.getImageData(0, y0, canvas.width, y1 - y0).data;
+        const margin = Math.round(0.03 * S);
+        const blocked = new Uint8Array(canvas.width);
+        for (let x = 0; x < canvas.width; x++) {
+          for (let y = 0; y < y1 - y0; y++) {
+            if (px[(y * canvas.width + x) * 4 + 3] > 40) {
+              for (let k = Math.max(0, x - margin); k <= Math.min(canvas.width - 1, x + margin); k++) blocked[k] = 1;
+              break;
+            }
+          }
+        }
+        ctx.font = '300 ' + (0.118 * S) + 'px ' + family;
+        const half = ctx.measureText(kicker.textContent).width / 2;
+        const pref = pad + w / 2 - 0.1 * S;
+        let best = null;
+        for (let cx = Math.ceil(pad + half); cx <= Math.floor(pad + w - half); cx++) {
+          let free = true;
+          for (let x = Math.floor(cx - half); x <= Math.ceil(cx + half); x++) if (blocked[x]) { free = false; break; }
+          if (free && (best === null || Math.abs(cx - pref) < Math.abs(best - pref))) best = cx;
+        }
+        if (best !== null && Math.abs(best - pref) <= 0.45 * S) kOff = (best - pad - w / 2) / S;
+        else kDrop = 0.9;   // sin hueco cercano: arriba del titular, centrado
+      } catch (e) { /* sin canvas: posición por defecto */ }
     }
     function layout() {
       const g = geom();
@@ -182,11 +229,14 @@
       const size = Math.max(12, Math.min(
         0.625 * g.sw / perEm,
         0.92 * g.W / perEm,
-        (g.top + base - (heroNavBottom() + 0.035 * g.H)) / 0.88
+        // 0.88 em del titular; si el kicker sube por encima, se le reserva su altura
+        (g.top + base - (heroNavBottom() + 0.035 * g.H)) / Math.max(0.88, kDrop + 0.02)
       ));
       headline.style.setProperty('--F', size.toFixed(2) + 'px');
       headline.style.setProperty('--base', base.toFixed(2) + 'px');
       headline.style.setProperty('--asc', asc.toFixed(4));
+      headline.style.setProperty('--koff', kOff.toFixed(4));
+      headline.style.setProperty('--kdrop', String(kDrop));
     }
     measure();
     layout();

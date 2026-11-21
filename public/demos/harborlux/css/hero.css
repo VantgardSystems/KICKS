@@ -116,11 +116,13 @@
   color: var(--text);
 }
 .word span { display: inline-block; }
+/* --koff: desplazamiento horizontal (em del titular); --kdrop: altura sobre la línea base.
+   hero.js los calcula para que el kicker no choque con acentos ni letras altas. */
 .kicker {
   position: absolute;
-  top: calc(var(--base) - var(--F) * .747);
-  left: calc(var(--F) * -.1);
-  right: calc(var(--F) * .1);
+  top: calc(var(--base) - var(--F) * var(--kdrop, .747));
+  left: calc(var(--F) * var(--koff, -.1));
+  right: calc(var(--F) * var(--koff, -.1) * -1);
   margin: 0;
   font-size: calc(var(--F) * .118);
   font-weight: var(--fw-light);

@@ -89,6 +89,7 @@ Tipos: `ext` (terraza/jardín), `agua` (alberca), `serv` (servicio, baños chico
 - `hero.modo: 'cinematico'`: puertas → toma aérea → video de tilt → parallax de cuatro capas → titular letra por letra → figura que sube, y lluvia en bucle. Necesita los siete medios de `hero.media`, alineados en el mismo encuadre 16:9 (`ciudad` y `frente` son PNG con transparencia).
 - `hero.modo: 'imagen'`: una sola foto (`media.fondo`) con el titular, sin intro. Úsalo si el cliente no tiene medios cinemáticos.
 - `kicker` + `palabra` forman el titular (la palabra gigante se ajusta sola a la pantalla). `titulo` es el texto completo para lectores de pantalla y SEO.
+- El kicker se acomoda solo: descansa en la línea de mayúsculas, en el hueco libre más cercano al centro, y si la palabra tiene acentos o letras altas que lo estorban (como la “é” de “México”) sube por encima del titular.
 - Con *reducir movimiento* activo, o al entrar con un enlace a una sección o propiedad, el hero aparece directamente en su cuadro final.
 
 ## Herramientas
